@@ -1,0 +1,124 @@
+
+.messages{
+    padding: 10px;
+    background-color: white;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.messages .search-bar {
+    position: relative;
+    padding-bottom: .5rem;
+
+}
+
+.search-icon {
+    position: absolute;
+    left: 10px;
+    color: #1e1e1ec9;
+    top: 7px;
+    font-size: 20px;
+}
+
+.search-bar input {
+    outline: none;
+    border: none;
+    background-color: #80808014;
+    height: 40px;
+    border-radius: 20px;
+    width: 100%;
+    padding: 0 36px;
+    font-size: 15px;
+}
+
+.filter {
+    position: absolute;
+    right: 15px;
+    top: 6px;
+    font-size: 21px;
+    color: var(--color-gray-dark);
+}
+
+.link-cont {
+    display: flex;
+    width: 100%;
+    gap: 15px;
+    justify-content: space-between;
+    font-weight: bold;
+    font-size: 14px;
+    color: var(--color-gray);
+    border-bottom: 1px solid;
+    overflow-x: auto;
+    overflow-y: hidden;    
+}
+
+.link-cont::-webkit-scrollbar {
+    display:none;
+}
+
+.isActive {
+    color: var(--color-gray-dark);
+    border-bottom: 2px solid;
+    padding-bottom: 5px;
+}
+
+.friends {
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+    gap: 15px;
+    overflow-x: hidden;
+    overflow-y: auto;    
+    max-height: 246px;
+}
+
+.friends::-webkit-scrollbar {
+    width: 0.3rem;
+    height: 0.1rem;
+}
+
+
+.person {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.person .img_wrapper {
+    background: linear-gradient(to top right, var(--blueViolet-lyt), var(--color-gray-lyt));    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.image_wrapper img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    border-radius: 50%;
+    border: 2px solid white;
+}
+
+
+.person-info {
+    width: 70%;
+    cursor: pointer;
+}
+
+.name-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.person-name {
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.online {
+    color: var(--blueViolet);
+}

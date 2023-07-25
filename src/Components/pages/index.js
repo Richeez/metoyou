@@ -1,0 +1,7 @@
+export { default as Home } from './home/Home'
+export { default as About } from './about/About'
+export { default as Account } from './account/Account'
+export { default as NotFound } from './404-Page/NotFound'
+export { default as SignUp } from './signupPage/signUp'
+export { default as LogIn } from './loginpage/loginPage'
+export { default as ExpSession } from './expired/ExpSession'
