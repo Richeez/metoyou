@@ -50,7 +50,7 @@ function SignUpPage() {
 
     try {
       const response = await axios.post(
-        "https://metoyou-server.vercel.app/register",
+        "https://metoyou-api.vercel.app/register",
         JSON.stringify({
           user: fullname.trim(),
           email: email.trim(),

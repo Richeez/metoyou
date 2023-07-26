@@ -42,7 +42,7 @@ const Post = ({
       <div className="post">
         <div className="img-wrapper">
           <img
-            src={`https://metoyou-server.vercel.app/assets/${picsPath}`}
+            src={`https://metoyou-api.vercel.app/assets/${picsPath}`}
             alt="post"
           />
         </div>
@@ -63,8 +63,8 @@ const Post = ({
                 <img
                   src={`${
                     frndPics
-                      ? `https://metoyou-server.vercel.app/assets/${frndPics}`
-                      : "https://metoyou-server.vercel.app/assets/default-user.png"
+                      ? `https://metoyou-api.vercel.app/assets/${frndPics}`
+                      : "https://metoyou-api.vercel.app/assets/default-user.png"
                   }`}
                   alt="avater"
                 />
@@ -73,8 +73,8 @@ const Post = ({
                 <img
                   src={`${
                     frndPics
-                      ? `https://metoyou-server.vercel.app/assets/${frndPics}`
-                      : "https://metoyou-server.vercel.app/assets/default-user.png"
+                      ? `https://metoyou-api.vercel.app/assets/${frndPics}`
+                      : "https://metoyou-api.vercel.app/assets/default-user.png"
                   }`}
                   alt="avater"
                 />
@@ -83,8 +83,8 @@ const Post = ({
                 <img
                   src={`${
                     frndPics
-                      ? `https://metoyou-server.vercel.app/assets/${frndPics}`
-                      : "https://metoyou-server.vercel.app/assets/default-user.png"
+                      ? `https://metoyou-api.vercel.app/assets/${frndPics}`
+                      : "https://metoyou-api.vercel.app/assets/default-user.png"
                   }`}
                   alt="avater"
                 />

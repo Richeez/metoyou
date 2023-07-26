@@ -84,7 +84,7 @@ const Activity = () => {
               ) : (
                 <div className="image">
                   <img
-                    src={`https://metoyou-server.vercel.app/assets/facts.jpg`}
+                    src={`https://metoyou-api.vercel.app/assets/facts.jpg`}
                     alt="postImg"
                   />
                 </div>
