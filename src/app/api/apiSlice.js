@@ -3,7 +3,7 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react"
 import { setCredentials, logOut } from "../../manager/auth/authSlice"
 
 const baseQuery = fetchBaseQuery({
-    baseUrl: "https://metoyou-api.vercel.app/",
+    baseUrl: "https://metoyou-api.vercel.app/api/",
     credentials: "include",
     prepareHeaders: (headers, { getState }) => {
         const token = getState().auth.token

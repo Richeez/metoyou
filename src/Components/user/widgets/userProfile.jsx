@@ -84,8 +84,8 @@ const UserProfile = () => {
             <img
               src={
                 backgroundBg
-                  ? `https://metoyou-api.vercel.app/assets/${backgroundBg} `
-                  : "https://metoyou-api.vercel.app/assets/facts.jpg"
+                  ? `https://metoyou-api.vercel.app/api/assets/${backgroundBg} `
+                  : "https://metoyou-api.vercel.app/api/assets/facts.jpg"
               }
               alt="background"
             />
@@ -170,7 +170,7 @@ const UserProfile = () => {
           <div className="photos-cont">
             <div className="main-photo">
               <img
-                src="https://metoyou-api.vercel.app/assets/profile-2.jpg"
+                src="https://metoyou-api.vercel.app/api/assets/profile-2.jpg"
                 alt=""
               />
             </div>
@@ -178,21 +178,21 @@ const UserProfile = () => {
             <div className="other-photos">
               <div className="other-photos-img">
                 <img
-                  src="https://metoyou-api.vercel.app/assets/profile-3.jpg"
+                  src="https://metoyou-api.vercel.app/api/assets/profile-3.jpg"
                   alt=""
                   className="other-photos-img"
                 />
               </div>
               <div className="other-photos-img">
                 <img
-                  src="https://metoyou-api.vercel.app/assets/elon-musk.jpg"
+                  src="https://metoyou-api.vercel.app/api/assets/elon-musk.jpg"
                   alt=""
                   className="other-photos-img"
                 />
               </div>
               <div className="other-photos-img">
                 <img
-                  src="https://metoyou-api.vercel.app/assets/profile-pic.png"
+                  src="https://metoyou-api.vercel.app/api/assets/profile-pic.png"
                   alt=""
                   className="other-photos-img"
                 />
@@ -200,7 +200,7 @@ const UserProfile = () => {
 
               <div className="last-photo">
                 <img
-                  src="https://metoyou-api.vercel.app/assets/Facebook.png"
+                  src="https://metoyou-api.vercel.app/api/assets/Facebook.png"
                   alt=""
                   className="other-photos-img"
                 />
