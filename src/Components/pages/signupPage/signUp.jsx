@@ -65,7 +65,6 @@ function SignUpPage() {
       setLoadingDiv(false);
       navigate("/login");
     } catch (err) {
-      console.log("🚀 ~ file: signUp.jsx:64 ~ signUp ~ err:", err);
       if (!err) {
         setErrorMessage({ bool: true, message: "No Server Response" });
       } else if (err?.response?.status === 400) {
