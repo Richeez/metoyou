@@ -14,7 +14,6 @@ const PostsWidget = ({ userId, isProfile = false }) => {
   const dispatch = useDispatch();
 
   const posts = useSelector(selectCurrentPost);
-  console.log("🚀 ~ file: postsWidget.jsx:15 ~ PostsWidget ~ posts:", posts);
 
   const {
     data: post,

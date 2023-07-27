@@ -2,10 +2,10 @@ import "./signUp.css";
 import axios from "axios";
 import { FaEyeSlash, FaEye, FaArrowRight } from "react-icons/fa";
 import { BiInfoCircle } from "react-icons/bi";
-import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import { RiAlarmWarningFill } from "react-icons/ri";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { Logging } from "../../../svgs";
 // import illustration from '../illustrations/login-illustrate.svg'
 
 // const request = {
@@ -113,10 +113,7 @@ function SignUpPage() {
     <div className="signup-page">
       {loadingDiv ? (
         <div className="loading-div">
-          <AiOutlineLoading3Quarters
-            className="loading-effect"
-            style={{ color: "orangeRed" }}
-          />
+          <Logging />
         </div>
       ) : (
         ""

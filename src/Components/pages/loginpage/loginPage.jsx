@@ -13,8 +13,6 @@ function LoginPage() {
   const [eyesOpen, setEyesOpen] = useState(false);
   const errRef = useRef(null);
 
-  // const { setAuth } = useAuth();
-
   const [userInfo, setUserInfo] = useState({
     username: "",
     password: "",
@@ -23,7 +21,6 @@ function LoginPage() {
 
   useEffect(() => {}, [errorMsg]);
   const { username, password } = userInfo;
-  // --- onchange function for filling the user info ---
   const fillingData = (e) => {
     const { name, value } = e.target;
     setUserInfo((prevState) => ({ ...prevState, [name]: value }));
