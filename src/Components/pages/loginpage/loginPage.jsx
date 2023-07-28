@@ -53,7 +53,6 @@ function LoginPage() {
       });
       navigate(from, { replace: true });
     } catch (err) {
-      console.log(err);
       if (!err) {
         setErrorMsg("No Server Response");
       } else if (err?.status === 400) {

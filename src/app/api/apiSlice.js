@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react"
-import { setCredentials, logOut } from "../../manager/auth/authSlice"
+import { setCredentials } from "../../manager/auth/authSlice"
 
 const baseQuery = fetchBaseQuery({
     baseUrl: "https://metoyou-api.vercel.app/api",
@@ -24,7 +24,7 @@ const refreshAccessToken = async (api, extraOptions) => {
 
         //? Store new token
         api.dispatch(setCredentials({ ...refreshResult.data, user }))
-        return refreshResult.data.access_token // Return the new access token
+        return refreshResult.data// Return the new access token
     }
 
     return null // Return null if refresh fails
@@ -49,11 +49,14 @@ export const baseQueryWithReAuth = async (args, api, extraOptions) => {
                 // Retry the original query with the new access token
                 retry = true
             } else {
-                console.log("Token refresh failed. Logging out...")
-                const logout = await baseQuery("/logout", api, extraOptions)
-                console.log("🚀 ~ file: apiSlice.js:54 ~ baseQueryWithReAuth ~ logout:", logout)
+                let logged;
 
-                api.dispatch(logOut())
+                if (newToken?.error?.status === 403) {
+                    logged = newToken?.error?.data?.message
+                    logged = "Your Log in session has expired! "
+
+                }
+                return logged;
             }
         } else {
             // Handle other errors, you can also throw it to let the upper layer handle it
@@ -70,38 +73,6 @@ export const baseQueryWithReAuth = async (args, api, extraOptions) => {
     return result
 }
 
-
-
-// export const baseQueryWithReAuth = async (args, api, extraOptions) => {
-//     let result = await baseQuery(args, api, extraOptions)
-//     console.log("from apiSlice", result)
-
-//     if (result?.error?.originalStatus === 403) {
-//         console.log("Sending refresh token...");
-//         const refreshResult = await baseQuery("/refresh", api, extraOptions)
-//         console.log("New Token:", refreshResult.data)
-
-//         if (refreshResult?.data) {
-//             const user = api.getState().auth.user
-
-//             //? Store new token
-//             api.dispatch(setCredentials({ ...refreshResult.data, user }))
-
-//             //? Retry the original query with new access token
-
-//             result = await baseQuery(args, api, extraOptions)
-
-//         } else {
-//             api.dispatch(logOut())
-
-
-//         }
-
-//     }
-
-//     return result
-
-// }
 
 export const apiSlice = createApi({
     baseQuery: baseQueryWithReAuth,
