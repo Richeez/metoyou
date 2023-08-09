@@ -11,6 +11,7 @@ import { StyledInput } from "../../features/inputs/styledInput";
 import Button from "../../features/animated buttons/Button";
 import { ImageBox } from "../../features";
 import { FaTimes } from "react-icons/fa";
+import { toast } from "react-toastify";
 
 const PostField = () => {
   const fileInputRef = useRef(null);
@@ -54,7 +55,32 @@ const PostField = () => {
       newPost
     );
 
-    if (!file) return; //? No file selected
+    if (!file && !description) {
+      return toast.error("You do not have any post to publish!!", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: false,
+        draggable: false,
+        progress: undefined,
+        toastId: "01",
+      });
+      //? No file and description available
+    }
+    if (!file) {
+      return toast.error("Please add a picture to make your post eye catchy", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: false,
+        draggable: false,
+        progress: undefined,
+        toastId: "02",
+      });
+      //? No file selected
+    }
 
     try {
       const postData = await post(newPost).unwrap();
@@ -83,7 +109,7 @@ const PostField = () => {
             type="text"
             name="description"
             autoComplete="off"
-            value={formData.description}
+            value={description}
             onChange={createPost}
             onKeyDown={(e) => e.key === "Enter" && e.preventDefault()} // Prevent form submission on Enter key press
             placeholder="Let out your mind"

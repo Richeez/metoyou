@@ -17,11 +17,15 @@ import { selectCurrentUserId } from "../../../manager/auth/authSlice";
 import { useParams } from "react-router-dom";
 import { ExpSession } from "../../pages";
 import { Fetching } from "../../../svgs";
+import useTitle from "../../../hooks/useTitle";
+import PostsWidget from "../post/postsWidget";
 
 const UserProfile = () => {
+  useTitle("Profile Page");
   const [toggle, setToggle] = useState(false);
   const editor = useRef(null);
-  const params = useParams();
+  const { userId } = useParams();
+  console.log("🚀 ~ file: userProfile.jsx:28 ~ UserProfile ~ userId:", userId);
 
   const handleToggle = () => {
     setToggle((prev) => !prev);
@@ -31,22 +35,23 @@ const UserProfile = () => {
   const _id = useSelector(selectCurrentUserId);
   const [id, setUserId] = useState(null); // Assuming you have a state to store the current user ID
   const [user, setUser] = useState(null);
-  const profileUserId = params?.id;
+  const profileUserId = userId;
   const currentUserId =
     profileUserId === id
       ? useGetUserIdQuery(_id)
       : useGetUserIdQuery(profileUserId);
-  const { data: userId, isLoading, isSuccess, isError } = currentUserId;
+  const { data: res, isLoading, isSuccess, isError } = currentUserId;
 
   useEffect(() => {
-    setUserId(userId); // Set the current user ID based on your logic
+    setUserId(res); // Set the current user ID based on your logic
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // const navigate = useNavigate();
   useEffect(() => {
     //? Render the data once it has been successfully fetched
-    setUser(userId);
-  }, [isSuccess, userId]);
+    setUser(res);
+  }, [isSuccess, res]);
 
   let profile;
   if (isLoading) {
@@ -54,7 +59,6 @@ const UserProfile = () => {
     profile = (
       <div className="loading-div">
         <Fetching />
-        {/* <AiOutlineLoading3Quarters className="loading-effect" /> */}
       </div>
     );
   } else if (isError) {
@@ -72,8 +76,6 @@ const UserProfile = () => {
       location,
     } = user;
 
-    let name = !nickname ? username : nickname;
-
     profile = (
       <div className="profile flex-cont">
         <BackDrop className={`${toggle ? "pop-up" : "offSet"}`}>
@@ -84,8 +86,8 @@ const UserProfile = () => {
             <img
               src={
                 backgroundBg
-                  ? `https://metoyou-api.vercel.app/api/assets/${backgroundBg} `
-                  : "https://metoyou-api.vercel.app/api/assets/facts.jpg"
+                  ? `http://localhost:4500/assets/${backgroundBg} `
+                  : "/facts.jpg"
               }
               alt="background"
             />
@@ -97,7 +99,7 @@ const UserProfile = () => {
               <p
                 style={{ textTransform: "lowercase" }}
                 className="handle-name"
-              >{`@${name}`}</p>
+              >{`@${nickname}`}</p>
             </div>
           </div>
         </div>
@@ -108,14 +110,16 @@ const UserProfile = () => {
           <p className="int">Travels</p>
         </div>
 
-        <div className="button-settings">
-          <div className="edit-button">
-            <button onClick={handleToggle}>Edit Profile</button>
+        {profileUserId === _id && (
+          <div className="button-settings">
+            <div className="edit-button">
+              <button onClick={handleToggle}>Edit Profile</button>
+            </div>
+            <div className="settings">
+              <IoMdSettings />
+            </div>
           </div>
-          <div className="settings">
-            <IoMdSettings />
-          </div>
-        </div>
+        )}
 
         <div className="rating">
           <div className="row">
@@ -152,12 +156,19 @@ const UserProfile = () => {
           )}
 
           <div className="rating-cont">
-            <p className="rating-info"> Who's viewed your profile:</p>
-            <p className="figure">{viewedProfile ? viewedProfile : 0}</p>
+            <p className="rating-info">
+              {" "}
+              Who's viewed your profile:{" "}
+              <span className="figure">
+                {viewedProfile ? viewedProfile : 0}
+              </span>
+            </p>
           </div>
           <div className="rating-cont ">
-            <p className="rating-info">impressions of your post:</p>
-            <p className="figure">{impressions ? impressions : 0}</p>
+            <p className="rating-info">
+              impressions of your post:{" "}
+              <span className="figure">{impressions ? impressions : 0}</span>
+            </p>
           </div>
         </div>
 
@@ -169,41 +180,26 @@ const UserProfile = () => {
 
           <div className="photos-cont">
             <div className="main-photo">
-              <img
-                src="https://metoyou-api.vercel.app/api/assets/profile-2.jpg"
-                alt=""
-              />
+              <img src="profile-2.jpg" alt="" />
             </div>
 
             <div className="other-photos">
               <div className="other-photos-img">
-                <img
-                  src="https://metoyou-api.vercel.app/api/assets/profile-3.jpg"
-                  alt=""
-                  className="other-photos-img"
-                />
+                <img src="profile-3.jpg" alt="" className="other-photos-img" />
+              </div>
+              <div className="other-photos-img">
+                <img src="elon-musk.jpg" alt="" className="other-photos-img" />
               </div>
               <div className="other-photos-img">
                 <img
-                  src="https://metoyou-api.vercel.app/api/assets/elon-musk.jpg"
-                  alt=""
-                  className="other-photos-img"
-                />
-              </div>
-              <div className="other-photos-img">
-                <img
-                  src="https://metoyou-api.vercel.app/api/assets/profile-pic.png"
+                  src="profile-pic.png"
                   alt=""
                   className="other-photos-img"
                 />
               </div>
 
               <div className="last-photo">
-                <img
-                  src="https://metoyou-api.vercel.app/api/assets/Facebook.png"
-                  alt=""
-                  className="other-photos-img"
-                />
+                <img src="smart.jpeg" alt="" className="other-photos-img" />
                 <span className="overlay">+4</span>
               </div>
             </div>
@@ -222,7 +218,9 @@ const UserProfile = () => {
                 <p className="no-post">No post(s) yet!</p>
                 <span className="click-add">click here to add</span>
               </div>
+
               <Lottie className="empty" animationData={Empty} />
+              <PostsWidget userId={userId} isProfile />
             </div>
           </div>
         </div>

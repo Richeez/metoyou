@@ -51,7 +51,21 @@ export const authApiSlice = apiSlice.injectEndpoints({
                 body: { ...credentials }
             })
         }),
+        like: builder.mutation({
+            query: credentials => {
+                const { id, userId } = credentials;
+
+                return {
+                    url: `/posts/${id}/like`,
+                    method: "PATCH",
+                    body: { userId }
+
+
+                }
+
+            }
+        }),
     })
 })
 
-export const { useLoginMutation, usePostMutation, useUpdateProfileMutation, useUploadMutation } = authApiSlice
+export const { useLoginMutation, usePostMutation, useUpdateProfileMutation, useUploadMutation, useLikeMutation } = authApiSlice

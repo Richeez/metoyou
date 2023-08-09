@@ -78,12 +78,20 @@ export const StyledPost = styled.div`
         align-items: center;
         justify-content: space-between;
         width: fit-content;
+        /* background-color: yellow; */
         gap: 2rem;
 
         &{
+
+          .icon{
+
+            font-size: 1.6rem;
+          }
           .icon:nth-of-type(1){
-          color: var(--blueViolet);
-          font-size: 1.5rem;
+            color:var(--color-gray);
+            
+            font-size: 1.8rem;
+          /* color: var(--blueViolet); */
 
           }
         }

@@ -36,11 +36,9 @@ const Profile = ({
       >
         <img
           src={`${
-            img
-              ? `https://metoyou-api.vercel.app/api/assets/${img}`
-              : "https://metoyou-api.vercel.app/api/assets/default-user.png"
+            img ? `http://localhost:4500/assets/${img}` : "/default-user.png"
           }`}
-          alt="avater"
+          alt="avatar"
           loading="lazy"
         />
       </div>

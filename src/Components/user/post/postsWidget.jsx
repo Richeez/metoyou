@@ -20,6 +20,7 @@ const PostsWidget = ({ userId, isProfile = false }) => {
     isLoading,
     isError,
   } = isProfile ? useGetUserPostsQuery(userId) : useGetUsersPostsQuery();
+  console.log("🚀 ~ file: postsWidget.jsx:23 ~ PostsWidget ~ post:", post);
 
   useEffect(() => {
     if (post) {
@@ -36,11 +37,19 @@ const PostsWidget = ({ userId, isProfile = false }) => {
   }
 
   if (isError) {
-    return <div>Error: Failed to fetch posts</div>;
+    return (
+      <div style={{ textAlign: "center", width: "100%", fontSize: "1.2rem" }}>
+        Error: Failed to fetch posts
+      </div>
+    );
   }
 
   if (!posts?.length) {
-    return <div>No posts found.</div>;
+    return (
+      <div style={{ textAlign: "center", width: "100%", fontSize: "1.2rem" }}>
+        No posts found.
+      </div>
+    );
   }
 
   return (
@@ -57,11 +66,15 @@ const PostsWidget = ({ userId, isProfile = false }) => {
             userPicsPath,
             likes,
             comments,
+            following,
           }) => (
             <>
-              <div className="item">
+              <div key={`${_id}-${userId}`} className="item">
+                {console.log(
+                  "🚀 ~ file: postsWidget.jsx:58 ~ PostsWidget ~ posts:",
+                  posts
+                )}{" "}
                 <Post
-                  key={`${_id}-${username}`}
                   postId={_id}
                   postUserId={userId}
                   username={username}
@@ -71,6 +84,7 @@ const PostsWidget = ({ userId, isProfile = false }) => {
                   userPicsPath={userPicsPath}
                   likes={likes}
                   comments={comments}
+                  following={following}
                 />
               </div>
             </>
@@ -80,5 +94,5 @@ const PostsWidget = ({ userId, isProfile = false }) => {
     </>
   );
 };
-
+//
 export default PostsWidget;

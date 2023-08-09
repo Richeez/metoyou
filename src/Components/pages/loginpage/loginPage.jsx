@@ -86,9 +86,9 @@ function LoginPage() {
 
         <ul className="login-ul">
           <li>
-            <label className="label" htmlFor="username">
+            {/* <label className="label" htmlFor="username">
               Full Name
-            </label>
+            </label> */}
             <input
               name="username"
               className="input"
@@ -102,9 +102,9 @@ function LoginPage() {
           </li>
 
           <li>
-            <label className="label" htmlFor="password">
+            {/* <label className="label" htmlFor="password">
               Password
-            </label>
+            </label> */}
 
             <div className="input-cont">
               {eyesOpen ? (

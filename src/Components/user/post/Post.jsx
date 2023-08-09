@@ -6,12 +6,16 @@ import { BsBookmark, BsThreeDots } from "react-icons/bs";
 import { FaRegComment } from "react-icons/fa";
 import Profile from "../profile/profile";
 import { StyledPost } from "./styledPost";
-import { /* useDispatch */ useSelector } from "react-redux";
-import { selectCurrentUserId } from "../../../manager/auth/authSlice";
-// import { useState } from "react";
+
+import { useDispatch, useSelector } from "react-redux";
+import { selectCurrentUserId, setPost } from "../../../manager/auth/authSlice";
+
+import { useLikeMutation } from "../../../manager/auth/authApiSlice";
+import Comment from "../widgets/comments/Comment";
+import { useState } from "react";
 
 const Post = ({
-  // postId,
+  postId,
   postUserId,
   username,
   description,
@@ -19,16 +23,49 @@ const Post = ({
   picsPath,
   userPicsPath,
   likes,
-  // comments,
-  frndPics,
+  comments,
+  followers,
 }) => {
-  console.log("as user", username);
   const name = username ? `${username}` : "username";
-  // const dispatch = useDispatch();
-  // const [isComments, setIsComments] = useState(false);
+  const dispatch = useDispatch();
+  const [isComments, setIsComments] = useState(false);
   const loggedInUserId = useSelector(selectCurrentUserId);
   const isLiked = Boolean(likes[loggedInUserId]);
-  // const likeCount = Object.keys(likes).length;
+  const likeCount = Object.keys(likes).length;
+  const [like] = useLikeMutation();
+
+  const handleLike = async () => {
+    const credentials = {
+      userId: loggedInUserId,
+      id: postId,
+    };
+    console.log(
+      "🚀 ~ file: Post.jsx:43 ~ handleLike ~ credentials.userId:",
+      credentials.userId
+    );
+    console.log(
+      "🚀 ~ file: Post.jsx:43 ~ handleLike ~ credentials.id:",
+      credentials.id
+    );
+    try {
+      // Assuming you have the necessary data for the like in a "credentials" object
+      const updatedPost = await like(credentials).unwrap();
+      dispatch(setPost(updatedPost));
+      console.log(
+        "🚀 ~ file: Post.jsx:52 ~ handleLike ~ updatedPost:",
+        updatedPost
+      );
+
+      // Handle successful like response here
+    } catch (error) {
+      console.error("Like error:", error);
+      // Handle error here
+    }
+  };
+  const handleComment = async () => {
+    setIsComments((prev) => !prev);
+  };
+
   return (
     <StyledPost>
       <div className="profile">
@@ -41,15 +78,12 @@ const Post = ({
       </div>
       <div className="post">
         <div className="img-wrapper">
-          <img
-            src={`https://metoyou-api.vercel.app/api/assets/${picsPath}`}
-            alt="post"
-          />
+          <img src={`http://localhost:4500/assets/${picsPath}`} alt="post" />
         </div>
         <div className="icons_wrapper">
           <div className="left-icons">
-            <AiFillLike className="icon" />
-            <FaRegComment className="icon" />
+            <AiFillLike onClick={handleLike} className="icon" />
+            <FaRegComment onClick={handleComment} className="icon" />
             <BiShareAlt className="icon" />
           </div>
           <div className="right_icons">
@@ -62,37 +96,38 @@ const Post = ({
               <div className="img-wrapper">
                 <img
                   src={`${
-                    frndPics
-                      ? `https://metoyou-api.vercel.app/api/assets/${frndPics}`
-                      : "https://metoyou-api.vercel.app/api/assets/default-user.png"
+                    followers
+                      ? `http://localhost:4500/assets/${followers}`
+                      : "/default-user.png"
                   }`}
-                  alt="avater"
+                  alt="avatar"
                 />
               </div>
               <div className="img-wrapper">
                 <img
                   src={`${
-                    frndPics
-                      ? `https://metoyou-api.vercel.app/api/assets/${frndPics}`
-                      : "https://metoyou-api.vercel.app/api/assets/default-user.png"
+                    followers
+                      ? `http://localhost:4500/assets/${followers}`
+                      : "/default-user.png"
                   }`}
-                  alt="avater"
+                  alt="avatar"
                 />
               </div>
               <div className="img-wrapper">
                 <img
                   src={`${
-                    frndPics
-                      ? `https://metoyou-api.vercel.app/api/assets/${frndPics}`
-                      : "https://metoyou-api.vercel.app/api/assets/default-user.png"
+                    followers
+                      ? `http://localhost:4500/assets/${followers}`
+                      : "/default-user.png"
                   }`}
-                  alt="avater"
+                  alt="avatar"
                 />
               </div>
             </div>
             {isLiked && (
               <div className="text_cont">
                 <span>
+                  {likeCount}
                   Liked by <span className="bold">Big Fame</span> and
                   <span className="bold">1,993 others</span>
                 </span>
@@ -101,6 +136,13 @@ const Post = ({
           </div>
           <p>{description}</p>
         </div>
+        {isComments && (
+          <Comment
+            content={comments}
+            author={username}
+            timestamp={new Date().toUTCString()}
+          />
+        )}
       </div>
     </StyledPost>
   );

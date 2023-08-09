@@ -45,7 +45,8 @@ const DropDownMenu = ({
   navbarRef,
 }) => {
   const [activeMenu, setActiveMenu] = useState("main");
-  const { _id: id, picsPath } = useSelector(selectCurrentUser);
+  const { _id, picsPath } = useSelector(selectCurrentUser);
+  console.log("🚀 ~ file: DropDownMenu.jsx:49 ~ _id:", _id);
 
   useEffect(() => {
     calcString();
@@ -132,7 +133,7 @@ const DropDownMenu = ({
               title={"profile"}
               img={
                 <Profile
-                  id={id}
+                  id={_id}
                   img={picsPath}
                   profile
                   radius="0"

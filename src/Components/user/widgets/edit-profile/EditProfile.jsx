@@ -12,6 +12,7 @@ import {
   selectCurrentUserId,
   setPosts,
 } from "../../../../manager/auth/authSlice";
+// import { useEffect } from "react";
 
 const EditProfile = ({ handleToggle, editor }) => {
   const coverImg = useRef(null);
@@ -73,6 +74,12 @@ const EditProfile = ({ handleToggle, editor }) => {
       profilePicture,
       coverImage,
     };
+
+    // useEffect(() => {
+    //   if (post) {
+    //     dispatch(setPosts({ posts: post }));
+    //   }
+    // }, [post, dispatch]);
 
     const newData = await updateProfile(newProfile).unwrap();
     dispatch(setPosts({ ...newData }));
