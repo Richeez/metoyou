@@ -73,7 +73,7 @@ export const StyledPost = styled.div`
       align-items: center;
       justify-content: space-between;
 
-      .left-icons {
+      .left-icons, .like {
         display: flex;
         align-items: center;
         justify-content: space-between;
@@ -87,14 +87,24 @@ export const StyledPost = styled.div`
 
             font-size: 1.6rem;
           }
-          .icon:nth-of-type(1){
-            color:var(--color-gray);
-            
+          .icon:nth-of-type(1){            
             font-size: 1.8rem;
           /* color: var(--blueViolet); */
 
           }
         }
+      }
+
+      .like{
+        gap: .5rem;
+p{
+  margin-top: auto;
+}
+      .icon{
+        color:var(--color-gray);
+
+
+      }
       }
     }
 

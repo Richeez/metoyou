@@ -173,6 +173,9 @@ const DropDownMenu = ({
             <DropDownItem title={"report issue"} leftIcon={<IoMdCall />}>
               Report Issue
             </DropDownItem>
+            <DropDownItem exec={logOut()} leftIcon={<BiLogOut />}>
+              Log Out
+            </DropDownItem>
           </ul>
         </div>
       </CSSTransition>
@@ -240,10 +243,6 @@ const DropDownMenu = ({
               title={"trust device"}
             >
               Trust Device
-            </DropDownItem>
-
-            <DropDownItem exec={logOut()} leftIcon={<BiLogOut />}>
-              Log Out
             </DropDownItem>
           </ul>
         </div>

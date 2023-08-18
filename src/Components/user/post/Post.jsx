@@ -12,7 +12,7 @@ import { selectCurrentUserId, setPost } from "../../../manager/auth/authSlice";
 
 import { useLikeMutation } from "../../../manager/auth/authApiSlice";
 import Comment from "../widgets/comments/Comment";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const Post = ({
   postId,
@@ -34,29 +34,17 @@ const Post = ({
   const likeCount = Object.keys(likes).length;
   const [like] = useLikeMutation();
 
+  useEffect(() => {}, [isLiked]);
+
   const handleLike = async () => {
     const credentials = {
       userId: loggedInUserId,
       id: postId,
     };
-    console.log(
-      "🚀 ~ file: Post.jsx:43 ~ handleLike ~ credentials.userId:",
-      credentials.userId
-    );
-    console.log(
-      "🚀 ~ file: Post.jsx:43 ~ handleLike ~ credentials.id:",
-      credentials.id
-    );
     try {
       // Assuming you have the necessary data for the like in a "credentials" object
       const updatedPost = await like(credentials).unwrap();
-      dispatch(setPost(updatedPost));
-      console.log(
-        "🚀 ~ file: Post.jsx:52 ~ handleLike ~ updatedPost:",
-        updatedPost
-      );
-
-      // Handle successful like response here
+      dispatch(setPost({ post: updatedPost }));
     } catch (error) {
       console.error("Like error:", error);
       // Handle error here
@@ -78,11 +66,25 @@ const Post = ({
       </div>
       <div className="post">
         <div className="img-wrapper">
-          <img src={`http://localhost:4500/assets/${picsPath}`} alt="post" />
+          <img
+            src={`https://metoyou-api.vercel.app/assets/${picsPath}`}
+            alt="post"
+          />
         </div>
         <div className="icons_wrapper">
           <div className="left-icons">
-            <AiFillLike onClick={handleLike} className="icon" />
+            <div className="like">
+              <AiFillLike
+                onClick={handleLike}
+                style={{
+                  color: `${
+                    isLiked ? "var(--blueViolet)" : "var(--color-gray)"
+                  } `,
+                }}
+                className="icon"
+              />{" "}
+              <p>{likeCount}</p>
+            </div>
             <FaRegComment onClick={handleComment} className="icon" />
             <BiShareAlt className="icon" />
           </div>
@@ -97,7 +99,7 @@ const Post = ({
                 <img
                   src={`${
                     followers
-                      ? `http://localhost:4500/assets/${followers}`
+                      ? `https://metoyou-api.vercel.app/assets/${followers}`
                       : "/default-user.png"
                   }`}
                   alt="avatar"
@@ -107,7 +109,7 @@ const Post = ({
                 <img
                   src={`${
                     followers
-                      ? `http://localhost:4500/assets/${followers}`
+                      ? `https://metoyou-api.vercel.app/assets/${followers}`
                       : "/default-user.png"
                   }`}
                   alt="avatar"
@@ -117,7 +119,7 @@ const Post = ({
                 <img
                   src={`${
                     followers
-                      ? `http://localhost:4500/assets/${followers}`
+                      ? `https://metoyou-api.vercel.app/assets/${followers}`
                       : "/default-user.png"
                   }`}
                   alt="avatar"
@@ -127,7 +129,6 @@ const Post = ({
             {isLiked && (
               <div className="text_cont">
                 <span>
-                  {likeCount}
                   Liked by <span className="bold">Big Fame</span> and
                   <span className="bold">1,993 others</span>
                 </span>
@@ -136,13 +137,17 @@ const Post = ({
           </div>
           <p>{description}</p>
         </div>
-        {isComments && (
-          <Comment
-            content={comments}
-            author={username}
-            timestamp={new Date().toUTCString()}
-          />
-        )}
+        {isComments &&
+          comments?.map(({ user, username, picsPath, comment }) => {
+            <Comment
+              user={user}
+              username={username}
+              picsPath={picsPath}
+              content={comment}
+              author={username}
+              timestamp={new Date().toUTCString()}
+            />;
+          })}
       </div>
     </StyledPost>
   );

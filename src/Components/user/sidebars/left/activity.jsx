@@ -83,10 +83,7 @@ const Activity = () => {
                 <div className="add-icon">{icon}</div>
               ) : (
                 <div className="image">
-                  <img
-                    src={`http://localhost:4500/assets/facts.jpg`}
-                    alt="postImg"
-                  />
+                  <img src={`/facts.jpg`} alt="postImg" />
                 </div>
               )}
             </div>

@@ -86,7 +86,7 @@ const UserProfile = () => {
             <img
               src={
                 backgroundBg
-                  ? `http://localhost:4500/assets/${backgroundBg} `
+                  ? `https://metoyou-api.vercel.app/assets/${backgroundBg} `
                   : "/facts.jpg"
               }
               alt="background"
