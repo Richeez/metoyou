@@ -45,11 +45,21 @@ export const authApiSlice = apiSlice.injectEndpoints({
             }
         }),
         upload: builder.mutation({
-            query: credentials => ({
-                url: "/upload",
-                method: "POST",
-                body: { ...credentials }
-            })
+            query: credentials => {
+
+                const formDataToSend = new FormData();
+                Object.keys(credentials.files).forEach((key) => {
+                    console.log("🚀 ~ file: authApiSlice.js:53 ~ Object.keys ~ credentials.files.item(key).name:", credentials.files.item(key).name)
+                    // formDataToSend.append(credentials.files.item(key).name, credentials.files.item(key))
+                })
+
+                return {
+                    url: "/upload",
+                    method: "POST",
+                    body: formDataToSend
+                }
+            }
+
         }),
         like: builder.mutation({
             query: credentials => {

@@ -4,7 +4,9 @@ import { VscReactions } from "react-icons/vsc";
 import Profile from "../profile/profile";
 import { StyledPostField } from "./styledPostField";
 import { useDispatch, useSelector } from "react-redux";
-import { usePostMutation } from "../../../manager/auth/authApiSlice";
+import {
+  usePostMutation /*, useUploadMutation,*/,
+} from "../../../manager/auth/authApiSlice";
 import { selectCurrentUser, setPosts } from "../../../manager/auth/authSlice";
 import { CustomButton } from "../../features/button";
 import { StyledInput } from "../../features/inputs/styledInput";
@@ -39,6 +41,7 @@ const PostField = () => {
   const { _id: userId, picsPath } = useSelector(selectCurrentUser);
 
   const [post, { isLoading }] = usePostMutation();
+  // const [upload, { isLoading }] = useUploadMutation();
 
   const dispatch = useDispatch();
 
@@ -56,7 +59,7 @@ const PostField = () => {
     );
 
     if (!file && !description) {
-      return toast.error("You do not have any post to publish!!", {
+      return toast.error("You do not have any post to publish.", {
         position: "top-right",
         autoClose: 3000,
         hideProgressBar: false,
@@ -69,7 +72,7 @@ const PostField = () => {
       //? No file and description available
     }
     if (!file) {
-      return toast.error("Please add a picture to make your post eye catchy", {
+      return toast.error("Please add a picture to make your post eye catchy.", {
         position: "top-right",
         autoClose: 3000,
         hideProgressBar: false,
@@ -84,19 +87,37 @@ const PostField = () => {
 
     try {
       const postData = await post(newPost).unwrap();
+      // const postData = await upload(files).unwrap();
+
       dispatch(setPosts({ posts: postData }));
-      console.log(
-        "🚀 ~ file: PostField.jsx:62 ~ handlePost ~ postData:",
-        postData
-      );
+
       setFormData({
         description: "",
         file: null,
         imageString: null,
       });
-      console.log("Post successfully posted!!");
+      toast.success("Post Published Successfully!", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: false,
+        draggable: false,
+        progress: undefined,
+        toastId: "03",
+      });
     } catch (err) {
-      console.log(err);
+      return toast.success(err, {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: false,
+        draggable: false,
+        progress: undefined,
+        toastId: "04",
+      });
+      // console.log(err);
     }
   };
 

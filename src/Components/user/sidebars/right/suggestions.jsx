@@ -5,27 +5,27 @@ import "./Suggestions.css";
 const Suggestions = () => {
   const suggestions = [
     {
-      img: "cinderella.jpeg",
+      pics: "cinderella.jpeg",
       username: "Cinderella",
       msg: "Recently",
     },
     {
-      img: "cynthia.jpeg",
+      pics: "cynthia.jpeg",
       username: "Cynthia Morgan",
       msg: "Suggested for you",
     },
     {
-      img: "patrick.jpeg",
+      pics: "patrick.jpeg",
       username: "CP Abiodun Alabi",
       msg: "Followed by Bella Cory",
     },
     {
-      img: "smart.jpeg",
+      pics: "smart.jpeg",
       username: "Smart",
       msg: "Suggested for you",
     },
     {
-      img: "derick.jpeg",
+      pics: "derick.jpeg",
       username: "Derick",
       msg: "Followed by Maloney",
     },
@@ -39,10 +39,10 @@ const Suggestions = () => {
 
       <div className="all-suggestion">
         {suggestions?.map((suggestion) => {
-          const { img, username, msg } = suggestion;
+          const { pics, username, msg } = suggestion;
           return (
             <div key={username} className="add-new">
-              <Profile size={"50px"} profile img={img} />
+              <Profile size={"50px"} profile pics={pics} />
               <div className="new-name">
                 <p>{username}</p>
                 <span className="time">{msg}</span>

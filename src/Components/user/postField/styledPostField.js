@@ -7,15 +7,25 @@ width: 100%;
               display: flex;
               flex-direction: column;
               align-items: center;
-              gap: .5rem;
-              padding-bottom: 2rem;
+              row-gap: .4rem;
+              padding-bottom: 1rem;
+              container-type: inline-size;
+             
+      //         .icon_wrapper{
+      //           width: 100%;
+      //           display: grid;
+      //           place-items: center;
 
+      // }
+// .icon_wrapper > .desc {
+
+// }
               
               .combine{
                 width: 100%;
                 display: flex;
                 align-items: center;
-                gap: 2rem;
+                gap: 1.5rem;
 
 
               }
@@ -23,6 +33,7 @@ width: 100%;
               .img_wrapper {
                 img {
                   width: 100%;
+                  height: 100%;
                   aspect-ratio: 1/1;
                   border-radius: 50%;
                   object-fit: cover;
@@ -38,27 +49,27 @@ width: 100%;
       border: 1px inset var(--blueViolet);
       outline: none;
       transition: var(--transition);
-      /* font-size: 1rem; */
       border-radius: 2rem;
       padding: 0.5rem 0.5rem 0.5rem 1rem;
-      container-type: inline-size;
-      font-size:3cqw;
+      font-size: 1rem;
 
       &::placeholder {
-        font-size: 5cqw;
+        font-size: .85rem;
+        font-weight: bold;
+        font-style: italic;
             
-        @media screen and (min-width: 40rem) {
-      font-size:3cqw;
+      //   @media screen and (min-width: 40rem) {
+      // font-size:3cqw;
 
 
 
-      }        
-            @media screen and (min-width: 64rem) {
-          font-size:4cqw;
+      // }        
+      //       @media screen and (min-width: 64rem) {
+      //     font-size:4cqw;
 
 
 
-          }        
+      //     }        
       }
 }
 
@@ -102,13 +113,13 @@ width: 100%;
           }
           .desc{
             text-transform: capitalize;
-          font-size: 4cqw;
+          font-size: 1rem;
           /* display: inline-block; */
 
-
-            
-            @media screen and (min-width: 64rem) {
-          font-size: 3cqw;
+          
+          
+          @media screen and (max-width: 360px) {
+          font-size: clamp(.3rem, 8cqi, .8rem);
 
 
 
@@ -129,6 +140,7 @@ width: 100%;
      .previewImg{
       position: relative;
       width: 100%;
+      height: 100%;
 
       .icon{
         position: absolute;
@@ -140,7 +152,6 @@ width: 100%;
         padding:.2rem;
         border-radius: 50%;
         color: var(--color-white);
-        /* font-size: 1rem; */
 
       }
      }

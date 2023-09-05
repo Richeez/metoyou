@@ -14,6 +14,7 @@ const Profile = ({
   name,
   size = "70px",
   status,
+  pics,
   icon,
   radius = "50%",
 }) => {
@@ -38,6 +39,8 @@ const Profile = ({
           src={`${
             img
               ? `https://metoyou-api.vercel.app/assets/${img}`
+              : pics
+              ? `/${pics}`
               : "/default-user.png"
           }`}
           alt="avatar"

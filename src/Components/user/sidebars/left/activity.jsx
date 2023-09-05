@@ -7,35 +7,35 @@ import { selectCurrentUser } from "../../../../manager/auth/authSlice";
 const Activity = () => {
   const suggestions = [
     {
-      img: "cinderella.jpeg",
+      pics: "cinderella.jpeg",
       username: "Cinderella",
       msg: "started following you",
       timeStamp: "2h",
       icon: <FaUserPlus />,
     },
     {
-      img: "cynthia.jpeg",
+      pics: "cynthia.jpeg",
       username: "Cynthia Morgan",
       msg: "liked your photo",
       timeStamp: "1h",
       postImg: "facts.jpg",
     },
     {
-      img: "patrick.jpeg",
+      pics: "patrick.jpeg",
       username: "CP Abiodun Alabi",
       msg: "started following you",
       timeStamp: "3m",
       icon: <FaUserPlus />,
     },
     {
-      img: "smart.jpeg",
+      pics: "smart.jpeg",
       username: "Smart",
       msg: "liked your photo",
       timeStamp: "2m",
       postImg: "profile-pic.png",
     },
     {
-      img: "derick.jpeg",
+      pics: "derick.jpeg",
       username: "Derick",
       msg: "Started following you",
       timeStamp: "1m",
@@ -69,10 +69,10 @@ const Activity = () => {
 
       <div className="all-suggestion">
         {suggestions?.map((suggestion) => {
-          const { img, username, msg, timeStamp, icon } = suggestion;
+          const { pics, username, msg, timeStamp, icon } = suggestion;
           return (
             <div key={username} className="add-new">
-              <Profile profile size={"50px"} img={img} />
+              <Profile profile size={"50px"} pics={pics} />
               <div className="new-name">
                 <p>{username}</p>
                 <span>{msg}</span>&nbsp;

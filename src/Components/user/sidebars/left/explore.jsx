@@ -39,69 +39,45 @@ const Explore = () => {
       <div className="all-exp-images">
         <div className="upp-img-div">
           <div className="exp-images-cont col1">
-            <img
-              src="https://metoyou-api.vercel.app/assets/profile-2.jpg"
-              alt=""
-            />
+            <img src="/profile-2.jpg" alt="" />
           </div>
 
           <div className="exp-images-cont col2">
-            <img
-              src="https://metoyou-api.vercel.app/assets/profile-3.jpg"
-              alt=""
-            />
+            <img src="/profile-3.jpg" alt="" />
           </div>
 
           <div className="exp-images-cont right-image">
-            <img
-              src="https://metoyou-api.vercel.app/assets/moses-bliss.jpg"
-              alt=""
-            />
+            <img src="/moses-bliss.jpg" alt="" />
           </div>
 
           <div className="exp-images-cont col3">
-            <img
-              src="https://metoyou-api.vercel.app/assets/elon-musk.jpg"
-              alt=""
-            />
+            <img src="/elon-musk.jpg" alt="" />
           </div>
 
           <div className="exp-images-cont col4">
-            <img src="https://metoyou-api.vercel.app/assets/facts.jpg" alt="" />
+            <img src="/facts.jpg" alt="" />
           </div>
         </div>
 
         <div className="botm-exp-images">
           <div className="exp-images-cont left-image">
-            <img
-              src="https://metoyou-api.vercel.app/assets/elon-musk.jpg"
-              alt=""
-            />
+            <img src="/elon-musk.jpg" alt="" />
           </div>
 
           <div className="exp-images-cont col1">
-            <img
-              src="https://metoyou-api.vercel.app/assets/testimony.jpg"
-              alt=""
-            />
+            <img src="/testimony.jpg" alt="" />
           </div>
 
           <div className="exp-images-cont col2">
-            <img src="https://metoyou-api.vercel.app/assets/cutty.png" alt="" />
+            <img src="/cutty.png" alt="" />
           </div>
 
           <div className="exp-images-cont col4">
-            <img
-              src="https://metoyou-api.vercel.app/assets/dev-harrison.jpg"
-              alt=""
-            />
+            <img src="/dev-harrison.jpg" alt="" />
           </div>
 
           <div className="exp-images-cont col5">
-            <img
-              src="https://metoyou-api.vercel.app/assets/cynthia.jpeg"
-              alt=""
-            />
+            <img src="/cynthia.jpeg" alt="" />
           </div>
         </div>
       </div>

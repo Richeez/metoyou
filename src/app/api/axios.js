@@ -1,5 +1,6 @@
 import axios from "axios";
 const BASE_URL = "https://metoyou-api.vercel.app"
+
 export default axios.create({
     baseURL: BASE_URL
 });
