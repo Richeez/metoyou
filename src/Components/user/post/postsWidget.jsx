@@ -9,6 +9,8 @@ import {
 import { useEffect } from "react";
 import Post from "./Post";
 import { Fetching } from "../../../svgs";
+import Lottie from "lottie-react";
+import Empty from "../profile/empty-state.json";
 
 const PostsWidget = ({ userId, isProfile = false }) => {
   const dispatch = useDispatch();
@@ -46,7 +48,15 @@ const PostsWidget = ({ userId, isProfile = false }) => {
   if (!posts?.length) {
     return (
       <div style={{ textAlign: "center", width: "100%", fontSize: "1.2rem" }}>
-        No posts found.
+        <div className="videos-cont">
+          <div className="empty-cont flex-cont">
+            <div className="empty-word flex-cont">
+              <p className="no-post">No post(s) yet!</p>
+            </div>
+
+            <Lottie className="empty" animationData={Empty} />
+          </div>
+        </div>
       </div>
     );
   }

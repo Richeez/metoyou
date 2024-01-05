@@ -1,7 +1,6 @@
 import styled from "styled-components";
 
 export const StyledProfile = styled.div`
-
               width: fit-content;
               transition: 1s ease;
 

@@ -18,8 +18,6 @@ const Profile = ({
   icon,
   radius = "50%",
 }) => {
-  console.log("🚀 ~ file: profile.jsx:21 ~ pics:", pics);
-  console.log("🚀 ~ file: profile.jsx:21 ~ img:", img);
   const navigate = useNavigate();
 
   const { username } = useSelector(selectCurrentUser);
@@ -37,15 +35,17 @@ const Profile = ({
         onClick={profile ? () => navigate(`/profile/${id}`) : null}
         className="img_wrapper"
       >
-        {(img?.length !== 0 || pics) && (
-          <img
-            src={`${
-              img ? `${img[0]?.url}` : pics ? `/${pics}` : "/default-user.png"
-            }`}
-            alt="avatar"
-            loading="lazy"
-          />
-        )}
+        <img
+          src={`${
+            img?.length
+              ? `${img[0]?.url}`
+              : pics
+              ? `/${pics}`
+              : "/default-user.png"
+          }`}
+          alt="avatar"
+          loading="lazy"
+        />
       </div>
       <div className="text tac">{status ? <p>{nickname}</p> : null}</div>
       {icon ? (

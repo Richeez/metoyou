@@ -43,7 +43,7 @@ const Activity = () => {
     },
   ];
 
-  const { picsPath } = useSelector(selectCurrentUser);
+  const { picsPath } = useSelector(selectCurrentUser) ?? {};
 
   return (
     <StyledActivity>

@@ -196,9 +196,7 @@ export const LinkWrapper = styled.li`
     transition: var(--transition);
 
   }
-  &[data-desc="profile"]{
-    /* background: var(--secondary-color); */
-  }
+  
   &[data-title="profile"]{
     background: linear-gradient(to top right, var(--blueViolet-lyt), var(--color-gray-lyt));
   }
@@ -227,7 +225,7 @@ border: 1px solid var(--blueViolet);
     hide &&
     css`
       display: none;
-      @media screen and (min-width: 64rem) {
+      @media screen and (min-width: 65rem) {
         display: flex;
       }
     `}
@@ -258,7 +256,6 @@ border: 1px solid var(--blueViolet);
   &:last-of-type {
     width: 3rem;
     height: 3rem;
-    /* overflow: hidden; */
     
     .cover{
       border-radius: 50%;
@@ -276,6 +273,7 @@ border: 1px solid var(--blueViolet);
 
   &:nth-of-type(4) {
     display: flex;
+
         @media screen and (max-width: 360px) {
       display: none;
     }
@@ -286,10 +284,12 @@ border: 1px solid var(--blueViolet);
   }
   &:nth-of-type(5) {
     display: flex;
+    
 
     @media screen and (max-width: 280px) {
       display: none;
     }
+
 
   }
 

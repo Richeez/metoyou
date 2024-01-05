@@ -25,6 +25,7 @@ const DeskNavBar = ({ handleMenu }) => {
   };
 
   const { picsPath, _id } = useSelector(selectCurrentUser) ?? {};
+  console.log("🚀 ~ file: deskNavBar.jsx:28 ~ DeskNavBar ~ _id:", _id);
 
   return (
     <>

@@ -17,7 +17,7 @@ const MobNavBar = ({ handleMenu }) => {
   const brandRef = useRef(null);
   const mobMenuRef = useRef(null);
   const [isOpen, setIsOpen] = useState(false);
-  const { picsPath, _id } = useSelector(selectCurrentUser);
+  const { picsPath, _id } = useSelector(selectCurrentUser) ?? {};
 
   const searchField = () => {
     setIsOpen(true);
