@@ -51,7 +51,7 @@ function SignUpPage() {
 
     try {
       const response = await axios.post(
-        `${BASE}/register`,
+        `${BASE.URI}/register`,
         JSON.stringify({
           user: fullname.trim(),
           email: email.trim(),
