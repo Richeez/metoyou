@@ -6,6 +6,7 @@ import { RiAlarmWarningFill } from "react-icons/ri";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Logging } from "../../../svgs";
+import { BASE } from "../../../../strings";
 // import illustration from '../illustrations/login-illustrate.svg'
 
 // const request = {
@@ -50,7 +51,7 @@ function SignUpPage() {
 
     try {
       const response = await axios.post(
-        "http://localhost:4500/register",
+        `${BASE}/register`,
         JSON.stringify({
           user: fullname.trim(),
           email: email.trim(),
