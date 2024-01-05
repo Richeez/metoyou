@@ -24,7 +24,7 @@ const DeskNavBar = ({ handleMenu }) => {
     handleMenu();
   };
 
-  const { picsPath, _id } = useSelector(selectCurrentUser);
+  const { picsPath, _id } = useSelector(selectCurrentUser) ?? {};
 
   return (
     <>
@@ -79,7 +79,7 @@ const DeskNavBar = ({ handleMenu }) => {
             </LinkWrapper>
             <LinkWrapper data-title="profile" hide>
               <div className="cover">
-                <Profile id={_id} img={picsPath} size={"100%"} profile />
+                <Profile id={_id} profile img={picsPath} size={"100%"} />
               </div>
             </LinkWrapper>
           </LinkCont>
