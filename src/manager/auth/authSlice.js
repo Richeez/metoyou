@@ -5,8 +5,14 @@ const authSlice = createSlice({
     initialState: { user: null, token: null, posts: [] },
     reducers: {
         setCredentials: (state, action) => {
-            const { rest, accessToken } = action.payload;
+            const { rest } = action.payload;
             state.user = rest;
+            console.log("first rest", rest)
+        },
+        setToken: (state, action) => {
+            const accessToken = action.payload;
+            console.log("🚀 ~ file: authSlice.js:14 ~ action.payload:", action.payload)
+            console.log("accessToken", accessToken)
             state.token = accessToken;
         },
         logOut: (state) => {
@@ -37,9 +43,9 @@ const authSlice = createSlice({
     },
 })
 
-export const { setCredentials, logOut, setFollowers, setPost, setPosts } = authSlice.actions
+export const { setCredentials, logOut, setFollowers, setPost, setPosts, setToken } = authSlice.actions
 export default authSlice.reducer
-export const selectCurrentUser = (state) => state.auth.user
-export const selectCurrentUserId = (state) => state.auth.user._id
-export const selectCurrentToken = (state) => state.auth.token
-export const selectCurrentPost = (state) => state.auth.posts
+export const selectCurrentUser = (state) => state?.auth?.user
+export const selectCurrentUserId = (state) => state?.auth?.user?._id
+export const selectCurrentToken = (state) => state?.auth?.token
+export const selectCurrentPost = (state) => state?.auth?.posts

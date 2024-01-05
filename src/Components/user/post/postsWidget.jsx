@@ -20,7 +20,6 @@ const PostsWidget = ({ userId, isProfile = false }) => {
     isLoading,
     isError,
   } = isProfile ? useGetUserPostsQuery(userId) : useGetUsersPostsQuery();
-  console.log("🚀 ~ file: postsWidget.jsx:23 ~ PostsWidget ~ post:", post);
 
   useEffect(() => {
     if (post) {
@@ -70,10 +69,6 @@ const PostsWidget = ({ userId, isProfile = false }) => {
           }) => (
             <>
               <div key={`${_id}-${userId}`} className="item">
-                {console.log(
-                  "🚀 ~ file: postsWidget.jsx:58 ~ PostsWidget ~ posts:",
-                  posts
-                )}{" "}
                 <Post
                   postId={_id}
                   postUserId={userId}

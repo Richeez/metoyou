@@ -37,6 +37,7 @@ function App() {
 
   const ProtectedRoutes = () => {
     const token = useSelector(selectCurrentToken);
+    console.log("🚀 ~ file: App.jsx:40 ~ ProtectedRoutes ~ token:", token);
     const location = useLocation();
 
     if (!token) {

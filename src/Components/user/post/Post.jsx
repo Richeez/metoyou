@@ -13,6 +13,7 @@ import { selectCurrentUserId, setPost } from "../../../manager/auth/authSlice";
 import { useLikeMutation } from "../../../manager/auth/authApiSlice";
 import Comment from "../widgets/comments/Comment";
 import { useEffect, useState } from "react";
+import { BASE } from "../../../../strings";
 
 const Post = ({
   postId,
@@ -65,12 +66,13 @@ const Post = ({
         <BsThreeDots className="icon" />
       </div>
       <div className="post">
-        <div className="img-wrapper">
-          <img
-            src={`https://metoyou-api.vercel.app/assets/${picsPath}`}
-            alt="post"
-          />
-        </div>
+        {picsPath.length !== 0 && (
+          <div className="img-wrapper">
+            <img src={picsPath[0].url} alt="post" />
+          </div>
+        )}
+        <p style={{ paddingTop: "1rem" }}>{description}</p>
+
         <div className="icons_wrapper">
           <div className="left-icons">
             <div className="like">
@@ -99,7 +101,8 @@ const Post = ({
                 <img
                   src={`${
                     followers
-                      ? `https://metoyou-api.vercel.app/assets/${followers}`
+                      ? `${BASE.URI}
+/assets/${followers}`
                       : "/default-user.png"
                   }`}
                   alt="avatar"
@@ -109,7 +112,8 @@ const Post = ({
                 <img
                   src={`${
                     followers
-                      ? `https://metoyou-api.vercel.app/assets/${followers}`
+                      ? `${BASE.URI}
+/assets/${followers}`
                       : "/default-user.png"
                   }`}
                   alt="avatar"
@@ -119,7 +123,8 @@ const Post = ({
                 <img
                   src={`${
                     followers
-                      ? `https://metoyou-api.vercel.app/assets/${followers}`
+                      ? `${BASE.URI}
+/assets/${followers}`
                       : "/default-user.png"
                   }`}
                   alt="avatar"
@@ -135,7 +140,7 @@ const Post = ({
               </div>
             )}
           </div>
-          <p>{description}</p>
+          {/* <p>{description}</p> */}
         </div>
         {isComments &&
           comments?.map(({ user, username, picsPath, comment }) => {

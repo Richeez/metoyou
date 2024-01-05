@@ -14,9 +14,11 @@ import Button from "../../features/animated buttons/Button";
 import { ImageBox } from "../../features";
 import { FaTimes } from "react-icons/fa";
 import { toast } from "react-toastify";
+import { toaster, uploadFile } from "../../../constants/reusables";
 
 const PostField = () => {
   const fileInputRef = useRef(null);
+  let attachments;
 
   const handleButtonClick = () => {
     fileInputRef.current.click();
@@ -38,55 +40,33 @@ const PostField = () => {
     setFormData((prev) => ({ ...prev, file: selectedFile }));
   };
 
-  const { _id: userId, picsPath } = useSelector(selectCurrentUser);
+  const { _id: userId, picsPath } = useSelector(selectCurrentUser) ?? {};
 
   const [post, { isLoading }] = usePostMutation();
-  // const [upload, { isLoading }] = useUploadMutation();
 
   const dispatch = useDispatch();
 
   const handlePost = async (e) => {
     e.preventDefault();
 
-    const newPost = {
-      userId,
-      description,
-      file,
-    };
-    console.log(
-      "🚀 ~ file: PostField.jsx:57 ~ handlePost ~ formData:",
-      newPost
-    );
+    if (file) {
+      attachments = await uploadFile(file);
+
+      console.log("fileUrl", attachments);
+    }
 
     if (!file && !description) {
-      return toast.error("You do not have any post to publish.", {
-        position: "top-right",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: false,
-        draggable: false,
-        progress: undefined,
-        toastId: "01",
-      });
       //? No file and description available
-    }
-    if (!file) {
-      return toast.error("Please add a picture to make your post eye catchy.", {
-        position: "top-right",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: false,
-        draggable: false,
-        progress: undefined,
-        toastId: "02",
-      });
-      //? No file selected
+      return toaster("You do not have any post to publish.", toast.error);
     }
 
     try {
-      const postData = await post(newPost).unwrap();
+      const postData = await post({
+        userId,
+        description,
+        attachments,
+      }).unwrap();
+      // const postData = await post(newPost).unwrap();
       // const postData = await upload(files).unwrap();
 
       dispatch(setPosts({ posts: postData }));
@@ -94,37 +74,17 @@ const PostField = () => {
       setFormData({
         description: "",
         file: null,
-        imageString: null,
       });
-      toast.success("Post Published Successfully!", {
-        position: "top-right",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: false,
-        draggable: false,
-        progress: undefined,
-        toastId: "03",
-      });
+      toaster("Post Published Successfully!", toast.success);
     } catch (err) {
-      return toast.success(err, {
-        position: "top-right",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: false,
-        draggable: false,
-        progress: undefined,
-        toastId: "04",
-      });
-      // console.log(err);
+      return toaster(err, toast.error);
     }
   };
 
   return (
     <StyledPostField encType="multipart/form-data" onSubmit={handlePost}>
       <div className="combine">
-        <Profile img={picsPath} size={"50px"} />
+        <Profile profile id={userId} img={picsPath} size={"50px"} />
         <div className="input_cont">
           <input
             type="text"

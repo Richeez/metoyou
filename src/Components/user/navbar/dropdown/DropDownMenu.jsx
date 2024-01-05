@@ -46,7 +46,6 @@ const DropDownMenu = ({
 }) => {
   const [activeMenu, setActiveMenu] = useState("main");
   const { _id, picsPath } = useSelector(selectCurrentUser);
-  console.log("🚀 ~ file: DropDownMenu.jsx:49 ~ _id:", _id);
 
   useEffect(() => {
     calcString();

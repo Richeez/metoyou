@@ -5,7 +5,7 @@ import { RiAlarmWarningFill } from "react-icons/ri";
 import { useRef, useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { setCredentials } from "../../../manager/auth/authSlice";
+import { setCredentials, setToken } from "../../../manager/auth/authSlice";
 import { useLoginMutation } from "../../../manager/auth/authApiSlice";
 import { Logging } from "../../../svgs";
 
@@ -45,8 +45,9 @@ function LoginPage() {
         user: username.trim(),
         pwd: password.trim(),
       }).unwrap();
+
       dispatch(setCredentials({ ...userData }));
-      console.log(userData);
+      dispatch(setToken(userData.accessToken));
       setUserInfo({
         username: "",
         password: "",
@@ -56,7 +57,7 @@ function LoginPage() {
       if (!err) {
         setErrorMsg("No Server Response");
       } else if (err?.status === 400) {
-        setErrorMsg(`Missing Username,\n \n Email or Password`);
+        setErrorMsg(`Missing Username,\nEmail or Password`);
       } else if (err?.originalStatus === 401) {
         setErrorMsg("Unauthorized");
       } else {
@@ -97,7 +98,7 @@ function LoginPage() {
               value={username}
               autoComplete="off"
               onChange={(e) => fillingData(e)}
-              placeholder="username"
+              placeholder="username / nickname"
             />
           </li>
 

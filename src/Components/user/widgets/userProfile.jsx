@@ -15,7 +15,7 @@ import EditProfile from "./edit-profile/EditProfile";
 import { MdLocationPin } from "react-icons/md";
 import { selectCurrentUserId } from "../../../manager/auth/authSlice";
 import { useParams } from "react-router-dom";
-import { ExpSession } from "../../pages";
+import { ExpSession, NotFound } from "../../pages";
 import { Fetching } from "../../../svgs";
 import useTitle from "../../../hooks/useTitle";
 import PostsWidget from "../post/postsWidget";
@@ -24,13 +24,38 @@ const UserProfile = () => {
   useTitle("Profile Page");
   const [toggle, setToggle] = useState(false);
   const editor = useRef(null);
+  const cover = useRef(null);
+  const picture = useRef(null);
   const { userId } = useParams();
-  console.log("🚀 ~ file: userProfile.jsx:28 ~ UserProfile ~ userId:", userId);
+
+  const [editField, setEditField] = useState({
+    nickname: "",
+    occupation: "",
+    email: "",
+    location: "",
+    images: {
+      profile: [],
+      cover: [],
+    },
+  });
 
   const handleToggle = () => {
     setToggle((prev) => !prev);
     const ref = editor.current;
     ref.classList.toggle("pop-up");
+    picture.current.textContent = "";
+    cover.current.textContent = "";
+
+    setEditField({
+      nickname: "",
+      occupation: "",
+      email: "",
+      location: "",
+      images: {
+        profile: [],
+        cover: [],
+      },
+    });
   };
   const _id = useSelector(selectCurrentUserId);
   const [id, setUserId] = useState(null); // Assuming you have a state to store the current user ID
@@ -40,7 +65,7 @@ const UserProfile = () => {
     profileUserId === id
       ? useGetUserIdQuery(_id)
       : useGetUserIdQuery(profileUserId);
-  const { data: res, isLoading, isSuccess, isError } = currentUserId;
+  const { data: res, error, isLoading, isSuccess, isError } = currentUserId;
 
   useEffect(() => {
     setUserId(res); // Set the current user ID based on your logic
@@ -62,7 +87,9 @@ const UserProfile = () => {
       </div>
     );
   } else if (isError) {
-    profile = <ExpSession />;
+    const statusCode = error?.status;
+
+    profile = statusCode === 404 ? <NotFound /> : <ExpSession />;
   } else if (isSuccess && user) {
     const {
       username,
@@ -74,20 +101,29 @@ const UserProfile = () => {
       backgroundBg,
       viewedProfile,
       location,
-    } = user;
+    } = user ?? {};
+    console.log(
+      "🚀 ~ file: userProfile.jsx:80 ~ UserProfile ~ nickname:",
+      nickname
+    );
 
     profile = (
       <div className="profile flex-cont">
         <BackDrop className={`${toggle ? "pop-up" : "offSet"}`}>
-          <EditProfile editor={editor} handleToggle={handleToggle} />
+          <EditProfile
+            editor={editor}
+            editField={editField}
+            setEditField={setEditField}
+            handleToggle={handleToggle}
+            cover={cover}
+            picture={picture}
+          />
         </BackDrop>
         <div className="flex-cont">
           <div className="background-image">
             <img
               src={
-                backgroundBg
-                  ? `https://metoyou-api.vercel.app/assets/${backgroundBg} `
-                  : "/facts.jpg"
+                backgroundBg.length !== 0 ? backgroundBg[0]?.url : "/facts.jpg"
               }
               alt="background"
             />
@@ -96,10 +132,7 @@ const UserProfile = () => {
             <Profile img={picsPath} size={"110px"} />
             <div className="profile-user">
               <p className="profile-name">{username ? username : "username"}</p>
-              <p
-                style={{ textTransform: "lowercase" }}
-                className="handle-name"
-              >{`@${nickname}`}</p>
+              <p className="handle-name">{`@${nickname}`}</p>
             </div>
           </div>
         </div>
@@ -180,26 +213,26 @@ const UserProfile = () => {
 
           <div className="photos-cont">
             <div className="main-photo">
-              <img src="profile-2.jpg" alt="" />
+              <img src="/profile-2.jpg" alt="" />
             </div>
 
             <div className="other-photos">
               <div className="other-photos-img">
-                <img src="profile-3.jpg" alt="" className="other-photos-img" />
+                <img src="/profile-3.jpg" alt="" className="other-photos-img" />
               </div>
               <div className="other-photos-img">
-                <img src="elon-musk.jpg" alt="" className="other-photos-img" />
+                <img src="/elon-musk.jpg" alt="" className="other-photos-img" />
               </div>
               <div className="other-photos-img">
                 <img
-                  src="profile-pic.png"
+                  src="/profile-pic.png"
                   alt=""
                   className="other-photos-img"
                 />
               </div>
 
               <div className="last-photo">
-                <img src="smart.jpeg" alt="" className="other-photos-img" />
+                <img src="/smart.jpeg" alt="" className="other-photos-img" />
                 <span className="overlay">+4</span>
               </div>
             </div>
