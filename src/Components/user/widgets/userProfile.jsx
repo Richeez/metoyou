@@ -130,7 +130,7 @@ const UserProfile = () => {
           </div>
           <div className="profile-info flex-cont">
             <Profile img={picsPath} size={"110px"} />
-            <div className="profile-user">
+            <div className="profile-user tac">
               <p className="profile-name">{username ? username : "username"}</p>
               <p className="handle-name">{`@${nickname}`}</p>
             </div>

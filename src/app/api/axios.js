@@ -1,17 +1,17 @@
 import axios from "axios";
-const BASE_URL = "http://localhost:4500"
+import { apiService } from "../../../strings";
 
 export default axios.create({
-    baseURL: BASE_URL
+  baseURL: apiService.BASE_URI,
 });
 
 export const axiosPrivate = axios.create({
-    baseURL: BASE_URL,
-    headers: { "Content-Type": "application/json" },
-    withCredentials: true
-})
+  baseURL: apiService.BASE_URI,
+  headers: { "Content-Type": "application/json" },
+  withCredentials: true,
+});
 export const sendFiles = axios.create({
-    baseURL: BASE_URL,
-    headers: { "Content-Type": "multipart/form-data" },
-    withCredentials: true
-})
+  baseURL: apiService.BASE_URI,
+  headers: { "Content-Type": "multipart/form-data" },
+  withCredentials: true,
+});

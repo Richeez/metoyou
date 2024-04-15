@@ -46,11 +46,11 @@ const Messages = () => {
 
       <div className="friends">
         {profiles?.slice(1).map((profile) => {
-          const { pics, active, username } = profile;
+          const { pics, active, username } = profile ?? {};
 
           return (
             <div key={username} className="person">
-              <Profile size={"50px"} profile pics={pics} />
+              <Profile size={"50px"} pics={pics} />
               <div className="person-info">
                 <div className="personal">
                   <div className="name-container">

@@ -25,7 +25,7 @@ const Home = () => {
       slider.scrollBy(200, 0);
     }
   };
-  const { username, picsPath, _id } = useSelector(selectCurrentUser);
+  const { username, picsPath, _id } = useSelector(selectCurrentUser) ?? {};
   return (
     <>
       <StartFromTop />

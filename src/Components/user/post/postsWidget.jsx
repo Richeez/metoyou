@@ -11,6 +11,7 @@ import Post from "./Post";
 import { Fetching } from "../../../svgs";
 import Lottie from "lottie-react";
 import Empty from "../profile/empty-state.json";
+import { ExpSession, NotFound } from "../../pages";
 
 const PostsWidget = ({ userId, isProfile = false }) => {
   const dispatch = useDispatch();
@@ -21,6 +22,7 @@ const PostsWidget = ({ userId, isProfile = false }) => {
     data: post,
     isLoading,
     isError,
+    error,
   } = isProfile ? useGetUserPostsQuery(userId) : useGetUsersPostsQuery();
 
   useEffect(() => {
@@ -38,10 +40,14 @@ const PostsWidget = ({ userId, isProfile = false }) => {
   }
 
   if (isError) {
+    const statusCode = error?.status;
+
+    const catchError = statusCode === 404 ? <NotFound /> : <ExpSession />;
     return (
-      <div style={{ textAlign: "center", width: "100%", fontSize: "1.2rem" }}>
-        Error: Failed to fetch posts
-      </div>
+      // <div style={{ textAlign: "center", width: "100%", fontSize: "1.2rem" }}>
+      //   Error: Failed to fetch posts
+      // </div>
+      { catchError }
     );
   }
 

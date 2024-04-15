@@ -13,7 +13,7 @@ import { selectCurrentUserId, setPost } from "../../../manager/auth/authSlice";
 import { useLikeMutation } from "../../../manager/auth/authApiSlice";
 import Comment from "../widgets/comments/Comment";
 import { useEffect, useState } from "react";
-import { BASE } from "../../../../strings";
+import { apiService } from "../../../../strings";
 
 const Post = ({
   postId,
@@ -101,7 +101,7 @@ const Post = ({
                 <img
                   src={`${
                     followers
-                      ? `${BASE.URI}
+                      ? `${apiService.BASE_URI}
 /assets/${followers}`
                       : "/default-user.png"
                   }`}
@@ -112,7 +112,7 @@ const Post = ({
                 <img
                   src={`${
                     followers
-                      ? `${BASE.URI}
+                      ? `${apiService.BASE_URI}
 /assets/${followers}`
                       : "/default-user.png"
                   }`}
@@ -123,7 +123,7 @@ const Post = ({
                 <img
                   src={`${
                     followers
-                      ? `${BASE.URI}
+                      ? `${apiService.BASE_URI}
 /assets/${followers}`
                       : "/default-user.png"
                   }`}

@@ -30,10 +30,17 @@ import { CSSTransition } from "react-transition-group";
 import { Switch } from "../../../features";
 import Profile from "../../profile/profile";
 import { Dropdown } from "./styledDropdown";
-import { logOut, selectCurrentUser } from "../../../../manager/auth/authSlice";
+import {
+  logOut,
+  selectCurrentToken,
+  selectCurrentUser,
+  selectCurrentUserId,
+} from "../../../../manager/auth/authSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation } from "react-router-dom";
 import { VscWorkspaceTrusted } from "react-icons/vsc";
+import { axiosPrivate } from "../../../../app/api/axios";
+import { apiService } from "../../../../../strings";
 
 const DropDownMenu = ({
   viewState,
@@ -45,7 +52,7 @@ const DropDownMenu = ({
   navbarRef,
 }) => {
   const [activeMenu, setActiveMenu] = useState("main");
-  const { _id, picsPath } = useSelector(selectCurrentUser);
+  const { _id, picsPath } = useSelector(selectCurrentUser) ?? {};
 
   useEffect(() => {
     calcString();
@@ -53,7 +60,11 @@ const DropDownMenu = ({
 
   const dispatch = useDispatch();
   const location = useLocation();
+  const userId = useSelector(selectCurrentUserId);
+  const token = useSelector(selectCurrentToken);
 
+  console.log("userId", userId);
+  console.log("token", token);
   const calcString = (string) => {
     let stringLength = string?.length;
 
@@ -62,6 +73,17 @@ const DropDownMenu = ({
     }
 
     return;
+  };
+
+  const signOut = async () => {
+    try {
+      await axiosPrivate.post(`${apiService.BASE_URI}/logout/${token}`);
+
+      dispatch(logOut()); // Dispatch redux action
+    } catch (error) {
+      console.error(error);
+      // Additional error handling
+    }
   };
 
   function DropDownItem(props) {
@@ -74,6 +96,8 @@ const DropDownMenu = ({
               () => dispatch(props?.exec)
             ) : props?.goTo ? (
               <Navigate to={props?.goTo} state={{ from: location }} replace />
+            ) : props.api ? (
+              props.api
             ) : null
           }
           className="dropdown_menu_item"
@@ -172,7 +196,7 @@ const DropDownMenu = ({
             <DropDownItem title={"report issue"} leftIcon={<IoMdCall />}>
               Report Issue
             </DropDownItem>
-            <DropDownItem exec={logOut()} leftIcon={<BiLogOut />}>
+            <DropDownItem api={signOut} leftIcon={<BiLogOut />}>
               Log Out
             </DropDownItem>
           </ul>

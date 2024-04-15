@@ -8,6 +8,7 @@ import { useDispatch } from "react-redux";
 import { setCredentials, setToken } from "../../../manager/auth/authSlice";
 import { useLoginMutation } from "../../../manager/auth/authApiSlice";
 import { Logging } from "../../../svgs";
+import Cookies from "js-cookie";
 
 function LoginPage() {
   const [eyesOpen, setEyesOpen] = useState(false);
@@ -47,7 +48,9 @@ function LoginPage() {
       }).unwrap();
 
       dispatch(setCredentials({ ...userData }));
-      dispatch(setToken(userData.accessToken));
+      console.log("userData", userData);
+      dispatch(setToken(userData.key));
+      Cookies.set("sessionId", userData.rest._id, { expires: 1 / 720 });
       setUserInfo({
         username: "",
         password: "",

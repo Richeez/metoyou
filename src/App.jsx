@@ -1,11 +1,11 @@
-import { Routes, Route, Navigate, useLocation, Outlet } from "react-router-dom";
+import { Routes, Route, useLocation, Outlet } from "react-router-dom";
 import { MainContent } from "./Components/user";
 import { useSelector } from "react-redux";
 import { selectCurrentToken } from "./manager/auth/authSlice";
-import { LogIn, NotFound, SignUp } from "./Components/pages";
+import { ExpSession, LogIn, NotFound, SignUp } from "./Components/pages";
 import UserProfile from "./Components/user/widgets/userProfile";
 import { useEffect, useState } from "react";
-// import PersistLogin from "./Components/PersistLogin";
+import PersistLogin from "./Components/PersistLogin";
 
 //TODO: integrate Posting
 //TODO: Create profile edit UI
@@ -36,12 +36,15 @@ function App() {
   };
 
   const ProtectedRoutes = () => {
+    // let token = null;
     const token = useSelector(selectCurrentToken);
+
     console.log("🚀 ~ file: App.jsx:40 ~ ProtectedRoutes ~ token:", token);
     const location = useLocation();
 
     if (!token) {
-      return <Navigate to="/login" state={{ from: location }} replace />;
+      // return <Navigate to="/login" state={{ from: location }} replace />;
+      return <ExpSession location={location} />;
     }
 
     return <Outlet />;
@@ -49,16 +52,16 @@ function App() {
   return (
     <main className="App">
       <Routes>
-        {/* <Route element={<PersistLogin persist={persist} />}> */}
-        <Route element={<ProtectedRoutes />}>
-          <Route
-            path="/"
-            element={
-              <MainContent trustDevice={togglePersist} persist={persist} />
-            }
-          />
+        <Route element={<PersistLogin persist={persist} />}>
+          <Route element={<ProtectedRoutes />}>
+            <Route
+              path="/"
+              element={
+                <MainContent trustDevice={togglePersist} persist={persist} />
+              }
+            />
+          </Route>
         </Route>
-        {/* </Route> */}
         <Route path="/login" element={<LogIn />} />
         <Route path="/sign-up" element={<SignUp />} />
         <Route path="/profile/:userId" element={<UserProfile />} />

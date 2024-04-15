@@ -20,7 +20,7 @@ const Profile = ({
 }) => {
   const navigate = useNavigate();
 
-  const { username } = useSelector(selectCurrentUser);
+  const { username } = useSelector(selectCurrentUser) ?? {};
 
   const nickname = name !== username ? `${name}` : "Your Story";
   return (

@@ -69,10 +69,10 @@ const Activity = () => {
 
       <div className="all-suggestion">
         {suggestions?.map((suggestion) => {
-          const { pics, username, msg, timeStamp, icon } = suggestion;
+          const { pics, username, msg, timeStamp, icon } = suggestion ?? {};
           return (
             <div key={username} className="add-new">
-              <Profile profile size={"50px"} pics={pics} />
+              <Profile size={"50px"} pics={pics} />
               <div className="new-name">
                 <p>{username}</p>
                 <span>{msg}</span>&nbsp;

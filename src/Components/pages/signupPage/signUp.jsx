@@ -6,7 +6,7 @@ import { RiAlarmWarningFill } from "react-icons/ri";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Logging } from "../../../svgs";
-import { BASE } from "../../../../strings";
+import { apiService } from "../../../../strings";
 // import illustration from '../illustrations/login-illustrate.svg'
 
 // const request = {
@@ -18,7 +18,7 @@ import { BASE } from "../../../../strings";
 // --------------- PROJECT ENDPOINTS ------------------
 // API URL -- https://loop-social-server-side.vercel.app/
 // REGISTER endpoint -- /api/auth/register
-// REGISTER DATA -- fullname, email, password
+// REGISTER DATA -- fullName, email, password
 // LOGIN endpoint -- /api/auth/login
 // LOGIN DATA -- email & password
 
@@ -27,12 +27,12 @@ function SignUpPage() {
 
   // ----------------  STATES ------------------
   const [newUser, setNewUser] = useState({
-    fullname: "",
+    fullName: "",
     email: "",
     password: "",
   });
 
-  const { fullname, email, password } = newUser;
+  const { fullName, email, password } = newUser;
 
   const [errorMessage, setErrorMessage] = useState({
     bool: false,
@@ -51,9 +51,9 @@ function SignUpPage() {
 
     try {
       const response = await axios.post(
-        `${BASE.URI}/register`,
+        `${apiService.BASE_URI}/register`,
         JSON.stringify({
-          user: fullname.trim(),
+          user: fullName.trim(),
           email: email.trim(),
           pwd: password.trim(),
         }),
@@ -99,7 +99,7 @@ function SignUpPage() {
 
   // ----- condition for enabling sign-up button ------
   const condition = () => {
-    if (email.length === 0 || password.length < 6 || fullname.length < 4)
+    if (email.length === 0 || password.length < 6 || fullName.length < 4)
       return true;
 
     return false;
@@ -107,7 +107,7 @@ function SignUpPage() {
 
   useEffect(() => {
     condition();
-  }, [email, password, fullname]);
+  }, [email, password, fullName]);
 
   return (
     <div className="signup-page">
@@ -129,15 +129,15 @@ function SignUpPage() {
         )}
         <ul className="signup-ul">
           <li>
-            <label className="label" htmlFor="fullname">
+            <label className="label" htmlFor="fullName">
               Full Name
             </label>
             <input
-              name="fullname"
+              name="fullName"
               className="input"
               type="text"
-              id="fullname"
-              value={fullname}
+              id="fullName"
+              value={fullName}
               autoComplete="off"
               onChange={(e) => fillingData(e)}
               placeholder="at least 4 or more characters"
@@ -215,7 +215,7 @@ function SignUpPage() {
         </div>
 
         <p>
-          Already have an account?
+          Already have an account? &nbsp;
           <span onClick={() => navigate("/login")} className="log-word">
             Login <FaArrowRight />
           </span>

@@ -1,4 +1,4 @@
-// Import the functions you need from the SDKs you need
+//? Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
 import { getStorage } from "firebase/storage";
 
@@ -11,6 +11,6 @@ const firebaseConfig = {
   appId: "1:348789708811:web:8ffb820ad9ed6ddaea8f0e"
 };
 
-// Initialize Firebase
+//? Initialize Firebase
 const app = initializeApp(firebaseConfig);
-export const  storage = getStorage(app)
+export const storage = getStorage(app)

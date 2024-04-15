@@ -37,13 +37,16 @@ export const GlobalStyles = createGlobalStyle`
   background:var(--color-white);  
 }
 
+
+
 ::-webkit-scrollbar-track {
   border-top-left-radius: 1rem;
   border-top-right-radius: 1rem;
-  -webkit-margin-before: 4.5rem;
-  margin-block-start: 4.5rem;
+  /* -webkit-margin-before: 4.5rem; */
+  /* margin-block-start: 4.5rem; */
   box-shadow: inset 0 0 6px var(--color-white);
 }
+
 
 
 ::-webkit-scrollbar-thumb {
@@ -61,13 +64,6 @@ export const GlobalStyles = createGlobalStyle`
   background:var(--color-white);  
 }
 
-::-webkit-scrollbar-track {
-  border-top-left-radius: 1rem;
-  border-top-right-radius: 1rem;
-  -webkit-margin-before: 4.5rem;
-  margin-block-start: 4.5rem;
-  box-shadow: inset 0 0 6px var(--color-white);
-}
 
 
 
@@ -438,10 +434,14 @@ margin: 0 auto;
 }
 
 .next {
-  right: 1%;
+  right: -1%;
+  top: 45%;
+transform: translate(-50%, -40%);
 }
 .prev {
-  left: 1%;
+  left: 3%;
+  top: 45%;
+transform: translate(-50%, -40%);
 }
 
 @media screen and (max-width: 40rem) {
