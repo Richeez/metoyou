@@ -34,13 +34,13 @@ import {
   logOut,
   selectCurrentToken,
   selectCurrentUser,
-  selectCurrentUserId,
 } from "../../../../manager/auth/authSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation } from "react-router-dom";
 import { VscWorkspaceTrusted } from "react-icons/vsc";
 import { axiosPrivate } from "../../../../app/api/axios";
 import { apiService } from "../../../../../strings";
+import Cookies from "js-cookie";
 
 const DropDownMenu = ({
   viewState,
@@ -60,11 +60,8 @@ const DropDownMenu = ({
 
   const dispatch = useDispatch();
   const location = useLocation();
-  const userId = useSelector(selectCurrentUserId);
   const token = useSelector(selectCurrentToken);
 
-  console.log("userId", userId);
-  console.log("token", token);
   const calcString = (string) => {
     let stringLength = string?.length;
 
@@ -78,7 +75,8 @@ const DropDownMenu = ({
   const signOut = async () => {
     try {
       await axiosPrivate.post(`${apiService.BASE_URI}/logout/${token}`);
-
+      // Clear user session token from cookies
+      Cookies.remove("sessionId");
       dispatch(logOut()); // Dispatch redux action
     } catch (error) {
       console.error(error);

@@ -10,11 +10,6 @@ const authSlice = createSlice({
     },
     setToken: (state, action) => {
       const accessToken = action.payload;
-      console.log(
-        "🚀 ~ file: authSlice.js:14 ~ action.payload:",
-        action.payload
-      );
-      console.log("accessToken", accessToken);
       state.token = accessToken;
     },
     logOut: (state) => {
