@@ -2,18 +2,19 @@ import { useSelector } from "react-redux";
 import { axiosPrivate } from "../app/api/axios";
 import { selectCurrentUserId } from "../manager/auth/authSlice";
 import Cookies from "js-cookie";
-export const useRefreshToken = () => {
+import PropTypes from "prop-types";
+
+export const useRefreshToken = ({ persist }) => {
   let userId;
   userId = useSelector(selectCurrentUserId);
-  console.log("userId from useRefresh", userId);
+  if (!persist) return false;
+
   if (!userId) {
     userId = Cookies.get("sessionId");
-    console.log("sessionId from useRefresh", userId);
   }
   const refresh = async () => {
     try {
       const response = await axiosPrivate.get(`/refresh/${userId}`);
-      console.log("useRefresh:", response.data);
 
       return response.data; // Return the refresh token
     } catch (error) {
@@ -26,5 +27,9 @@ export const useRefreshToken = () => {
   };
 
   return refresh;
+};
+
+useRefreshToken.propTypes = {
+  persist: PropTypes.bool,
 };
 export default useRefreshToken;

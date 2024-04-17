@@ -14,7 +14,7 @@ import { BackDrop } from "../../features/backdrop";
 import EditProfile from "./edit-profile/EditProfile";
 import { MdLocationPin } from "react-icons/md";
 import { selectCurrentUserId } from "../../../manager/auth/authSlice";
-import { useParams } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 import { ExpSession, NotFound } from "../../pages";
 import { Fetching } from "../../../svgs";
 import useTitle from "../../../hooks/useTitle";
@@ -27,6 +27,7 @@ const UserProfile = () => {
   const cover = useRef(null);
   const picture = useRef(null);
   const { userId } = useParams();
+  const location = useLocation();
 
   const [editField, setEditField] = useState({
     nickname: "",
@@ -89,7 +90,8 @@ const UserProfile = () => {
   } else if (isError) {
     const statusCode = error?.status;
 
-    profile = statusCode === 404 ? <NotFound /> : <ExpSession />;
+    profile =
+      statusCode === 404 ? <NotFound /> : <ExpSession location={location} />;
   } else if (isSuccess && user) {
     const {
       username,

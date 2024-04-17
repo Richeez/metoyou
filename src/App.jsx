@@ -1,8 +1,8 @@
-import { Routes, Route, useLocation, Outlet } from "react-router-dom";
+import { Routes, Route, useLocation, Outlet, Navigate } from "react-router-dom";
 import { MainContent } from "./Components/user";
 import { useSelector } from "react-redux";
 import { selectCurrentToken } from "./manager/auth/authSlice";
-import { ExpSession, LogIn, NotFound, SignUp } from "./Components/pages";
+import { LogIn, NotFound, SignUp } from "./Components/pages";
 import UserProfile from "./Components/user/widgets/userProfile";
 import { useEffect, useState } from "react";
 import PersistLogin from "./Components/PersistLogin";
@@ -39,12 +39,11 @@ function App() {
     // let token = null;
     const token = useSelector(selectCurrentToken);
 
-    console.log("🚀 ~ file: App.jsx:40 ~ ProtectedRoutes ~ token:", token);
     const location = useLocation();
 
     if (!token) {
-      // return <Navigate to="/login" state={{ from: location }} replace />;
-      return <ExpSession location={location} />;
+      return <Navigate to="/login" state={{ from: location }} replace />;
+      // return <ExpSession location={location} />;
     }
 
     return <Outlet />;

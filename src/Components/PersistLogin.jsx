@@ -13,15 +13,22 @@ import PropTypes from "prop-types";
 
 const PersistLogin = ({ persist }) => {
   const [isLoading, setIsLoading] = useState(true);
-  const refresh = useRefreshToken();
+  const refresh = useRefreshToken({ persist });
   const token = useSelector(selectCurrentToken);
   const dispatch = useDispatch();
+
   useEffect(() => {
     const verifyRefreshToken = async () => {
       try {
+        if (!refresh) {
+          setIsLoading(false);
+          return;
+        }
         const refreshToken = await refresh();
-
-        console.log("from Persist", refreshToken);
+        if (!refreshToken) {
+          setIsLoading(false);
+          return;
+        }
         dispatch(setToken(refreshToken?.key));
         dispatch(setCredentials({ ...refreshToken }));
       } catch (error) {
@@ -30,13 +37,14 @@ const PersistLogin = ({ persist }) => {
         setIsLoading(false);
       }
     };
-    !token ? verifyRefreshToken() : setIsLoading(false);
-  }, []);
 
-  useEffect(() => {
-    console.log(`isLoading: ${isLoading}`);
-    console.log(`Token: ${JSON.stringify(token)}`);
-  }, [isLoading, token]);
+    !token ? verifyRefreshToken() : setIsLoading(false);
+  }, [dispatch, refresh, token]);
+
+  // useEffect(() => {
+  //   console.log(`isLoading: ${isLoading}`);
+  //   console.log(`Token: ${JSON.stringify(token)}`);
+  // }, [isLoading, token]);
 
   return (
     <>
@@ -45,8 +53,6 @@ const PersistLogin = ({ persist }) => {
       ) : isLoading ? (
         <div className="loading-div">
           <ReactLoading type={"bubbles"} color={"#0052cc"} />
-
-          {/* <AiOutlineLoading3Quarters className="loading-effect" /> */}
         </div>
       ) : (
         <Outlet />
