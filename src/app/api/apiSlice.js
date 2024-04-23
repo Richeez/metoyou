@@ -2,7 +2,6 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { setToken, logOut } from "../../manager/auth/authSlice";
 import { apiService } from "../../../strings";
-import { ExpSession } from "../../Components/pages";
 import Cookies from "js-cookie";
 
 const baseQuery = fetchBaseQuery({
@@ -10,12 +9,12 @@ const baseQuery = fetchBaseQuery({
   credentials: "include",
   prepareHeaders: (headers, { getState }) => {
     let token;
+    const session = Cookies.get("session");
+    token = session ? JSON.parse(session).token : null;
     const stateToken = getState().auth.token;
     if (stateToken) {
       token = stateToken;
     }
-    const session = Cookies.get("session");
-    token = session ? JSON.parse(session).token : null;
 
     if (token) {
       headers.set("authorization", `Bearer ${token}`);
@@ -38,8 +37,6 @@ const refreshAccessToken = async (api, extraOptions) => {
   token = session ? JSON.parse(session).token : null;
   userId = session ? JSON.parse(session).id : null;
 
-  console.log("refreshAccessToken ~ userId", userId);
-  console.log("refreshAccessToken ~ token", token);
   try {
     const refreshResult = await baseQuery(`/refresh/${userId}`, api, {
       headers: {
@@ -86,14 +83,12 @@ const baseQueryWithReAuth = async (args, api, extraOptions) => {
       result?.error?.originalStatus
     );
     if (result?.error?.originalStatus === 401) {
-      console.log("Access forbidden. Refreshing token...");
+      // console.log("Access forbidden. Refreshing token...");
 
       const newToken = await refreshAccessToken(api, extraOptions);
 
       if (newToken) {
         console.log("Retrying original request with new token...");
-        // api.setHeader("Authorization", `Bearer ${newToken}`);
-
         return baseQuery(args, api, {
           headers: {
             Authorization: `Bearer ${newToken}`,
@@ -104,7 +99,6 @@ const baseQueryWithReAuth = async (args, api, extraOptions) => {
 
         api.dispatch(logOut());
         return null;
-
       }
     }
 

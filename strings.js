@@ -1,5 +1,5 @@
 export const apiService = {
-  BASE_URI: " https://metoyou-api.vercel.app",
+  BASE_URI: "http://localhost:4500",
 };
 //? https://metoyou-api.vercel.app/
 //? http://localhost:4500
