@@ -47,10 +47,13 @@ function LoginPage() {
         pwd: password.trim(),
       }).unwrap();
 
+      const access = {
+        id: userData.rest._id,
+        token: userData.key,
+      };
       dispatch(setCredentials({ ...userData }));
-      console.log("userData", userData);
       dispatch(setToken(userData.key));
-      Cookies.set("sessionId", userData.rest._id, { expires: 1 / 720 });
+      Cookies.set("session", JSON.stringify(access) /*, { expires: 1 / 720 }*/);
       setUserInfo({
         username: "",
         password: "",

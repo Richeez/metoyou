@@ -104,10 +104,6 @@ const UserProfile = () => {
       viewedProfile,
       location,
     } = user ?? {};
-    console.log(
-      "🚀 ~ file: userProfile.jsx:80 ~ UserProfile ~ nickname:",
-      nickname
-    );
 
     profile = (
       <div className="profile flex-cont">

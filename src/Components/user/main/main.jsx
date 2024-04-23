@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Navigate } from "react-router-dom";
 
 import { Home } from "../../pages";
@@ -12,27 +12,39 @@ import NavBar from "../navbar/navBar";
 const MainContent = ({ trustDevice, persist }) => {
   const [open, setOpen] = useState(false);
   const [menuHeight, setMenuHeight] = useState(null);
+  const deskMenuRef = useRef(null);
+  const mobMenuRef = useRef(null);
 
   const calcHeight = (e) => {
     const height = e?.offsetHeight;
     setMenuHeight(height);
   };
 
-  const handleMenu = () => {
+  const handleMenu = (e) => {
+    e.stopPropagation();
+
     calcHeight();
     setOpen((prev) => !prev);
   };
 
-  // useEffect(() => {
-  //   calcHeight();
-  // }, [menuHeight]);
+  useEffect(() => {
+    console.log("I reached here", open);
+  }, [open]);
 
   return (
     <div id="main">
       <StartFromTop />
       <NavBar>
-        <DeskNavBar Navigate={Navigate} handleMenu={handleMenu} />
-        <MobNavBar Navigate={Navigate} handleMenu={handleMenu} />
+        <DeskNavBar
+          deskMenuRef={deskMenuRef}
+          Navigate={Navigate}
+          handleMenu={handleMenu}
+        />
+        <MobNavBar
+          Navigate={Navigate}
+          mobMenuRef={mobMenuRef}
+          handleMenu={handleMenu}
+        />
         <DropDownMenu
           trustDevice={trustDevice}
           persist={persist}
@@ -40,6 +52,9 @@ const MainContent = ({ trustDevice, persist }) => {
           calcHeight={calcHeight}
           Navigate={Navigate}
           viewState={open ? "reveal" : ""}
+          handleDropDown={setOpen}
+          deskMenuRef={deskMenuRef}
+          mobMenuRef={mobMenuRef}
         />
       </NavBar>
       <Home />

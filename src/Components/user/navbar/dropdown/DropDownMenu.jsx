@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
 // import { useContext } from "react";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import {
   BiBlock,
   BiFingerprint,
@@ -41,6 +41,7 @@ import { VscWorkspaceTrusted } from "react-icons/vsc";
 import { axiosPrivate } from "../../../../app/api/axios";
 import { apiService } from "../../../../../strings";
 import Cookies from "js-cookie";
+import useClickOutside from "../../../../hooks/useClickOutside";
 
 const DropDownMenu = ({
   viewState,
@@ -49,7 +50,9 @@ const DropDownMenu = ({
   Navigate,
   trustDevice,
   persist,
-  navbarRef,
+  handleDropDown,
+  deskMenuRef,
+  mobMenuRef,
 }) => {
   const [activeMenu, setActiveMenu] = useState("main");
   const { _id, picsPath } = useSelector(selectCurrentUser) ?? {};
@@ -57,6 +60,7 @@ const DropDownMenu = ({
   useEffect(() => {
     calcString();
   }, []);
+  const dropDownRef = useRef(null);
 
   const dispatch = useDispatch();
   const location = useLocation();
@@ -72,11 +76,23 @@ const DropDownMenu = ({
     return;
   };
 
+  useClickOutside(
+    dropDownRef,
+    () => {
+      const dropDown = deskMenuRef.current;
+      const mobile = mobMenuRef.current;
+      dropDown.classList.remove("hamburger");
+      mobile.classList.remove("hamburger");
+      handleDropDown(false);
+    },
+    [deskMenuRef, mobMenuRef]
+  );
+
   const signOut = async () => {
     try {
       await axiosPrivate.post(`${apiService.BASE_URI}/logout/${token}`);
       // Clear user session token from cookies
-      Cookies.remove("sessionId");
+      Cookies.remove("session");
       dispatch(logOut()); // Dispatch redux action
     } catch (error) {
       console.error(error);
@@ -137,7 +153,7 @@ const DropDownMenu = ({
   }
   return (
     <Dropdown
-      ref={navbarRef}
+      ref={dropDownRef}
       className={`${viewState}`}
       style={{ height: menuHeight }}
     >

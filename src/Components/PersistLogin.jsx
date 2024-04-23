@@ -41,11 +41,6 @@ const PersistLogin = ({ persist }) => {
     !token ? verifyRefreshToken() : setIsLoading(false);
   }, [dispatch, refresh, token]);
 
-  // useEffect(() => {
-  //   console.log(`isLoading: ${isLoading}`);
-  //   console.log(`Token: ${JSON.stringify(token)}`);
-  // }, [isLoading, token]);
-
   return (
     <>
       {!persist ? (

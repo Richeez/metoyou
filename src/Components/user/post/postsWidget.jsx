@@ -41,7 +41,7 @@ const PostsWidget = ({ userId, isProfile = false }) => {
 
   if (isError) {
     const statusCode = error?.status;
-
+    console.log("statusCode", statusCode);
     const catchError = statusCode === 404 ? <NotFound /> : <ExpSession />;
     return (
       // <div style={{ textAlign: "center", width: "100%", fontSize: "1.2rem" }}>

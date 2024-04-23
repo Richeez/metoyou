@@ -10,7 +10,9 @@ export const useRefreshToken = ({ persist }) => {
   if (!persist) return false;
 
   if (!userId) {
-    userId = Cookies.get("sessionId");
+    const session = Cookies.get("session");
+    userId = JSON.parse(session).id;
+    console.log("useRefreshToken === userId", userId);
   }
   const refresh = async () => {
     try {

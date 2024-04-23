@@ -11,11 +11,10 @@ import { Profile } from "../..";
 import { useSelector } from "react-redux";
 import { selectCurrentUser } from "../../../../manager/auth/authSlice";
 
-const MobNavBar = ({ handleMenu }) => {
+const MobNavBar = ({ handleMenu, mobMenuRef }) => {
   const inputRef = useRef(null);
   const buttonRef = useRef(null);
   const brandRef = useRef(null);
-  const mobMenuRef = useRef(null);
   const [isOpen, setIsOpen] = useState(false);
   const { picsPath, _id } = useSelector(selectCurrentUser) ?? {};
 
@@ -24,13 +23,18 @@ const MobNavBar = ({ handleMenu }) => {
     inputRef.current.focus();
   };
 
-  const handleMobMenuBar = () => {
-    const menu = mobMenuRef.current;
+  const handleMobMenuBar = (e) => {
+    e.stopPropagation();
 
-    menu.classList.toggle("hamburger");
+    const menu = mobMenuRef?.current;
+    console.log("menu", menu);
+    menu?.classList.toggle("hamburger");
+    handleMenu(e);
   };
 
-  useEffect(() => {}, [isOpen]);
+  useEffect(() => {
+    console.log("isOpen", isOpen);
+  }, [isOpen]);
 
   return (
     <>
@@ -60,8 +64,8 @@ const MobNavBar = ({ handleMenu }) => {
           </div>
           <LinkCont>
             <LinkWrapper data-title="menu">
-              <div onClick={handleMobMenuBar} className="cover">
-                <MenuBar onClick={handleMenu} ref={mobMenuRef}>
+              <div onClick={(e) => handleMobMenuBar(e)} className="cover">
+                <MenuBar className="toggle" ref={mobMenuRef}>
                   <div />
                 </MenuBar>
               </div>

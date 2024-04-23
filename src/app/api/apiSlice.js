@@ -3,12 +3,20 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { setToken, logOut } from "../../manager/auth/authSlice";
 import { apiService } from "../../../strings";
 import { ExpSession } from "../../Components/pages";
+import Cookies from "js-cookie";
 
 const baseQuery = fetchBaseQuery({
   baseUrl: apiService.BASE_URI,
   credentials: "include",
   prepareHeaders: (headers, { getState }) => {
-    const token = getState().auth.token;
+    let token;
+    const stateToken = getState().auth.token;
+    if (stateToken) {
+      token = stateToken;
+    }
+    const session = Cookies.get("session");
+    token = session ? JSON.parse(session).token : null;
+
     if (token) {
       headers.set("authorization", `Bearer ${token}`);
     }
@@ -18,8 +26,18 @@ const baseQuery = fetchBaseQuery({
 });
 
 const refreshAccessToken = async (api, extraOptions) => {
-  const token = api.getState()?.auth?.token;
-  const userId = api.getState()?.auth?.user?._id;
+  let token;
+  let userId;
+  const stateToken = api.getState().auth.token;
+  const stateId = api.getState()?.auth?.user?._id;
+  if (stateToken && stateId) {
+    token = stateToken;
+    userId = stateId;
+  }
+  const session = Cookies.get("session");
+  token = session ? JSON.parse(session).token : null;
+  userId = session ? JSON.parse(session).id : null;
+
   console.log("refreshAccessToken ~ userId", userId);
   console.log("refreshAccessToken ~ token", token);
   try {
@@ -84,7 +102,9 @@ const baseQueryWithReAuth = async (args, api, extraOptions) => {
       } else {
         console.log("Token refresh failed. Logging out...");
 
-        return <ExpSession />;
+        api.dispatch(logOut());
+        return null;
+
       }
     }
 

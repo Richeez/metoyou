@@ -1,6 +1,5 @@
 /* eslint-disable react/prop-types */
 // import { useContext } from "react";
-import { useRef } from "react";
 import { BiSearchAlt2 } from "react-icons/bi";
 import { BsCameraVideo } from "react-icons/bs";
 import { CgAddR } from "react-icons/cg";
@@ -13,15 +12,16 @@ import { Header } from "./styledDeskNav";
 import { useSelector } from "react-redux";
 import { selectCurrentUser } from "../../../../manager/auth/authSlice";
 
-const DeskNavBar = ({ handleMenu }) => {
-  const deskMenuRef = useRef(null);
+const DeskNavBar = ({ handleMenu, deskMenuRef }) => {
   // const { currentUser } = useContext(AuthContext);
 
-  const handleDeskMenuBar = () => {
-    const menu = deskMenuRef.current;
+  const handleDeskMenuBar = (e) => {
+    e.stopPropagation();
 
+    const menu = deskMenuRef?.current;
     menu.classList.toggle("hamburger");
-    handleMenu();
+    console.log("from desktop menu bar", menu);
+    handleMenu(e);
   };
 
   const { picsPath, _id } = useSelector(selectCurrentUser) ?? {};
@@ -54,8 +54,8 @@ const DeskNavBar = ({ handleMenu }) => {
                   data-flow="right"
                   className="tooltip"
                 /> */}
-              <div onClick={handleDeskMenuBar} className="cover">
-                <MenuBar ref={deskMenuRef}>
+              <div onClick={(e) => handleDeskMenuBar(e)} className="cover">
+                <MenuBar className="toggle" ref={deskMenuRef}>
                   <div />
                 </MenuBar>
               </div>
