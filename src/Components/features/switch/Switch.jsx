@@ -1,12 +1,16 @@
 /* eslint-disable react/prop-types */
 import { CheckBox, Label, Slider, SwitcherCont } from "./styledSwitch";
 
-const Switch = ({ stick, trust }) => {
+const Switch = ({ action, isChecked }) => {
   return (
     <>
       <SwitcherCont>
         <Label>
-          <CheckBox checked={trust === true} onChange={stick} type="checkbox" />
+          <CheckBox
+            checked={isChecked === true}
+            onChange={action}
+            type="checkbox"
+          />
           <Slider />
         </Label>
       </SwitcherCont>

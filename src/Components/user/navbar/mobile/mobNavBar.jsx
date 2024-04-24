@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { BiSearchAlt2 } from "react-icons/bi";
 import { BsCameraVideo } from "react-icons/bs";
 import { CgAddR } from "react-icons/cg";
@@ -27,14 +27,9 @@ const MobNavBar = ({ handleMenu, mobMenuRef }) => {
     e.stopPropagation();
 
     const menu = mobMenuRef?.current;
-    console.log("menu", menu);
     menu?.classList.toggle("hamburger");
     handleMenu(e);
   };
-
-  useEffect(() => {
-    console.log("isOpen", isOpen);
-  }, [isOpen]);
 
   return (
     <>

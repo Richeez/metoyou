@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import useRefreshToken from "../hooks/useRefreshToken";
-// import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import ReactLoading from "react-loading";
 import { Outlet } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
@@ -10,9 +9,11 @@ import {
   setToken,
 } from "../manager/auth/authSlice";
 import PropTypes from "prop-types";
+import useLocalStorage from "../hooks/useLocalStorage";
 
-const PersistLogin = ({ persist }) => {
+const PersistLogin = () => {
   const [isLoading, setIsLoading] = useState(true);
+  const [persist] = useLocalStorage("Persist", false);
   const refresh = useRefreshToken({ persist });
   const token = useSelector(selectCurrentToken);
   const dispatch = useDispatch();

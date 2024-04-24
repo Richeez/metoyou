@@ -81,27 +81,25 @@ const PostsWidget = ({ userId, isProfile = false }) => {
             comments,
             following,
           }) => (
-            <>
-              <div key={`${_id}-${userId}`} className="item">
-                <Post
-                  postId={_id}
-                  postUserId={userId}
-                  username={username}
-                  description={description}
-                  location={location}
-                  picsPath={picsPath}
-                  userPicsPath={userPicsPath}
-                  likes={likes}
-                  comments={comments}
-                  following={following}
-                />
-              </div>
-            </>
+            <div key={`${_id}-${userId}`} className="item">
+              <Post
+                postId={_id}
+                postUserId={userId}
+                username={username}
+                description={description}
+                location={location}
+                picsPath={picsPath}
+                userPicsPath={userPicsPath}
+                likes={likes}
+                comments={comments}
+                following={following}
+              />
+            </div>
           )
         )
         .reverse()}
     </>
   );
 };
-//
+
 export default PostsWidget;

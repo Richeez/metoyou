@@ -42,14 +42,13 @@ import { axiosPrivate } from "../../../../app/api/axios";
 import { apiService } from "../../../../../strings";
 import Cookies from "js-cookie";
 import useClickOutside from "../../../../hooks/useClickOutside";
+import useToggle from "../../../../hooks/useToggle";
 
 const DropDownMenu = ({
   viewState,
   menuHeight,
   calcHeight,
   Navigate,
-  trustDevice,
-  persist,
   handleDropDown,
   deskMenuRef,
   mobMenuRef,
@@ -61,7 +60,14 @@ const DropDownMenu = ({
     calcString();
   }, []);
   const dropDownRef = useRef(null);
+  const mainRef = useRef(null);
+  const settingsRef = useRef(null);
+  const notificationRef = useRef(null);
 
+  const [persist, togglePersist] = useToggle("Persist", false);
+  const [pushNotify, togglePushNotify] = useToggle("Push_notification", false);
+  const [notifySMS, toggleNotifySMS] = useToggle("Sms_manager", false);
+  const [notifyEmail, toggleNotifyEmail] = useToggle("email_notify", false);
   const dispatch = useDispatch();
   const location = useLocation();
   const token = useSelector(selectCurrentToken);
@@ -90,7 +96,10 @@ const DropDownMenu = ({
 
   const signOut = async () => {
     try {
-      await axiosPrivate.post(`${apiService.BASE_URI}/logout/${token}`);
+      const response = await axiosPrivate.post(
+        `${apiService.BASE_URI}/logout/${token}`
+      );
+      console.log("response", response);
       // Clear user session token from cookies
       Cookies.remove("session");
       dispatch(logOut()); // Dispatch redux action
@@ -162,6 +171,7 @@ const DropDownMenu = ({
         onEnter={calcHeight}
         unmountOnExit
         timeout={500}
+        ref={mainRef}
         classNames="menu-primary"
       >
         <div className="menu">
@@ -221,6 +231,7 @@ const DropDownMenu = ({
         onEnter={calcHeight}
         unmountOnExit
         timeout={500}
+        ref={settingsRef}
         classNames="menu-secondary"
       >
         <div className="menu">
@@ -276,7 +287,7 @@ const DropDownMenu = ({
             </DropDownItem>
             <DropDownItem
               leftIcon={<VscWorkspaceTrusted />}
-              rightIcon={<Switch stick={trustDevice} trust={persist} />}
+              rightIcon={<Switch action={togglePersist} isChecked={persist} />}
               title={"trust device"}
             >
               Trust Device
@@ -289,6 +300,7 @@ const DropDownMenu = ({
         onEnter={calcHeight}
         unmountOnExit
         timeout={500}
+        ref={notificationRef}
         classNames="menu-secondary"
       >
         <div className="menu">
@@ -299,7 +311,12 @@ const DropDownMenu = ({
               heading={"Notifications"}
               goToMenu="settings"
             />
-            <DropDownItem leftIcon={<BiSelection />} rightIcon={<Switch />}>
+            <DropDownItem
+              leftIcon={<BiSelection />}
+              rightIcon={
+                <Switch action={togglePushNotify} isChecked={pushNotify} />
+              }
+            >
               push notification
             </DropDownItem>
             <DropDownItem
@@ -309,10 +326,20 @@ const DropDownMenu = ({
             >
               manage notifications
             </DropDownItem>
-            <DropDownItem leftIcon={<FaSms />} rightIcon={<Switch />}>
+            <DropDownItem
+              leftIcon={<FaSms />}
+              rightIcon={
+                <Switch action={toggleNotifySMS} isChecked={notifySMS} />
+              }
+            >
               SMS notification
             </DropDownItem>
-            <DropDownItem leftIcon={<CgMail />} rightIcon={<Switch />}>
+            <DropDownItem
+              leftIcon={<CgMail />}
+              rightIcon={
+                <Switch action={toggleNotifyEmail} isChecked={notifyEmail} />
+              }
+            >
               email notification
             </DropDownItem>
           </ul>

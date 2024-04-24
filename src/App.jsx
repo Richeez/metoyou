@@ -4,7 +4,6 @@ import { useSelector } from "react-redux";
 import { selectCurrentToken } from "./manager/auth/authSlice";
 import { ExpSession, LogIn, NotFound, SignUp } from "./Components/pages";
 import UserProfile from "./Components/user/widgets/userProfile";
-import { useEffect, useState } from "react";
 import PersistLogin from "./Components/PersistLogin";
 
 //TODO: integrate Posting
@@ -15,28 +14,8 @@ import PersistLogin from "./Components/PersistLogin";
 //TODO:  1ntegrate likes
 //TODO:  1ntegrate comments
 
-// --------------- PROJECT ENDPOINTS ------------------
-// API URL -- https://loop-social-server-side.vercel.app/
-// REGISTER endpoint -- /register
-// REGISTER DATA -- username, email, password
-// LOGIN endpoint -- /auth
-// LOGIN DATA -- username & password
-
 function App() {
-  const [persist, setPersist] = useState(
-    JSON.parse(localStorage.getItem("Persist")) ?? false
-  );
-
-  useEffect(() => {
-    localStorage.setItem("Persist", persist);
-  }, [persist]);
-
-  const togglePersist = () => {
-    setPersist((prev) => !prev);
-  };
-
   const ProtectedRoutes = () => {
-    // let token = null;
     const token = useSelector(selectCurrentToken);
 
     const location = useLocation();
@@ -51,14 +30,9 @@ function App() {
   return (
     <main className="App">
       <Routes>
-        <Route element={<PersistLogin persist={persist} />}>
+        <Route element={<PersistLogin />}>
           <Route element={<ProtectedRoutes />}>
-            <Route
-              path="/"
-              element={
-                <MainContent trustDevice={togglePersist} persist={persist} />
-              }
-            />
+            <Route path="/" element={<MainContent />} />
           </Route>
         </Route>
         <Route path="/login" element={<LogIn />} />

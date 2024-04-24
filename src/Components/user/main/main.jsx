@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { Navigate } from "react-router-dom";
 
 import { Home } from "../../pages";
@@ -9,7 +9,7 @@ import DropDownMenu from "../navbar/dropdown/DropDownMenu";
 import MobNavBar from "../navbar/mobile/mobNavBar";
 import NavBar from "../navbar/navBar";
 
-const MainContent = ({ trustDevice, persist }) => {
+const MainContent = () => {
   const [open, setOpen] = useState(false);
   const [menuHeight, setMenuHeight] = useState(null);
   const deskMenuRef = useRef(null);
@@ -27,10 +27,6 @@ const MainContent = ({ trustDevice, persist }) => {
     setOpen((prev) => !prev);
   };
 
-  useEffect(() => {
-    console.log("I reached here", open);
-  }, [open]);
-
   return (
     <div id="main">
       <StartFromTop />
@@ -46,8 +42,6 @@ const MainContent = ({ trustDevice, persist }) => {
           handleMenu={handleMenu}
         />
         <DropDownMenu
-          trustDevice={trustDevice}
-          persist={persist}
           menuHeight={menuHeight}
           calcHeight={calcHeight}
           Navigate={Navigate}

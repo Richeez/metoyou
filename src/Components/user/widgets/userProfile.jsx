@@ -6,7 +6,7 @@ import "../../user/widgets/userProfile.css";
 import Lottie from "lottie-react";
 import Empty from "../profile/empty-state.json";
 import StartFromTop from "../../StartFromTop";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import { useGetUserIdQuery } from "../../../manager/usersReq/usersApiSlice";
 import { useSelector } from "react-redux";
 import Profile from "../profile/profile";
@@ -14,21 +14,24 @@ import { BackDrop } from "../../features/backdrop";
 import EditProfile from "./edit-profile/EditProfile";
 import { MdLocationPin } from "react-icons/md";
 import { selectCurrentUserId } from "../../../manager/auth/authSlice";
-import { useLocation, useParams } from "react-router-dom";
-import { ExpSession, NotFound } from "../../pages";
+import { Navigate, useParams } from "react-router-dom";
+import { NotFound } from "../../pages";
 import { Fetching } from "../../../svgs";
 import useTitle from "../../../hooks/useTitle";
 import PostsWidget from "../post/postsWidget";
 
 const UserProfile = () => {
-  useTitle("Profile Page");
+  useTitle("Profile");
   const [toggle, setToggle] = useState(false);
   const editor = useRef(null);
   const cover = useRef(null);
   const picture = useRef(null);
   const { userId } = useParams();
-  const location = useLocation();
+  // const location = useLocation();
 
+  const _id = useSelector(selectCurrentUserId);
+  const [id, setUserId] = useState(null); // Assuming you have a state to store the current user ID
+  const [user, setUser] = useState(null);
   const [editField, setEditField] = useState({
     nickname: "",
     occupation: "",
@@ -40,13 +43,12 @@ const UserProfile = () => {
     },
   });
 
-  const handleToggle = () => {
-    setToggle((prev) => !prev);
+  const handleToggle = useCallback(() => {
+    setToggle((prevToggle) => !prevToggle);
     const ref = editor.current;
     ref.classList.toggle("pop-up");
     picture.current.textContent = "";
     cover.current.textContent = "";
-
     setEditField({
       nickname: "",
       occupation: "",
@@ -57,10 +59,8 @@ const UserProfile = () => {
         cover: [],
       },
     });
-  };
-  const _id = useSelector(selectCurrentUserId);
-  const [id, setUserId] = useState(null); // Assuming you have a state to store the current user ID
-  const [user, setUser] = useState(null);
+  }, []);
+
   const profileUserId = userId;
   const currentUserId =
     profileUserId === id
@@ -90,8 +90,7 @@ const UserProfile = () => {
   } else if (isError) {
     const statusCode = error?.status;
 
-    profile =
-      statusCode === 404 ? <NotFound /> : <ExpSession location={location} />;
+    profile = statusCode === 404 ? <NotFound /> : <Navigate to="/login" />;
   } else if (isSuccess && user) {
     const {
       username,
@@ -104,7 +103,6 @@ const UserProfile = () => {
       viewedProfile,
       location,
     } = user ?? {};
-
     profile = (
       <div className="profile flex-cont">
         <BackDrop className={`${toggle ? "pop-up" : "offSet"}`}>

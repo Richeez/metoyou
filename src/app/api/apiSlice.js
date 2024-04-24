@@ -8,13 +8,12 @@ const baseQuery = fetchBaseQuery({
   baseUrl: apiService.BASE_URI,
   credentials: "include",
   prepareHeaders: (headers, { getState }) => {
-    let token;
-    const session = Cookies.get("session");
-    token = session ? JSON.parse(session).token : null;
-    const stateToken = getState().auth.token;
-    if (stateToken) {
-      token = stateToken;
-    }
+    // const session = Cookies.get("session");
+    // token = session ? JSON.parse(session).token : null;
+    const token = getState().auth.token;
+    // if (stateToken) {
+    //   token = stateToken;
+    // }
 
     if (token) {
       headers.set("authorization", `Bearer ${token}`);
@@ -37,7 +36,14 @@ const refreshAccessToken = async (api, extraOptions) => {
   token = session ? JSON.parse(session).token : null;
   userId = session ? JSON.parse(session).id : null;
 
+  const persist = JSON.parse(localStorage.getItem("Persist"));
+  console.log("persist", persist);
+
   try {
+    if (!persist && !stateToken) {
+      api.dispatch(logOut());
+      return null;
+    }
     const refreshResult = await baseQuery(`/refresh/${userId}`, api, {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -48,10 +54,16 @@ const refreshAccessToken = async (api, extraOptions) => {
     });
 
     if (refreshResult?.data) {
-      const newAccessToken = refreshResult.data?.key;
+      const userData = refreshResult.data;
       //? Update the token in your Redux state
-      api.dispatch(setToken(newAccessToken));
-      return newAccessToken;
+      api.dispatch(setToken(userData.key));
+      const access = {
+        id: userData.rest._id,
+        token: userData.key,
+      };
+      Cookies.set("session", JSON.stringify(access));
+
+      return userData.key;
     }
 
     return null; // Return null if refresh fails

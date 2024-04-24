@@ -83,14 +83,10 @@ const EditProfile = ({
   //   });
   // };
 
-  console.log(
-    "🚀 ~ file: EditProfile.jsx:57 ~ EditProfile ~ editField:",
-    editField?.images
-  );
   const handleTextsField = (e) => {
     const { name, value } = e.target;
 
-    // Check if the field is 'nickname' before applying space prevention
+    //? Check if the field is 'nickname' before applying space prevention
     const sanitizedValue =
       name === "nickname" ? value.replace(/\s/g, "").toLowerCase() : value;
 
