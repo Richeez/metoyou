@@ -41,8 +41,9 @@ import { VscWorkspaceTrusted } from "react-icons/vsc";
 import { axiosPrivate } from "../../../../app/api/axios";
 import { apiService } from "../../../../../strings";
 import Cookies from "js-cookie";
-import useClickOutside from "../../../../hooks/useClickOutside";
+// import useClickOutside from "../../../../hooks/useClickOutside";
 import useToggle from "../../../../hooks/useToggle";
+import OutsideClickHandler from "../../../../hooks/useClickOutside";
 
 const DropDownMenu = ({
   viewState,
@@ -82,17 +83,13 @@ const DropDownMenu = ({
     return;
   };
 
-  useClickOutside(
-    dropDownRef,
-    () => {
-      const dropDown = deskMenuRef.current;
-      const mobile = mobMenuRef.current;
-      dropDown.classList.remove("hamburger");
-      mobile.classList.remove("hamburger");
-      handleDropDown(false);
-    },
-    [deskMenuRef, mobMenuRef]
-  );
+  const closeDropdown = () => {
+    const dropDown = deskMenuRef.current;
+    const mobile = mobMenuRef.current;
+    dropDown.classList.remove("hamburger");
+    mobile.classList.remove("hamburger");
+    handleDropDown(false);
+  };
 
   const signOut = async () => {
     try {
@@ -161,191 +158,201 @@ const DropDownMenu = ({
     );
   }
   return (
-    <Dropdown
-      ref={dropDownRef}
-      className={`${viewState}`}
-      style={{ height: menuHeight }}
+    <OutsideClickHandler
+      menuRefs={[deskMenuRef, mobMenuRef]}
+      onOutsideClick={closeDropdown}
     >
-      <CSSTransition
-        in={activeMenu === "main"}
-        onEnter={calcHeight}
-        unmountOnExit
-        timeout={500}
-        ref={mainRef}
-        classNames="menu-primary"
+      <Dropdown
+        ref={dropDownRef}
+        className={`${viewState}`}
+        style={{ height: menuHeight }}
       >
-        <div className="menu">
-          <ul>
-            <DropDownItem
-              title={"profile"}
-              img={
-                <Profile
-                  id={_id}
-                  img={picsPath}
-                  profile
-                  radius="0"
-                  size={"100%"}
-                />
-              }
-            >
-              My Profile
-            </DropDownItem>
-            <DropDownItem title={"home"} leftIcon={<GoHome />}>
-              Home
-            </DropDownItem>
-            <DropDownItem title={"messages"} leftIcon={<BiMessage />}>
-              Messages
-            </DropDownItem>
-            <DropDownItem
-              title={"settings"}
-              leftIcon={<FaCogs />}
-              goRight
-              rightIcon={<FaChevronRight />}
-              goToMenu="settings"
-            >
-              Settings
-            </DropDownItem>
-            <DropDownItem leftIcon={<FaUserFriends />} title={"requests"}>
-              Requests(249)
-            </DropDownItem>
-            <DropDownItem title={"create post"} leftIcon={<CgAddR />}>
-              Create Post
-            </DropDownItem>
-            <DropDownItem title={"room"} leftIcon={<BsCameraVideo />}>
-              Room
-            </DropDownItem>
-            <DropDownItem leftIcon={<BiFingerprint />} title={"verify account"}>
-              Verify Account
-            </DropDownItem>
-            <DropDownItem title={"report issue"} leftIcon={<IoMdCall />}>
-              Report Issue
-            </DropDownItem>
-            <DropDownItem api={signOut} leftIcon={<BiLogOut />}>
-              Log Out
-            </DropDownItem>
-          </ul>
-        </div>
-      </CSSTransition>
-      <CSSTransition
-        in={activeMenu === "settings"}
-        onEnter={calcHeight}
-        unmountOnExit
-        timeout={500}
-        ref={settingsRef}
-        classNames="menu-secondary"
-      >
-        <div className="menu">
-          <ul>
-            <DropDownItem
-              leftIcon={<FaChevronLeft />}
-              goLeft
-              heading={"Settings"}
-              goToMenu="main"
-            />
-            <DropDownItem
-              leftIcon={<BiBlock />}
-              rightIcon={<FaChevronRight />}
-              goRight
-            >
-              Blocked Accounts
-            </DropDownItem>
-            <DropDownItem
-              leftIcon={<IoMdNotificationsOutline />}
-              rightIcon={<FaChevronRight />}
-              goRight
-              goToMenu="notifications"
-            >
-              Notifications
-            </DropDownItem>
-            <DropDownItem
-              leftIcon={<BsShieldExclamation />}
-              rightIcon={<FaChevronRight />}
-              goRight
-            >
-              Privacy Policy
-            </DropDownItem>
-            <DropDownItem
-              leftIcon={<FaBusinessTime />}
-              rightIcon={<FaChevronRight />}
-              goRight
-            >
-              Terms of Service
-            </DropDownItem>
-            <DropDownItem
-              leftIcon={<FaGuilded />}
-              rightIcon={<FaChevronRight />}
-              goRight
-            >
-              Community Guidelines
-            </DropDownItem>
-            <DropDownItem
-              leftIcon={<BiSupport />}
-              rightIcon={<FaChevronRight />}
-              goRight
-            >
-              Support
-            </DropDownItem>
-            <DropDownItem
-              leftIcon={<VscWorkspaceTrusted />}
-              rightIcon={<Switch action={togglePersist} isChecked={persist} />}
-              title={"trust device"}
-            >
-              Trust Device
-            </DropDownItem>
-          </ul>
-        </div>
-      </CSSTransition>
-      <CSSTransition
-        in={activeMenu === "notifications"}
-        onEnter={calcHeight}
-        unmountOnExit
-        timeout={500}
-        ref={notificationRef}
-        classNames="menu-secondary"
-      >
-        <div className="menu">
-          <ul>
-            <DropDownItem
-              leftIcon={<FaChevronLeft />}
-              goLeft
-              heading={"Notifications"}
-              goToMenu="settings"
-            />
-            <DropDownItem
-              leftIcon={<BiSelection />}
-              rightIcon={
-                <Switch action={togglePushNotify} isChecked={pushNotify} />
-              }
-            >
-              push notification
-            </DropDownItem>
-            <DropDownItem
-              leftIcon={<IoIosSwitch />}
-              rightIcon={<FaChevronRight />}
-              goRight
-            >
-              manage notifications
-            </DropDownItem>
-            <DropDownItem
-              leftIcon={<FaSms />}
-              rightIcon={
-                <Switch action={toggleNotifySMS} isChecked={notifySMS} />
-              }
-            >
-              SMS notification
-            </DropDownItem>
-            <DropDownItem
-              leftIcon={<CgMail />}
-              rightIcon={
-                <Switch action={toggleNotifyEmail} isChecked={notifyEmail} />
-              }
-            >
-              email notification
-            </DropDownItem>
-          </ul>
-        </div>
-      </CSSTransition>
-    </Dropdown>
+        <CSSTransition
+          in={activeMenu === "main"}
+          onEnter={calcHeight}
+          unmountOnExit
+          timeout={500}
+          ref={mainRef}
+          classNames="menu-primary"
+        >
+          <div className="menu">
+            <ul>
+              <DropDownItem
+                title={"profile"}
+                img={
+                  <Profile
+                    id={_id}
+                    img={picsPath}
+                    profile
+                    radius="0"
+                    size={"100%"}
+                  />
+                }
+              >
+                My Profile
+              </DropDownItem>
+              <DropDownItem title={"home"} leftIcon={<GoHome />}>
+                Home
+              </DropDownItem>
+              <DropDownItem title={"messages"} leftIcon={<BiMessage />}>
+                Messages
+              </DropDownItem>
+              <DropDownItem
+                title={"settings"}
+                leftIcon={<FaCogs />}
+                goRight
+                rightIcon={<FaChevronRight />}
+                goToMenu="settings"
+              >
+                Settings
+              </DropDownItem>
+              <DropDownItem leftIcon={<FaUserFriends />} title={"requests"}>
+                Requests(249)
+              </DropDownItem>
+              <DropDownItem title={"create post"} leftIcon={<CgAddR />}>
+                Create Post
+              </DropDownItem>
+              <DropDownItem title={"room"} leftIcon={<BsCameraVideo />}>
+                Room
+              </DropDownItem>
+              <DropDownItem
+                leftIcon={<BiFingerprint />}
+                title={"verify account"}
+              >
+                Verify Account
+              </DropDownItem>
+              <DropDownItem title={"report issue"} leftIcon={<IoMdCall />}>
+                Report Issue
+              </DropDownItem>
+              <DropDownItem api={signOut} leftIcon={<BiLogOut />}>
+                Log Out
+              </DropDownItem>
+            </ul>
+          </div>
+        </CSSTransition>
+        <CSSTransition
+          in={activeMenu === "settings"}
+          onEnter={calcHeight}
+          unmountOnExit
+          timeout={500}
+          ref={settingsRef}
+          classNames="menu-secondary"
+        >
+          <div className="menu">
+            <ul>
+              <DropDownItem
+                leftIcon={<FaChevronLeft />}
+                goLeft
+                heading={"Settings"}
+                goToMenu="main"
+              />
+              <DropDownItem
+                leftIcon={<BiBlock />}
+                rightIcon={<FaChevronRight />}
+                goRight
+              >
+                Blocked Accounts
+              </DropDownItem>
+              <DropDownItem
+                leftIcon={<IoMdNotificationsOutline />}
+                rightIcon={<FaChevronRight />}
+                goRight
+                goToMenu="notifications"
+              >
+                Notifications
+              </DropDownItem>
+              <DropDownItem
+                leftIcon={<BsShieldExclamation />}
+                rightIcon={<FaChevronRight />}
+                goRight
+              >
+                Privacy Policy
+              </DropDownItem>
+              <DropDownItem
+                leftIcon={<FaBusinessTime />}
+                rightIcon={<FaChevronRight />}
+                goRight
+              >
+                Terms of Service
+              </DropDownItem>
+              <DropDownItem
+                leftIcon={<FaGuilded />}
+                rightIcon={<FaChevronRight />}
+                goRight
+              >
+                Community Guidelines
+              </DropDownItem>
+              <DropDownItem
+                leftIcon={<BiSupport />}
+                rightIcon={<FaChevronRight />}
+                goRight
+              >
+                Support
+              </DropDownItem>
+              <DropDownItem
+                leftIcon={<VscWorkspaceTrusted />}
+                rightIcon={
+                  <Switch action={togglePersist} isChecked={persist} />
+                }
+                title={"trust device"}
+              >
+                Trust Device
+              </DropDownItem>
+            </ul>
+          </div>
+        </CSSTransition>
+        <CSSTransition
+          in={activeMenu === "notifications"}
+          onEnter={calcHeight}
+          unmountOnExit
+          timeout={500}
+          ref={notificationRef}
+          classNames="menu-secondary"
+        >
+          <div className="menu">
+            <ul>
+              <DropDownItem
+                leftIcon={<FaChevronLeft />}
+                goLeft
+                heading={"Notifications"}
+                goToMenu="settings"
+              />
+              <DropDownItem
+                leftIcon={<BiSelection />}
+                rightIcon={
+                  <Switch action={togglePushNotify} isChecked={pushNotify} />
+                }
+              >
+                push notification
+              </DropDownItem>
+              <DropDownItem
+                leftIcon={<IoIosSwitch />}
+                rightIcon={<FaChevronRight />}
+                goRight
+              >
+                manage notifications
+              </DropDownItem>
+              <DropDownItem
+                leftIcon={<FaSms />}
+                rightIcon={
+                  <Switch action={toggleNotifySMS} isChecked={notifySMS} />
+                }
+              >
+                SMS notification
+              </DropDownItem>
+              <DropDownItem
+                leftIcon={<CgMail />}
+                rightIcon={
+                  <Switch action={toggleNotifyEmail} isChecked={notifyEmail} />
+                }
+              >
+                email notification
+              </DropDownItem>
+            </ul>
+          </div>
+        </CSSTransition>
+      </Dropdown>
+    </OutsideClickHandler>
   );
 };
 

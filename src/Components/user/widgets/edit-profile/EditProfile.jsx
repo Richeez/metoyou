@@ -18,7 +18,6 @@ import {
   uploadFile,
 } from "../../../../constants/reusables";
 import { toast } from "react-toastify";
-// import { useEffect } from "react";
 
 const EditProfile = ({
   handleToggle,
@@ -27,6 +26,7 @@ const EditProfile = ({
   editField,
   setEditField,
   editor,
+  closeRef,
 }) => {
   const coverImg = useRef(null);
   const profileImage = useRef(null);
@@ -157,7 +157,9 @@ const EditProfile = ({
       >
         <div className="header">
           <h1>Edit Profile</h1>
-          <MdClose onClick={handleToggle} className="icon" />
+          <div className="toggle" ref={closeRef}>
+            <MdClose onClick={handleToggle} className="icon" />
+          </div>
         </div>
         <div className="inputs-field">
           <input

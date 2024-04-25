@@ -19,6 +19,7 @@ import { NotFound } from "../../pages";
 import { Fetching } from "../../../svgs";
 import useTitle from "../../../hooks/useTitle";
 import PostsWidget from "../post/postsWidget";
+import OutsideClickHandler from "../../../hooks/useClickOutside";
 
 const UserProfile = () => {
   useTitle("Profile");
@@ -27,11 +28,10 @@ const UserProfile = () => {
   const cover = useRef(null);
   const picture = useRef(null);
   const { userId } = useParams();
-  // const location = useLocation();
-
   const _id = useSelector(selectCurrentUserId);
   const [id, setUserId] = useState(null); // Assuming you have a state to store the current user ID
   const [user, setUser] = useState(null);
+  const closeRef = useRef(null);
   const [editField, setEditField] = useState({
     nickname: "",
     occupation: "",
@@ -47,6 +47,24 @@ const UserProfile = () => {
     setToggle((prevToggle) => !prevToggle);
     const ref = editor.current;
     ref.classList.toggle("pop-up");
+    picture.current.textContent = "";
+    cover.current.textContent = "";
+    setEditField({
+      nickname: "",
+      occupation: "",
+      email: "",
+      location: "",
+      images: {
+        profile: [],
+        cover: [],
+      },
+    });
+  }, []);
+
+  const handleEditor = useCallback(() => {
+    setToggle(false);
+    const ref = editor.current;
+    ref.classList.remove("pop-up");
     picture.current.textContent = "";
     cover.current.textContent = "";
     setEditField({
@@ -106,15 +124,22 @@ const UserProfile = () => {
     profile = (
       <div className="profile flex-cont">
         <BackDrop className={`${toggle ? "pop-up" : "offSet"}`}>
-          <EditProfile
-            editor={editor}
-            editField={editField}
-            setEditField={setEditField}
-            handleToggle={handleToggle}
-            cover={cover}
-            picture={picture}
-          />
+          <OutsideClickHandler
+            onOutsideClick={handleEditor}
+            menuRefs={[closeRef]}
+          >
+            <EditProfile
+              editor={editor}
+              editField={editField}
+              setEditField={setEditField}
+              handleToggle={handleToggle}
+              cover={cover}
+              picture={picture}
+              closeRef={closeRef}
+            />
+          </OutsideClickHandler>
         </BackDrop>
+
         <div className="flex-cont">
           <div className="background-image">
             <img
