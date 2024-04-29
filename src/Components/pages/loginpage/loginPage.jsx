@@ -1,26 +1,25 @@
 /* eslint-disable react/no-unescaped-entities */
 import "./loginPage.css";
 import { FaEyeSlash, FaEye } from "react-icons/fa";
-import { RiAlarmWarningFill } from "react-icons/ri";
-import { useRef, useState, useEffect } from "react";
+import { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { setCredentials, setToken } from "../../../manager/auth/authSlice";
 import { useLoginMutation } from "../../../manager/auth/authApiSlice";
 import { Logging } from "../../../svgs";
 import Cookies from "js-cookie";
+import HttpErrorHandler from "../../../utils/http_error_handler";
+import { FileInputWrapper } from "../../features/inputs/styledInput";
+import useToggle from "../../../hooks/useToggle";
 
 function LoginPage() {
   const [eyesOpen, setEyesOpen] = useState(false);
-  const errRef = useRef(null);
-
   const [userInfo, setUserInfo] = useState({
     username: "",
     password: "",
   });
-  const [errorMsg, setErrorMsg] = useState("");
+  const [persist, togglePersist] = useToggle("Persist", false);
 
-  useEffect(() => {}, [errorMsg]);
   const { username, password } = userInfo;
   const fillingData = (e) => {
     const { name, value } = e.target;
@@ -60,18 +59,7 @@ function LoginPage() {
       });
       navigate(from, { replace: true });
     } catch (err) {
-      if (!err) {
-        setErrorMsg("No Server Response");
-      } else if (err?.status === 400) {
-        setErrorMsg(`Missing Username,\nEmail or Password`);
-      } else if (err?.originalStatus === 401) {
-        setErrorMsg("Unauthorized");
-      } else {
-        setErrorMsg(err?.data?.message || "Login Failed");
-      }
-      setTimeout(() => {
-        setErrorMsg("");
-      }, 5000);
+      HttpErrorHandler.spitHttpErrorMsg(err);
     }
   };
   return (
@@ -85,17 +73,9 @@ function LoginPage() {
       )}
       <form className="login-form" onSubmit={(e) => e.preventDefault()}>
         <h2>Login</h2>
-        <div className="error">
-          <p ref={errRef} className={`${errorMsg ? "otherError" : "offSet"}`}>
-            <RiAlarmWarningFill /> {errorMsg}
-          </p>
-        </div>
 
         <ul className="login-ul">
           <li>
-            {/* <label className="label" htmlFor="username">
-              Full Name
-            </label> */}
             <input
               name="username"
               className="input"
@@ -109,10 +89,6 @@ function LoginPage() {
           </li>
 
           <li>
-            {/* <label className="label" htmlFor="password">
-              Password
-            </label> */}
-
             <div className="input-cont">
               {eyesOpen ? (
                 <input
@@ -141,13 +117,29 @@ function LoginPage() {
                   {eyesOpen ? <FaEyeSlash /> : <FaEye />}
                 </span>
               )}
-
-              <span
-                className="forget-password"
-                onClick={() => navigate("/forget")}
-              >
-                Forgot password?
-              </span>
+              <div className=" due-text-cont ">
+                <FileInputWrapper>
+                  <input
+                    style={{ marginRight: "5px", cursor: "pointer" }}
+                    onChange={togglePersist}
+                    checked={persist}
+                    name="trust_device"
+                    type="checkbox"
+                  />
+                  <span
+                    className="forget-password"
+                    onClick={() => navigate("/forget")}
+                  >
+                    Remember me
+                  </span>
+                </FileInputWrapper>
+                <span
+                  className="forget-password"
+                  onClick={() => navigate("/forget")}
+                >
+                  Forgot password?
+                </span>
+              </div>
             </div>
           </li>
         </ul>

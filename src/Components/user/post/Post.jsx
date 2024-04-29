@@ -14,6 +14,7 @@ import { useLikeMutation } from "../../../manager/auth/authApiSlice";
 import Comment from "../widgets/comments/Comment";
 import { useEffect, useState } from "react";
 import { apiService } from "../../../../strings";
+import { formatDate } from "../../../constants/reusables";
 
 const Post = ({
   postId,
@@ -26,6 +27,7 @@ const Post = ({
   likes,
   comments,
   followers,
+  timestamp,
 }) => {
   const name = username ? `${username}` : "username";
   const dispatch = useDispatch();
@@ -36,6 +38,10 @@ const Post = ({
   const [like] = useLikeMutation();
 
   useEffect(() => {}, [isLiked]);
+
+  useEffect(() => {
+    console.log(formatDate(timestamp));
+  }, []);
 
   const handleLike = async () => {
     const credentials = {

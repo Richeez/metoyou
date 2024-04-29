@@ -1,57 +1,52 @@
 import styled from "styled-components";
 
-
 export const StyledPost = styled.div`
-              
-            .profile {
-              width: 100%;
-              display: flex;
-              align-items: center;
-              justify-content: space-between;
-              padding-bottom: 2rem;
+  .profile {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-bottom: 2rem;
 
-              .img_wrapper {
+    .img_wrapper {
+      &:hover {
+        img {
+          transform: scale(1.1);
+          transition: var(--transition);
+        }
+      }
+      img {
+        width: 100%;
+        aspect-ratio: 1/1;
+        border-radius: 50%;
+        object-fit: cover;
+        /* border: 2px solid var(--color-white); */
+        object-position: center;
+      }
+    }
 
-                &:hover{
-                  img{
-                    transform: scale(1.1);
-                    transition: var(--transition);
+    .text {
+      display: flex;
+      flex-direction: column;
+      margin-right: auto;
+      p {
+        width: 100%;
+        font-weight: bold;
+        opacity: 0.6;
+        /* color:var(--color-gray-dark); */
+        text-transform: capitalize;
+        font-size: 0.8rem;
+        &:nth-of-type(1) {
+          opacity: 1;
 
-                  }
-                }
-                img {
-                  width: 100%;
-                  aspect-ratio: 1/1;
-                  border-radius: 50%;
-                  object-fit: cover;
-                  /* border: 2px solid var(--color-white); */
-                  object-position: center;
-                }
-              }
+          text-transform: unset;
 
-              .text {
-                display: flex;
-                flex-direction: column;
-                margin-right: auto;
-                p {
-                  width: 100%;
-                  font-weight: bold;
-                  opacity: 0.6;
-                  /* color:var(--color-gray-dark); */
-                  text-transform: capitalize;
-                  font-size: 0.8rem;
-                  &:nth-of-type(1) {
-                    opacity: 1;
-
-                    text-transform: unset;
-
-                    font-size: 1rem;
-                  }
-                }
-              }
-            }
-.post{
-    
+          font-size: 1rem;
+        }
+      }
+    }
+  }
+  .post {
     width: 100%;
     .img-wrapper {
       background: var(--color-white);
@@ -73,7 +68,8 @@ export const StyledPost = styled.div`
       align-items: center;
       justify-content: space-between;
 
-      .left-icons, .like {
+      .left-icons,
+      .like {
         display: flex;
         align-items: center;
         justify-content: space-between;
@@ -81,30 +77,25 @@ export const StyledPost = styled.div`
         /* background-color: yellow; */
         gap: 2rem;
 
-        &{
-
-          .icon{
-
+        & {
+          .icon {
             font-size: 1.6rem;
           }
-          .icon:nth-of-type(1){            
+          .icon:nth-of-type(1) {
             font-size: 1.8rem;
-          /* color: var(--blueViolet); */
-
+            /* color: var(--blueViolet); */
           }
         }
       }
 
-      .like{
-        gap: .5rem;
-p{
-  margin-top: auto;
-}
-      .icon{
-        color:var(--color-gray);
-
-
-      }
+      .like {
+        gap: 0.5rem;
+        p {
+          margin-top: auto;
+        }
+        .icon {
+          color: var(--color-gray);
+        }
       }
     }
 
@@ -122,8 +113,8 @@ p{
           position: relative;
 
           .img-wrapper {
-            width: 40px; 
-             height: 40px;
+            width: 40px;
+            height: 40px;
             cursor: pointer;
             position: absolute;
             border-radius: 50%;
@@ -151,16 +142,12 @@ p{
           }
         }
 
-
         .text_cont {
           margin-left: 5rem;
-          padding: .5rem;
-          color:var(--color-gray-dark);
-
+          padding: 0.5rem;
+          color: var(--color-gray-dark);
         }
       }
     }
   }
-
-
 `;

@@ -6,11 +6,7 @@ const Switch = ({ action, isChecked }) => {
     <>
       <SwitcherCont>
         <Label>
-          <CheckBox
-            checked={isChecked === true}
-            onChange={action}
-            type="checkbox"
-          />
+          <CheckBox checked={isChecked} onChange={action} type="checkbox" />
           <Slider />
         </Label>
       </SwitcherCont>

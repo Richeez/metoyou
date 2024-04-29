@@ -269,7 +269,7 @@ const UserProfile = () => {
           <div className="videos-cont">
             <div className="empty-cont flex-cont">
               <div className="empty-word flex-cont">
-                <p className="no-post">No post(s) yet!</p>
+                <p className="no-post">No video(s) yet!</p>
                 <span className="click-add">click here to add</span>
               </div>
 

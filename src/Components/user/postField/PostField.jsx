@@ -4,9 +4,7 @@ import { VscReactions } from "react-icons/vsc";
 import Profile from "../profile/profile";
 import { StyledPostField } from "./styledPostField";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  usePostMutation /*, useUploadMutation,*/,
-} from "../../../manager/auth/authApiSlice";
+import { usePostMutation } from "../../../manager/auth/authApiSlice";
 import { selectCurrentUser, setPosts } from "../../../manager/auth/authSlice";
 import { CustomButton } from "../../features/button";
 import { StyledInput } from "../../features/inputs/styledInput";
@@ -115,8 +113,8 @@ const PostField = () => {
             />
             <CustomButton type="button" onClick={handleButtonClick}>
               <MdOutlineInsertPhoto className="icon" />
+              <span className="desc">photo</span>
             </CustomButton>
-            <span className="desc">photo</span>
           </div>
           <div className="icon_wrapper">
             <VscReactions className="icon" />

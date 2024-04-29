@@ -17,6 +17,7 @@ export const GlobalStyles = createGlobalStyle`
 --primary-color: #ffff;
 /* --primary-color: #000000; */
 --color-gray: #cccccc;
+--transparent-color: rgba(0, 0, 0, 0.514);
 --color-gray-lyt: #eeeeee;
 --dim-gray: rgb(94, 92, 92);
 --aliceblue: #eff4ff;
@@ -214,6 +215,7 @@ position: relative;
 
  .fdirc{
     flex-direction: column;
+    
 } 
  .jsb{
      flex-direction: column;
@@ -230,6 +232,10 @@ justify-content: center;
 
  .aic{
     align-items: center;
+
+}
+ .ais{
+    align-items: flex-start;
 
 }
  .tac{
@@ -495,18 +501,16 @@ transform: translate(-50%, -40%);
   /* box-shadow: calc(var(--boxShadowDepth) * 1px) calc(var(--boxShadowDepth) * 1px) 0 #888; */
   color: var(--textColor, var(--buttonColor));
   cursor: pointer;
-  font-size: calc(var(--fontSize) * .95rem);
+  font-size: calc(var(--fontSize) * .85rem);
   font-weight: bold;
   font-family: sans-serif;
   outline: transparent;
-  padding: calc(var(--verticalPadding) * 1px) calc(var(--horizontalPadding) * 1px);
+  padding: calc(var(--verticalPadding) * .7px) calc(var(--horizontalPadding) * .7px);
   position: relative;
   text-decoration: none;
-  /* height: 60px; */
   display: flex;
   align-items: center;
   justify-content: center;
-  /* width: 300px; */
   width: max-content;
   transition: transform 0.2s;
   transform: translate(0, calc(var(--y, 0) * 1%)) scale(var(--scale, 1));

@@ -100,6 +100,8 @@ label {
   cursor: pointer;
   transition: all 0.05s ease-in-out;
   white-space: nowrap;
+  font-size: 0.8rem;
+  font-weight: bolder;
 }
 
 .sign-word:hover {
@@ -169,11 +171,15 @@ label {
 
 .forget-password {
   color: rgb(34, 98, 170);
-  align-self: flex-end;
-  /* margin: 0.2rem 5.5rem 0 0; */
-  font-size: 14px;
+
+  font-size: 0.65rem;
   font-weight: bolder;
   transition: all 0.05s ease-in-out;
+}
+
+.due-text-cont {
+  display: flex;
+  justify-content: space-between;
 }
 
 .forget-password:hover {
@@ -183,6 +189,10 @@ label {
 .nav-to-signUp {
   white-space: nowrap;
   width: 100%;
+  text-align: center;
+  font-size: 0.9rem;
+  background: var(--color-gray-lyt);
+  border-radius: 0.5rem;
 }
 
 @media screen and (min-width: 900px) {
@@ -230,8 +240,11 @@ label {
   }
 
   .forget-password {
-    align-self: flex-end;
-    /* margin: 0.2rem 5.5rem 0 0; */
+    font-size: 0.8rem;
+  }
+
+  .nav-to-signUp {
+    background: unset;
   }
 
   .login-btn {

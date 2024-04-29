@@ -1,9 +1,11 @@
 import styled from "styled-components";
 
-
 export const FileInputWrapper = styled.div`
   position: relative;
-  display: inline-block;
+  /* display: inline-block; */
+  display: flex;
+  align-items: center;
+  /* background-color: orange; */
 `;
 
 export const StyledInput = styled.input`
@@ -16,18 +18,15 @@ export const StyledInput = styled.input`
   display: none;
   cursor: pointer;
 
-
-  &[title]{
-position: relative;
-&::after{
-    content: none;
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-}
-}
+  &[title] {
+    position: relative;
+    &::after {
+      content: none;
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+    }
+  }
 `;
-
-

@@ -51,16 +51,19 @@ const PostsWidget = ({ userId, isProfile = false }) => {
 
   if (!posts?.length) {
     return (
-      <div style={{ textAlign: "center", width: "100%", fontSize: "1.2rem" }}>
-        <div className="videos-cont">
-          <div className="empty-cont flex-cont">
-            <div className="empty-word flex-cont">
-              <p className="no-post">No post(s) yet!</p>
-            </div>
-
-            <Lottie className="empty" animationData={Empty} />
-          </div>
-        </div>
+      <div
+        style={{
+          textAlign: "center",
+          width: "100%",
+          display: "flex",
+          fontSize: "1.2rem",
+          fontWeight: "bolder",
+          lineHeight: "1.4",
+        }}
+        className=" post-cont fdirc aic"
+      >
+        <p className="no-post">No post(s) yet!</p>
+        <Lottie className="empty" animationData={Empty} />
       </div>
     );
   }
@@ -80,6 +83,7 @@ const PostsWidget = ({ userId, isProfile = false }) => {
             likes,
             comments,
             following,
+            createdAt,
           }) => (
             <div key={`${_id}-${userId}`} className="item">
               <Post
@@ -93,6 +97,7 @@ const PostsWidget = ({ userId, isProfile = false }) => {
                 likes={likes}
                 comments={comments}
                 following={following}
+                timestamp={createdAt}
               />
             </div>
           )
