@@ -1,26 +1,11 @@
 import "./signUp.css";
-import axios from "axios";
 import { FaEyeSlash, FaEye, FaArrowRight } from "react-icons/fa";
-import { BiInfoCircle } from "react-icons/bi";
-import { RiAlarmWarningFill } from "react-icons/ri";
-import { useState, useEffect } from "react";
+// import { BiInfoCircle } from "react-icons/bi";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Logging } from "../../../svgs";
-import { apiService } from "../../../../strings";
-// import illustration from '../illustrations/login-illustrate.svg'
-
-// const request = {
-//   method: 'POST',
-//   url: 'https://loop-social-server-side.vercel.app/auth/login',
-//   body: ''
-// }
-
-// --------------- PROJECT ENDPOINTS ------------------
-// API URL -- https://loop-social-server-side.vercel.app/
-// REGISTER endpoint -- /api/auth/register
-// REGISTER DATA -- fullName, email, password
-// LOGIN endpoint -- /api/auth/login
-// LOGIN DATA -- email & password
+import { toaster } from "../../../constants/reusables";
+import APIService from "../../../app/api/http/api_services";
 
 function SignUpPage() {
   const navigate = useNavigate();
@@ -34,11 +19,6 @@ function SignUpPage() {
 
   const { fullName, email, password } = newUser;
 
-  const [errorMessage, setErrorMessage] = useState({
-    bool: false,
-    message: "",
-  });
-
   const [loadingDiv, setLoadingDiv] = useState(false);
 
   const [eyesOpen, setEyesOpen] = useState(false);
@@ -49,40 +29,30 @@ function SignUpPage() {
   const signUp = async () => {
     setLoadingDiv(true);
 
-    try {
-      const response = await axios.post(
-        `${apiService.BASE_URI}/register`,
-        JSON.stringify({
-          user: fullName.trim(),
-          email: email.trim(),
-          pwd: password.trim(),
-        }),
-        {
-          headers: { "Content-Type": "application/json" },
-          withCredentials: true,
-        }
-      );
-      console.log(response.data);
-      setLoadingDiv(false);
-      navigate("/login");
-    } catch (err) {
-      if (!err) {
-        setErrorMessage({ bool: true, message: "No Server Response" });
-      } else if (err?.response?.status === 400) {
-        setErrorMessage({
-          bool: true,
-          message: `Missing Username,\n \n Email or Password`,
-        });
-      } else if (err?.response?.status === 409) {
-        setErrorMessage({ bool: true, message: "Name or Email Already Exist" });
-      } else {
-        setErrorMessage({
-          bool: true,
-          message: err?.message || "Registration Failed",
-        });
-      }
+    const requestBody = {
+      fullName,
+      email,
+      password,
+    };
 
+    try {
+      APIService.signUp(requestBody, (response, error) => {
+        console.log("🚀 ~ APIService.signUp ~ error:", error);
+        //? Assuming response is an object with a 'data' property
+        const data = response ?? {};
+        if (error) {
+          setLoadingDiv(false);
+          return;
+        }
+        let message = data?.message;
+        toaster(message);
+
+        setLoadingDiv(false);
+        navigate("/login");
+      });
+    } catch (err) {
       setLoadingDiv(false);
+      toaster(err?.message, true);
     }
   };
 
@@ -97,18 +67,6 @@ function SignUpPage() {
     setEyesOpen(!eyesOpen);
   };
 
-  // ----- condition for enabling sign-up button ------
-  const condition = () => {
-    if (email.length === 0 || password.length < 6 || fullName.length < 4)
-      return true;
-
-    return false;
-  };
-
-  useEffect(() => {
-    condition();
-  }, [email, password, fullName]);
-
   return (
     <div className="signup-page">
       {loadingDiv ? (
@@ -120,18 +78,8 @@ function SignUpPage() {
       )}
       <form className="signup-form" onSubmit={(e) => e.preventDefault()}>
         <h2>Sign Up</h2>
-        {errorMessage.bool ? (
-          <div className="error">
-            <RiAlarmWarningFill /> {errorMessage.message}
-          </div>
-        ) : (
-          ""
-        )}
         <ul className="signup-ul">
           <li>
-            <label className="label" htmlFor="fullName">
-              Full Name
-            </label>
             <input
               name="fullName"
               className="input"
@@ -140,15 +88,12 @@ function SignUpPage() {
               value={fullName}
               autoComplete="off"
               onChange={(e) => fillingData(e)}
-              placeholder="at least 4 or more characters"
+              placeholder="Full name"
               maxLength={25}
             />
           </li>
 
           <li>
-            <label className="label" htmlFor="email">
-              Email
-            </label>
             <input
               name="email"
               className="input"
@@ -157,15 +102,11 @@ function SignUpPage() {
               autoComplete="off"
               value={newUser.email}
               onChange={(e) => fillingData(e)}
-              placeholder="example@gmail.com"
+              placeholder="Email"
             />
           </li>
 
           <li>
-            <label className="label" htmlFor="password">
-              Password
-            </label>
-
             <div className="signup-input-cont">
               {eyesOpen ? (
                 <input
@@ -186,7 +127,7 @@ function SignUpPage() {
                   value={newUser.password}
                   onChange={(e) => fillingData(e)}
                   maxLength={22}
-                  placeholder="a strong password"
+                  placeholder="A strong password"
                 />
               )}
 
@@ -196,20 +137,16 @@ function SignUpPage() {
                 </span>
               )}
 
-              <span className="pass-info">
+              {/* <span className="pass-info">
                 {" "}
                 <BiInfoCircle /> password must be 6 or more characters
-              </span>
+              </span> */}
             </div>
           </li>
         </ul>
 
         <div className="btn">
-          <button
-            className="signup-btn"
-            onClick={() => signUp()}
-            // disabled={condition()}
-          >
+          <button className="signup-btn" onClick={signUp}>
             Sign up
           </button>
         </div>

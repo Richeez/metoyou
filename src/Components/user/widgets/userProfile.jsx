@@ -13,13 +13,14 @@ import Profile from "../profile/profile";
 import { BackDrop } from "../../features/backdrop";
 import EditProfile from "./edit-profile/EditProfile";
 import { MdLocationPin } from "react-icons/md";
-import { selectCurrentUserId } from "../../../manager/auth/authSlice";
+import { getCurrentUserId } from "../../../manager/auth/authSlice";
 import { Navigate, useParams } from "react-router-dom";
 import { NotFound } from "../../pages";
 import { Fetching } from "../../../svgs";
 import useTitle from "../../../hooks/useTitle";
-import PostsWidget from "../post/postsWidget";
+// import PostsWidget from "../post/postsWidget";
 import OutsideClickHandler from "../../../hooks/useClickOutside";
+import { Section } from "../../features/container";
 
 const UserProfile = () => {
   useTitle("Profile");
@@ -28,7 +29,7 @@ const UserProfile = () => {
   const cover = useRef(null);
   const picture = useRef(null);
   const { userId } = useParams();
-  const _id = useSelector(selectCurrentUserId);
+  const _id = useSelector(getCurrentUserId);
   const [id, setUserId] = useState(null); // Assuming you have a state to store the current user ID
   const [user, setUser] = useState(null);
   const closeRef = useRef(null);
@@ -122,163 +123,176 @@ const UserProfile = () => {
       location,
     } = user ?? {};
     profile = (
-      <div className="profile flex-cont">
-        <BackDrop className={`${toggle ? "pop-up" : "offSet"}`}>
-          <OutsideClickHandler
-            onOutsideClick={handleEditor}
-            menuRefs={[closeRef]}
-          >
-            <EditProfile
-              editor={editor}
-              editField={editField}
-              setEditField={setEditField}
-              handleToggle={handleToggle}
-              cover={cover}
-              picture={picture}
-              closeRef={closeRef}
-            />
-          </OutsideClickHandler>
-        </BackDrop>
+      <Section className="profile-cont">
+        <div className="profile flex-cont">
+          <BackDrop className={`${toggle ? "pop-up" : "offSet"}`}>
+            <OutsideClickHandler
+              onOutsideClick={handleEditor}
+              menuRefs={[closeRef]}
+            >
+              <EditProfile
+                editor={editor}
+                editField={editField}
+                setEditField={setEditField}
+                handleToggle={handleToggle}
+                cover={cover}
+                picture={picture}
+                closeRef={closeRef}
+              />
+            </OutsideClickHandler>
+          </BackDrop>
 
-        <div className="flex-cont">
-          <div className="background-image">
-            <img
-              src={
-                backgroundBg.length !== 0 ? backgroundBg[0]?.url : "/facts.jpg"
-              }
-              alt="background"
-            />
-          </div>
-          <div className="profile-info flex-cont">
-            <Profile img={picsPath} size={"110px"} />
-            <div className="profile-user tac">
-              <p className="profile-name">{username ? username : "username"}</p>
-              <p className="handle-name">{`@${nickname}`}</p>
+          <div className="flex-cont">
+            <div className="background-image">
+              <img
+                src={
+                  backgroundBg.length !== 0
+                    ? backgroundBg[0]?.url
+                    : "/facts.jpg"
+                }
+                alt="background"
+              />
             </div>
-          </div>
-        </div>
-
-        <div className="interests">
-          <p className="int">Art</p>
-          <p className="int">Music</p>
-          <p className="int">Travels</p>
-        </div>
-
-        {profileUserId === _id && (
-          <div className="button-settings">
-            <div className="edit-button">
-              <button onClick={handleToggle}>Edit Profile</button>
-            </div>
-            <div className="settings">
-              <IoMdSettings />
+            <div className="profile-info flex-cont">
+              <Profile img={picsPath} size={"110px"} />
+              <div className="profile-user tac">
+                <p className="profile-name">
+                  {username ? username : "username"}
+                </p>
+                <p className="handle-name">{`@${nickname}`}</p>
+              </div>
             </div>
           </div>
-        )}
 
-        <div className="rating">
-          <div className="row">
-            <div className="rating-cont ">
-              <p className="rating-info">posts</p>
-              <p className="figure">200k</p>
-            </div>
-
-            <div className="rating-cont ">
-              <p className="rating-info">followers</p>
-              <p className="figure">{friends ? friends.length : 0}</p>
-            </div>
-
-            <div className="rating-cont">
-              <p className="rating-info">following</p>
-              <p className="figure">500k</p>
-            </div>
+          <div className="interests">
+            <p className="int">Art</p>
+            <p className="int">Music</p>
+            <p className="int">Travels</p>
           </div>
-          {occupation && (
-            <div className="rating-cont">
-              <p className="rating-info">
-                <IoMdBriefcase />
-              </p>
-              <p className="figure">{occupation}</p>
-            </div>
-          )}
-          {location && (
-            <div className="rating-cont ">
-              <p className="rating-info">
-                <MdLocationPin />
-              </p>
-              <p className="figure">{location}</p>
+
+          {profileUserId === _id && (
+            <div className="button-settings">
+              <div className="edit-button">
+                <button onClick={handleToggle}>Edit Profile</button>
+              </div>
+              <div className="settings">
+                <IoMdSettings />
+              </div>
             </div>
           )}
 
-          <div className="rating-cont">
-            <p className="rating-info">
-              {" "}
-              Who's viewed your profile:{" "}
-              <span className="figure">
-                {viewedProfile ? viewedProfile : 0}
-              </span>
-            </p>
-          </div>
-          <div className="rating-cont ">
-            <p className="rating-info">
-              impressions of your post:{" "}
-              <span className="figure">{impressions ? impressions : 0}</span>
-            </p>
-          </div>
-        </div>
-
-        <div className="photos flex-cont">
-          <div className="photos-head">
-            <p className="photos-label">Photos</p>
-            <FaGreaterThan className="goTo" />
-          </div>
-
-          <div className="photos-cont">
-            <div className="main-photo">
-              <img src="/profile-2.jpg" alt="" />
-            </div>
-
-            <div className="other-photos">
-              <div className="other-photos-img">
-                <img src="/profile-3.jpg" alt="" className="other-photos-img" />
-              </div>
-              <div className="other-photos-img">
-                <img src="/elon-musk.jpg" alt="" className="other-photos-img" />
-              </div>
-              <div className="other-photos-img">
-                <img
-                  src="/profile-pic.png"
-                  alt=""
-                  className="other-photos-img"
-                />
+          <div className="rating">
+            <div className="row">
+              <div className="rating-cont ">
+                <p className="rating-info">posts</p>
+                <p className="figure">200k</p>
               </div>
 
-              <div className="last-photo">
-                <img src="/smart.jpeg" alt="" className="other-photos-img" />
-                <span className="overlay">+4</span>
+              <div className="rating-cont ">
+                <p className="rating-info">followers</p>
+                <p className="figure">{friends ? friends.length : 0}</p>
+              </div>
+
+              <div className="rating-cont">
+                <p className="rating-info">following</p>
+                <p className="figure">500k</p>
               </div>
             </div>
-          </div>
-        </div>
+            {occupation && (
+              <div className="rating-cont">
+                <p className="rating-info">
+                  <IoMdBriefcase />
+                </p>
+                <p className="figure">{occupation}</p>
+              </div>
+            )}
+            {location && (
+              <div className="rating-cont ">
+                <p className="rating-info">
+                  <MdLocationPin />
+                </p>
+                <p className="figure">{location}</p>
+              </div>
+            )}
 
-        <div className="videos flex-cont">
-          <div className="videos-head">
-            <h2 className="videos-label">Videos</h2>
-            <FaGreaterThan className="goTo" />
+            <div className="rating-cont">
+              <p className="rating-info">
+                {" "}
+                Who's viewed your profile:{" "}
+                <span className="figure">
+                  {viewedProfile ? viewedProfile : 0}
+                </span>
+              </p>
+            </div>
+            <div className="rating-cont ">
+              <p className="rating-info">
+                impressions of your post:{" "}
+                <span className="figure">{impressions ? impressions : 0}</span>
+              </p>
+            </div>
           </div>
 
-          <div className="videos-cont">
-            <div className="empty-cont flex-cont">
-              <div className="empty-word flex-cont">
-                <p className="no-post">No video(s) yet!</p>
-                <span className="click-add">click here to add</span>
+          <div className="photos flex-cont">
+            <div className="photos-head">
+              <p className="photos-label">Photos</p>
+              <FaGreaterThan className="goTo" />
+            </div>
+
+            <div className="photos-cont">
+              <div className="main-photo">
+                <img src="/profile-2.jpg" alt="" />
               </div>
 
-              <Lottie className="empty" animationData={Empty} />
-              <PostsWidget userId={userId} isProfile />
+              <div className="other-photos">
+                <div className="other-photos-img">
+                  <img
+                    src="/profile-3.jpg"
+                    alt=""
+                    className="other-photos-img"
+                  />
+                </div>
+                <div className="other-photos-img">
+                  <img
+                    src="/elon-musk.jpg"
+                    alt=""
+                    className="other-photos-img"
+                  />
+                </div>
+                <div className="other-photos-img">
+                  <img
+                    src="/profile-pic.png"
+                    alt=""
+                    className="other-photos-img"
+                  />
+                </div>
+
+                <div className="last-photo">
+                  <img src="/smart.jpeg" alt="" className="other-photos-img" />
+                  <span className="overlay">+4</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="videos flex-cont">
+            <div className="videos-head">
+              <h2 className="videos-label">Videos</h2>
+              <FaGreaterThan className="goTo" />
+            </div>
+
+            <div className="videos-cont">
+              <div className="empty-cont flex-cont">
+                <div className="empty-word flex-cont">
+                  <p className="no-post">No video(s) yet!</p>
+                  <span className="click-add">click here to add</span>
+                  <Lottie className="empty" animationData={Empty} />
+                </div>
+                {/* <PostsWidget userId={userId} isProfile /> */}
+              </div>
             </div>
           </div>
         </div>
-      </div>
+      </Section>
     );
   }
 

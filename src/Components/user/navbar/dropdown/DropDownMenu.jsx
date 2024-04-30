@@ -32,18 +32,17 @@ import Profile from "../../profile/profile";
 import { Dropdown } from "./styledDropdown";
 import {
   logOut,
-  selectCurrentToken,
-  selectCurrentUser,
+  getCurrentToken,
+  getCurrentUser,
 } from "../../../../manager/auth/authSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation } from "react-router-dom";
 import { VscWorkspaceTrusted } from "react-icons/vsc";
 import { axiosPrivate } from "../../../../app/api/axios";
-import { apiService } from "../../../../../strings";
 import Cookies from "js-cookie";
-// import useClickOutside from "../../../../hooks/useClickOutside";
 import useToggle from "../../../../hooks/useToggle";
 import OutsideClickHandler from "../../../../hooks/useClickOutside";
+import EndPoints from "../../../../app/api/http/endPoints";
 
 const DropDownMenu = ({
   viewState,
@@ -55,7 +54,7 @@ const DropDownMenu = ({
   mobMenuRef,
 }) => {
   const [activeMenu, setActiveMenu] = useState("main");
-  const { _id, picsPath } = useSelector(selectCurrentUser) ?? {};
+  const { _id, picsPath } = useSelector(getCurrentUser) ?? {};
 
   useEffect(() => {
     calcString();
@@ -71,7 +70,7 @@ const DropDownMenu = ({
   const [notifyEmail, toggleNotifyEmail] = useToggle("email_notify", false);
   const dispatch = useDispatch();
   const location = useLocation();
-  const token = useSelector(selectCurrentToken);
+  const token = useSelector(getCurrentToken);
 
   const calcString = (string) => {
     let stringLength = string?.length;
@@ -94,7 +93,7 @@ const DropDownMenu = ({
   const signOut = async () => {
     try {
       const response = await axiosPrivate.post(
-        `${apiService.BASE_URI}/logout/${token}`
+        `${EndPoints.ROOT_DOMAIN}/logout/${token}`
       );
       console.log("response", response);
       // Clear user session token from cookies

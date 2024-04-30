@@ -4,10 +4,11 @@ export const StyledPostField = styled.form`
   width: 100%;
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: start;
   row-gap: 0.4rem;
   padding-bottom: 0rem;
   container-type: inline-size;
+  height: max-content;
 
   //         .icon_wrapper{
   //           width: 100%;
@@ -39,16 +40,21 @@ export const StyledPostField = styled.form`
   }
   .input_cont {
     width: 100%;
+    height: max-content;
 
     input {
       width: 100%;
       background-color: var(--color-gray-lyt);
-      border: 1px inset var(--blueViolet);
+      border: 1px solid var(--color-gray);
       outline: none;
+      min-height: 40px; /* Minimum height */
       transition: var(--transition);
       border-radius: 2rem;
       padding: 0.5rem 0.5rem 0.5rem 1rem;
       font-size: 1rem;
+      overflow: hidden; /* Ensure overflow is hidden to prevent scrolling */
+      resize: none; /* Disable manual resizing */
+      white-space: pre-wrap;
 
       &::placeholder {
         font-size: 0.85rem;
@@ -64,6 +70,9 @@ export const StyledPostField = styled.form`
 
         //     }
       }
+      &:focus {
+        border: 1px inset var(--blueViolet);
+      }
     }
   }
   .actions_cont {
@@ -72,7 +81,6 @@ export const StyledPostField = styled.form`
     align-items: center;
     justify-content: center;
     flex-wrap: wrap;
-    /* background-color: aliceblue; */
     gap: 0.7rem;
 
     .icons_cont {
@@ -81,7 +89,6 @@ export const StyledPostField = styled.form`
       align-items: center;
       justify-content: flex-end;
       padding-left: 3%;
-      /* background-color: yellow; */
       flex-direction: row-reverse;
       gap: 1rem;
       @media screen and (max-width: 280px) {
@@ -94,10 +101,7 @@ export const StyledPostField = styled.form`
         align-items: center;
         justify-content: center;
         gap: 0.2rem;
-        /* background-color: gray; */
         position: relative;
-
-        /* display: inline-block; */
 
         .icon {
           font-size: 1rem;
@@ -105,7 +109,6 @@ export const StyledPostField = styled.form`
         .desc {
           text-transform: capitalize;
           font-size: 0.8rem;
-          /* display: inline-block; */
 
           @media screen and (max-width: 360px) {
             font-size: clamp(0.3rem, 8cqi, 0.8rem);

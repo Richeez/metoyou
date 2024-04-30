@@ -1,12 +1,12 @@
 import { useSelector } from "react-redux";
 import { axiosPrivate } from "../app/api/axios";
-import { selectCurrentUserId } from "../manager/auth/authSlice";
+import { getCurrentUserId } from "../manager/auth/authSlice";
 import Cookies from "js-cookie";
 import PropTypes from "prop-types";
 
 export const useRefreshToken = ({ persist }) => {
   let userId;
-  userId = useSelector(selectCurrentUserId);
+  userId = useSelector(getCurrentUserId);
   if (!persist) return false;
 
   if (!userId) {

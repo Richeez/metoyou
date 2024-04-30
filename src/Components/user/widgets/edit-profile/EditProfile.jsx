@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
 import { MdClose } from "react-icons/md";
 import { StyledEditor } from "./styledEditor";
-import { useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { StyledInput } from "../../../features/inputs/styledInput";
 import { CustomButton } from "../../../features/button";
 // import { useState } from "react";
@@ -9,7 +9,10 @@ import { useUpdateProfileMutation } from "../../../../manager/auth/authApiSlice"
 import { useDispatch, useSelector } from "react-redux";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import {
-  selectCurrentUserId,
+  getCurrentPost,
+  getCurrentUser,
+  getCurrentUserId,
+  setCredentials,
   setPosts,
 } from "../../../../manager/auth/authSlice";
 import {
@@ -17,7 +20,6 @@ import {
   toaster,
   uploadFile,
 } from "../../../../constants/reusables";
-import { toast } from "react-toastify";
 
 const EditProfile = ({
   handleToggle,
@@ -33,7 +35,9 @@ const EditProfile = ({
 
   let validEmail;
   let imageArray;
-  const id = useSelector(selectCurrentUserId);
+  const id = useSelector(getCurrentUserId);
+  const user = useSelector(getCurrentUser);
+  const posts = useSelector(getCurrentPost);
 
   const handleButtonClickForProfileImage = () => {
     profileImage.current.click();
@@ -42,25 +46,37 @@ const EditProfile = ({
     coverImg.current.click();
   };
 
+  const [newData, setNewData] = useState(null);
+
+  const [updateProfile, { isLoading }] = useUpdateProfileMutation();
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    console.log("🚀 ~ useEffect ~ newData:", newData);
+    if (newData) {
+      dispatch(setPosts({ posts: newData.posts }));
+      dispatch(setCredentials({ ...newData }));
+    }
+  }, [newData, dispatch, posts, user]);
   const handleFileInputChangeForCover = (e) => {
     const files = e.target.files;
     const updatedFiles = [...files]; //? Use only the most recent selection
     setEditField((prev) => ({
       ...prev,
-      images: { ...prev.images, cover: [...files] },
+      images: { ...prev.images, cover: updatedFiles },
     }));
-    cover.current.textContent = updatedFiles[0].name;
+    cover.current.textContent = updatedFiles[0]?.name;
   };
 
   const handleFileInputChangeForProfileImage = (e) => {
     const files = e.target.files;
     const updatedFiles = [...files]; //? Use only the most recent selection
+
     setEditField((prev) => ({
       ...prev,
-      images: { ...prev.images, profile: [...files] },
+      images: { ...prev?.images, profile: updatedFiles },
     }));
-
-    picture.current.textContent = updatedFiles[0].name;
+    picture.current.textContent = updatedFiles[0]?.name;
   };
 
   // const handleFileInputChangeForImage = (e) => {
@@ -93,17 +109,21 @@ const EditProfile = ({
     setEditField((prev) => ({ ...prev, [name]: sanitizedValue }));
   };
 
-  const [updateProfile, { isLoading }] = useUpdateProfileMutation();
-  const dispatch = useDispatch();
-
   const { nickname, occupation, email, location, images } = editField ?? {};
   const handleUpdate = async (e) => {
     e.preventDefault();
+    console.log("🚀 ~ editField:", editField);
     console.log("start");
-    if (!nickname && !occupation && !email && !location && !images)
-      return toaster("Fields are empty", toast.error);
+    if (
+      !nickname &&
+      !occupation &&
+      !email &&
+      !location &&
+      (!images?.profile.length || !images?.cover.length)
+    )
+      return toaster("Fields are empty", true);
 
-    if (images) {
+    if (images?.length !== 0) {
       imageArray = await uploadFile(images);
 
       console.log("fileUrl", imageArray);
@@ -116,13 +136,7 @@ const EditProfile = ({
       }
     }
 
-    // useEffect(() => {
-    //   if (post) {
-    //     dispatch(setPosts({ posts: post }));
-    //   }
-    // }, [post, dispatch]);
-
-    const newData = await updateProfile({
+    const profileRes = await updateProfile({
       userId: id,
       nickname,
       occupation,
@@ -130,7 +144,9 @@ const EditProfile = ({
       location,
       imageArray,
     }).unwrap();
-    dispatch(setPosts({ ...newData }));
+    setNewData(profileRes);
+    console.log("🚀 ~ handleUpdate ~ newData:", profileRes);
+    // dispatch(setPosts({ ...newData }));
     setEditField({
       nickname: "",
       occupation: "",

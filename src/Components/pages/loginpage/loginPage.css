@@ -21,7 +21,7 @@
 .login-form {
   transform: translateY(10vh);
   height: 300px;
-  width: 90%;
+  width: 100%;
   display: flex;
   flex-direction: column;
   gap: 20px;
@@ -32,13 +32,11 @@
 
 .login-ul {
   list-style-type: none;
-  width: 80%;
+  width: 100%;
   display: flex;
   align-items: flex-start;
-  /* justify-content: center; */
   flex-direction: column;
   gap: 2rem;
-  /* align-items: flex-start; */
 }
 
 .login-ul li {
@@ -172,7 +170,7 @@ label {
 .forget-password {
   color: rgb(34, 98, 170);
 
-  font-size: 0.65rem;
+  font-size: 0.7rem;
   font-weight: bolder;
   transition: all 0.05s ease-in-out;
 }
@@ -188,7 +186,8 @@ label {
 }
 .nav-to-signUp {
   white-space: nowrap;
-  width: 100%;
+  width: max-content;
+  padding: 1%;
   text-align: center;
   font-size: 0.9rem;
   background: var(--color-gray-lyt);
@@ -226,6 +225,10 @@ label {
     align-items: center;
     justify-content: center;
     flex-direction: column;
+  }
+
+  .login-ul {
+    width: 80%;
   }
 
   .input {

@@ -10,7 +10,7 @@ import {
   Status,
 } from "../../user";
 import { useSelector } from "react-redux";
-import { selectCurrentUser } from "../../../manager/auth/authSlice";
+import { getCurrentUser } from "../../../manager/auth/authSlice";
 import PostsWidget from "../../user/post/postsWidget";
 
 const Home = () => {
@@ -25,7 +25,7 @@ const Home = () => {
       slider.scrollBy(200, 0);
     }
   };
-  const { username, picsPath, _id } = useSelector(selectCurrentUser) ?? {};
+  const { username, picsPath, _id } = useSelector(getCurrentUser) ?? {};
   return (
     <>
       <StartFromTop />

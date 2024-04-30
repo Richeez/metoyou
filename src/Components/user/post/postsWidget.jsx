@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable react-hooks/rules-of-hooks */
 import { useDispatch, useSelector } from "react-redux";
-import { selectCurrentPost, setPosts } from "../../../manager/auth/authSlice";
+import { getCurrentPost, setPosts } from "../../../manager/auth/authSlice";
 import {
   useGetUserPostsQuery,
   useGetUsersPostsQuery,
@@ -15,7 +15,7 @@ import Empty from "../profile/empty-state.json";
 const PostsWidget = ({ userId, isProfile = false }) => {
   const dispatch = useDispatch();
 
-  const posts = useSelector(selectCurrentPost);
+  const posts = useSelector(getCurrentPost);
 
   const {
     data: post,

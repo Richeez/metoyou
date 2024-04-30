@@ -65,7 +65,23 @@ export const GlobalStyles = createGlobalStyle`
   background:var(--color-white);  
 }
 
+.textarea-container {
+  position: relative;
+}
 
+.textarea {
+  width: 100%;
+  min-height: 40px; /* Minimum height */
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  transition: height 0.5s ease-in-out; /* Transition for height changes */
+  overflow: hidden; /* Ensure overflow is hidden to prevent scrolling */
+  resize: none; /* Disable manual resizing */
+  box-sizing: border-box; /* Include padding and border in the element's total width and height */
+  white-space: pre-wrap; /* Allow text wrapping */
+}
 
 
 
@@ -154,28 +170,9 @@ background-repeat:no-repeat;
   justify-content: center;
 }
 
-.otherError {
-  display: block;
-  padding: 0.5rem;
-  border-radius: 0.5rem;
-  font-weight: bold;
-  transform: scale(1);
-  transition: all .5s ease-in-out;
-  border: 1px solid white;
-  background-color: red;
-  font-size: 1rem;
-  width: max-content;
-  color: var(--color-white);
-}
 
-.error {
-  color: orangered;
-  /* display: inline-flex; */
-  align-items: center;
-  gap: 2px;
-  transition: all .5s ease-in-out;
 
-}
+
 
 .pop-up{
   transform: scale(1) !important;
@@ -207,6 +204,7 @@ position: relative;
     z-index: 15;
     position: absolute;
     inset: 0;
+    user-select: none;
     background: rgba(0, 0, 0, 0.514) ;
 
   }

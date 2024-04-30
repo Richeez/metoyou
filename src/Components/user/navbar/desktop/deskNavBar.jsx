@@ -10,7 +10,7 @@ import Profile from "../../profile/profile";
 import { LinkCont, LinkWrapper, MenuBar, NavCont } from "../styledNavBar";
 import { Header } from "./styledDeskNav";
 import { useSelector } from "react-redux";
-import { selectCurrentUser } from "../../../../manager/auth/authSlice";
+import { getCurrentUser } from "../../../../manager/auth/authSlice";
 
 const DeskNavBar = ({ handleMenu, deskMenuRef }) => {
   // const { currentUser } = useContext(AuthContext);
@@ -24,7 +24,7 @@ const DeskNavBar = ({ handleMenu, deskMenuRef }) => {
     handleMenu(e);
   };
 
-  const { picsPath, _id } = useSelector(selectCurrentUser) ?? {};
+  const { picsPath, _id } = useSelector(getCurrentUser) ?? {};
 
   return (
     <>

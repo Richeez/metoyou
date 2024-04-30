@@ -1,7 +1,13 @@
+.profile-cont.profile-cont {
+  padding: 0 0 0.2rem;
+}
+
 .profile {
+  width: 100%;
   gap: 20px;
   padding-bottom: 60px;
   position: relative;
+  /* height: 100vh; */
 }
 
 .flex-cont {
@@ -30,7 +36,7 @@
 }
 
 .profile-info .img_wrapper {
-  border: 2px solid white;
+  border: 2px solid var(--color-white);
   position: absolute;
   top: 50%;
   left: 50%;
@@ -261,7 +267,7 @@
   align-self: center;
   justify-content: space-between;
   background-color: rgba(15, 15, 15, 0.082);
-  height: 40vh;
+  height: max-content;
   padding: 15px;
   border-radius: 10px;
 }

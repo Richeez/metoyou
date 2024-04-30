@@ -5,17 +5,19 @@ import Profile from "../profile/profile";
 import { StyledPostField } from "./styledPostField";
 import { useDispatch, useSelector } from "react-redux";
 import { usePostMutation } from "../../../manager/auth/authApiSlice";
-import { selectCurrentUser, setPosts } from "../../../manager/auth/authSlice";
+import { getCurrentUser, setPosts } from "../../../manager/auth/authSlice";
 import { CustomButton } from "../../features/button";
 import { StyledInput } from "../../features/inputs/styledInput";
 import Button from "../../features/animated buttons/Button";
 import { ImageBox } from "../../features";
 import { FaTimes } from "react-icons/fa";
-import { toast } from "react-toastify";
 import { toaster, uploadFile } from "../../../constants/reusables";
 
 const PostField = () => {
   const fileInputRef = useRef(null);
+  const dispatch = useDispatch();
+  // const [textareaHeight, setTextareaHeight] = useState("auto"); // Initial height
+
   let attachments;
 
   const handleButtonClick = () => {
@@ -30,6 +32,16 @@ const PostField = () => {
 
   const createPost = (e) => {
     const { name, value } = e.target;
+    // Calculate the new height based on the content
+    // const lineHeight = 20; // Adjust this value based on your font size
+    // const minRows = 1; // Minimum number of rows
+    // const maxRows = 10; // Maximum number of rows
+    // const newRows = Math.min(
+    //   maxRows,
+    //   Math.max(minRows, Math.ceil(e.target.scrollHeight / lineHeight))
+    // );
+    // const newHeight = newRows * lineHeight + "px";
+    // setTextareaHeight(newHeight);
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
@@ -38,11 +50,9 @@ const PostField = () => {
     setFormData((prev) => ({ ...prev, file: selectedFile }));
   };
 
-  const { _id: userId, picsPath } = useSelector(selectCurrentUser) ?? {};
+  const { _id: userId, picsPath } = useSelector(getCurrentUser) ?? {};
 
   const [post, { isLoading }] = usePostMutation();
-
-  const dispatch = useDispatch();
 
   const handlePost = async (e) => {
     e.preventDefault();
@@ -55,7 +65,7 @@ const PostField = () => {
 
     if (!file && !description) {
       //? No file and description available
-      return toaster("You do not have any post to publish.", toast.error);
+      return toaster("You do not have any post to publish.", true);
     }
 
     try {
@@ -64,8 +74,6 @@ const PostField = () => {
         description,
         attachments,
       }).unwrap();
-      // const postData = await post(newPost).unwrap();
-      // const postData = await upload(files).unwrap();
 
       dispatch(setPosts({ posts: postData }));
 
@@ -73,9 +81,9 @@ const PostField = () => {
         description: "",
         file: null,
       });
-      toaster("Post Published Successfully!", toast.success);
+      toaster("Post Published Successfully!");
     } catch (err) {
-      return toaster(err, toast.error);
+      return toaster(err, true);
     }
   };
 
@@ -84,11 +92,13 @@ const PostField = () => {
       <div className="combine">
         <Profile profile id={userId} img={picsPath} size={"50px"} />
         <div className="input_cont">
+          {/* <TextArea /> */}
           <input
             type="text"
             name="description"
             autoComplete="off"
             value={description}
+            // style={{ height: textareaHeight }}
             onChange={createPost}
             onKeyDown={(e) => e.key === "Enter" && e.preventDefault()} // Prevent form submission on Enter key press
             placeholder="Let out your mind"

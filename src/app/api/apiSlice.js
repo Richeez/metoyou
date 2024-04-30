@@ -1,11 +1,11 @@
 /* eslint-disable no-unused-vars */
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { setToken, logOut } from "../../manager/auth/authSlice";
-import { apiService } from "../../../strings";
 import Cookies from "js-cookie";
+import EndPoints from "./http/endPoints";
 
 const baseQuery = fetchBaseQuery({
-  baseUrl: apiService.BASE_URI,
+  baseUrl: EndPoints.ROOT_DOMAIN,
   credentials: "include",
   prepareHeaders: (headers, { getState }) => {
     // const session = Cookies.get("session");

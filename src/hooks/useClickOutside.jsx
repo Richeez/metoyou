@@ -100,4 +100,5 @@ OutsideClickHandler.propTypes = {
   onOutsideClick: PropTypes.func.isRequired,
   menuRefs: PropTypes.array,
 };
+
 export default OutsideClickHandler;

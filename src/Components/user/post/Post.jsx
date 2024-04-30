@@ -8,13 +8,13 @@ import Profile from "../profile/profile";
 import { StyledPost } from "./styledPost";
 
 import { useDispatch, useSelector } from "react-redux";
-import { selectCurrentUserId, setPost } from "../../../manager/auth/authSlice";
+import { getCurrentUserId, setPost } from "../../../manager/auth/authSlice";
 
 import { useLikeMutation } from "../../../manager/auth/authApiSlice";
 import Comment from "../widgets/comments/Comment";
 import { useEffect, useState } from "react";
-import { apiService } from "../../../../strings";
 import { formatDate } from "../../../constants/reusables";
+import EndPoints from "../../../app/api/http/endPoints";
 
 const Post = ({
   postId,
@@ -32,7 +32,7 @@ const Post = ({
   const name = username ? `${username}` : "username";
   const dispatch = useDispatch();
   const [isComments, setIsComments] = useState(false);
-  const loggedInUserId = useSelector(selectCurrentUserId);
+  const loggedInUserId = useSelector(getCurrentUserId);
   const isLiked = Boolean(likes[loggedInUserId]);
   const likeCount = Object.keys(likes).length;
   const [like] = useLikeMutation();
@@ -107,7 +107,7 @@ const Post = ({
                 <img
                   src={`${
                     followers
-                      ? `${apiService.BASE_URI}
+                      ? `${EndPoints.ROOT_DOMAIN}
 /assets/${followers}`
                       : "/default-user.png"
                   }`}
@@ -118,7 +118,7 @@ const Post = ({
                 <img
                   src={`${
                     followers
-                      ? `${apiService.BASE_URI}
+                      ? `${EndPoints.ROOT_DOMAIN}
 /assets/${followers}`
                       : "/default-user.png"
                   }`}
@@ -129,7 +129,7 @@ const Post = ({
                 <img
                   src={`${
                     followers
-                      ? `${apiService.BASE_URI}
+                      ? `${EndPoints.ROOT_DOMAIN}
 /assets/${followers}`
                       : "/default-user.png"
                   }`}

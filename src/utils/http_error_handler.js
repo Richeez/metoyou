@@ -1,5 +1,5 @@
 /* eslint-disable no-prototype-builtins */
-import { toast } from "react-toastify";
+import { toaster } from "../constants/reusables";
 
 // Define UnauthorizedError as a standalone class
 class UnauthorizedError extends Error {
@@ -49,7 +49,9 @@ export default class HttpErrorHandler {
 
     // Display error message as toast if present
     if (errorMessage) {
-      toast.error(errorMessage, { theme: "colored" });
+      // toast.error(errorMessage, { theme: "colored" });
+      toaster(errorMessage, true);
+      return true;
     }
 
     // Throw UnauthorizedError if status code is 403

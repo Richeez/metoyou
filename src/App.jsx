@@ -1,7 +1,7 @@
 import { Routes, Route, useLocation, Outlet, Navigate } from "react-router-dom";
 import { MainContent } from "./Components/user";
 import { useSelector } from "react-redux";
-import { selectCurrentToken } from "./manager/auth/authSlice";
+import { getCurrentToken } from "./manager/auth/authSlice";
 import { ExpSession, LogIn, NotFound, SignUp } from "./Components/pages";
 import UserProfile from "./Components/user/widgets/userProfile";
 import PersistLogin from "./Components/PersistLogin";
@@ -16,7 +16,7 @@ import PersistLogin from "./Components/PersistLogin";
 
 function App() {
   const ProtectedRoutes = () => {
-    const token = useSelector(selectCurrentToken);
+    const token = useSelector(getCurrentToken);
 
     const location = useLocation();
 
@@ -33,11 +33,11 @@ function App() {
         <Route element={<PersistLogin />}>
           <Route element={<ProtectedRoutes />}>
             <Route path="/" element={<MainContent />} />
+            <Route path="/profile/:userId" element={<UserProfile />} />
           </Route>
         </Route>
         <Route path="/login" element={<LogIn />} />
         <Route path="/sign-up" element={<SignUp />} />
-        <Route path="/profile/:userId" element={<UserProfile />} />
         <Route path="/error" element={<ExpSession />} />
         <Route path="*" element={<NotFound />} />
       </Routes>

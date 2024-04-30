@@ -9,14 +9,14 @@ import { LinkCont, LinkWrapper, MenuBar, NavCont } from "../styledNavBar";
 import { MobileNavCont } from "./styledMobile";
 import { Profile } from "../..";
 import { useSelector } from "react-redux";
-import { selectCurrentUser } from "../../../../manager/auth/authSlice";
+import { getCurrentUser } from "../../../../manager/auth/authSlice";
 
 const MobNavBar = ({ handleMenu, mobMenuRef }) => {
   const inputRef = useRef(null);
   const buttonRef = useRef(null);
   const brandRef = useRef(null);
   const [isOpen, setIsOpen] = useState(false);
-  const { picsPath, _id } = useSelector(selectCurrentUser) ?? {};
+  const { picsPath, _id } = useSelector(getCurrentUser) ?? {};
 
   const searchField = () => {
     setIsOpen(true);

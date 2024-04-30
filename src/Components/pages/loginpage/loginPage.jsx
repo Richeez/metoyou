@@ -8,9 +8,10 @@ import { setCredentials, setToken } from "../../../manager/auth/authSlice";
 import { useLoginMutation } from "../../../manager/auth/authApiSlice";
 import { Logging } from "../../../svgs";
 import Cookies from "js-cookie";
-import HttpErrorHandler from "../../../utils/http_error_handler";
 import { FileInputWrapper } from "../../features/inputs/styledInput";
 import useToggle from "../../../hooks/useToggle";
+import APIService from "../../../app/api/http/api_services";
+import { toaster } from "../../../constants/reusables";
 
 function LoginPage() {
   const [eyesOpen, setEyesOpen] = useState(false);
@@ -41,27 +42,40 @@ function LoginPage() {
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      const userData = await login({
-        user: username.trim(),
-        pwd: password.trim(),
-      }).unwrap();
-
-      const access = {
-        id: userData.rest._id,
-        token: userData.key,
+      const requestBody = {
+        username,
+        password,
       };
-      dispatch(setCredentials({ ...userData }));
-      dispatch(setToken(userData.key));
-      Cookies.set("session", JSON.stringify(access) /*, { expires: 1 / 720 }*/);
-      setUserInfo({
-        username: "",
-        password: "",
+      APIService.logUserIn(login, requestBody, (response, error) => {
+        //? Assuming response is an object with a 'data' property
+        const data = response ?? {};
+        if (error) {
+          return;
+        }
+        let message = response?.message;
+        toaster(message);
+
+        dispatch(setCredentials({ ...data }));
+        dispatch(setToken(data.key));
+        const access = {
+          id: data.rest?._id,
+          token: data.key,
+        };
+        Cookies.set(
+          "session",
+          JSON.stringify(access) /*, { expires: 1 / 720 }*/
+        );
+        setUserInfo({
+          username: "",
+          password: "",
+        });
+        navigate(from, { replace: true });
       });
-      navigate(from, { replace: true });
     } catch (err) {
-      HttpErrorHandler.spitHttpErrorMsg(err);
+      toaster(err?.message, true);
     }
   };
+
   return (
     <div className="login-page">
       {isLoading ? (

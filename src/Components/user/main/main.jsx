@@ -26,7 +26,7 @@ const MainContent = () => {
     calcHeight();
     setOpen((prev) => !prev);
   };
-
+  /*className="unactive-screen"*/
   return (
     <div id="main">
       <StartFromTop />

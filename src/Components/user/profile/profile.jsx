@@ -5,7 +5,7 @@ import { StyledProfile } from "./styledProfile";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { AiOutlinePlus } from "react-icons/ai";
-import { selectCurrentUser } from "../../../manager/auth/authSlice";
+import { getCurrentUser } from "../../../manager/auth/authSlice";
 
 const Profile = ({
   profile,
@@ -18,10 +18,13 @@ const Profile = ({
   icon,
   radius = "50%",
 }) => {
+  console.log("🚀 ~ id:", id);
   const navigate = useNavigate();
 
-  const { username } = useSelector(selectCurrentUser) ?? {};
+  const { username } = useSelector(getCurrentUser) ?? {};
 
+  console.log("🚀  ~ img:", img);
+  console.log("🚀  ~ pics:", pics);
   const nickname = name !== username ? `${name}` : "Your Story";
   return (
     <StyledProfile>

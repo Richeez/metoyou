@@ -8,7 +8,7 @@
       rgba(255, 255, 255, 0.699),
       rgba(255, 255, 255, 0.534)
     ),
-    url("/public/illustrations/mobile-signup.png") no-repeat;
+    url("/illustrations/mobile-signup.png") no-repeat;
   background-size: contain;
   background-position: bottom;
 }
@@ -37,6 +37,8 @@
 .signup-ul {
   list-style-type: none;
   display: flex;
+  width: 100%;
+  /* padding: 0 5rem; */
   flex-direction: column;
   gap: 12px;
   /* align-items: flex-start; */
@@ -129,6 +131,10 @@ label {
     justify-content: space-between;
     background: none;
     gap: 20px;
+  }
+
+  .signup-ul {
+    padding: 0 5rem;
   }
 
   .signup-illustration {

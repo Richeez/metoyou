@@ -2,7 +2,7 @@ import { FaUserPlus } from "react-icons/fa";
 import Profile from "../../profile/profile";
 import { StyledActivity } from "./styledActivity";
 import { useSelector } from "react-redux";
-import { selectCurrentUser } from "../../../../manager/auth/authSlice";
+import { getCurrentUser } from "../../../../manager/auth/authSlice";
 
 const Activity = () => {
   const suggestions = [
@@ -43,7 +43,7 @@ const Activity = () => {
     },
   ];
 
-  const { picsPath } = useSelector(selectCurrentUser) ?? {};
+  const { picsPath } = useSelector(getCurrentUser) ?? {};
 
   return (
     <StyledActivity>

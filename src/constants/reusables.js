@@ -80,9 +80,12 @@ export const isValidEmail = (email) => {
 };
 
 // Display a toast message when the email is not valid using the exported options
-export const toaster = (message, show) => {
+export const toaster = (message, error = false) => {
   const toastId = new Date().getTime().toString();
-  show(message, { ...toastOptions, toastId });
+  if (error) {
+    return toast.error(message, { ...toastOptions, toastId });
+  }
+  return toast.success(message, { ...toastOptions, toastId });
 };
 
 const getFileType = (fileName) => {
