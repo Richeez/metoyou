@@ -16,7 +16,7 @@ export default class HttpErrorHandler {
     const isDevelopment = typeof window !== "undefined";
 
     // Check network status only if not in development mode
-    if (!isDevelopment) {
+    if (isDevelopment) {
       errorMessage = navigator.onLine
         ? "Sorry, something went wrong. Please try again later"
         : "Oops! An error occurred!.\nEnsure your data connection is still right.";
