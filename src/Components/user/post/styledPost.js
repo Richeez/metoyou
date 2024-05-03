@@ -34,7 +34,6 @@ export const StyledPost = styled.div`
         font-weight: bold;
         opacity: 0.6;
         /* color:var(--color-gray-dark); */
-        text-transform: capitalize;
         font-size: 0.8rem;
         &:nth-of-type(1) {
           opacity: 1;
@@ -44,6 +43,10 @@ export const StyledPost = styled.div`
           font-size: 1rem;
         }
       }
+    }
+
+    .icon {
+      align-self: flex-start;
     }
   }
   .post {
@@ -60,6 +63,9 @@ export const StyledPost = styled.div`
         /* border: 2px solid var(--color-white); */
         object-position: center;
       }
+    }
+    .desc {
+      padding-top: 1rem;
     }
 
     .icons_wrapper {

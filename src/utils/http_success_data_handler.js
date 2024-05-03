@@ -1,6 +1,7 @@
 export default class HttpSuccessDataHandler {
   static getSuccessResponseData(response) {
     if (response != null) {
+      console.log("response", response);
       return response["data"] || response;
     } else {
       return {

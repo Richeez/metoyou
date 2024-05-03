@@ -37,18 +37,23 @@ export default class APIService {
       cb(null, errorMessage);
     }
   }
-  // static async fetchPosts(posts, userId, cb) {
-  //   try {
-  //     const response = await posts({
-  //       user: requestBody.username.trim(),
-  //       pwd: requestBody.password.trim(),
-  //     }).unwrap();
-  //     const responseData =
-  //       HttpSuccessDataHandler.getSuccessResponseData(response);
-  //     cb(responseData, null);
-  //   } catch (error) {
-  //     const errorMessage = HttpErrorHandler.spitHttpErrorMsg(error);
-  //     cb(null, errorMessage);
-  //   }
-  // }
+  static async fetchPosts(isProfile, userPosts, usersPosts, userId, cb) {
+    console.log("Fetching posts", isProfile, userPosts, usersPosts, userId);
+    cb(true, null, null);
+    try {
+      //? Call the query function to get data
+
+      const { data: response } = isProfile
+        ? await userPosts(userId).unwrap()
+        : await usersPosts().unwrap();
+      console.log("response", response);
+      cb(true, null, null);
+      const responseData =
+        HttpSuccessDataHandler.getSuccessResponseData(response);
+      cb(false, responseData, null);
+    } catch (error) {
+      const errorMessage = HttpErrorHandler.spitHttpErrorMsg(error);
+      cb(false, null, errorMessage);
+    }
+  }
 }

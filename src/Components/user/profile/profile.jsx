@@ -1,6 +1,6 @@
 /* eslint-disable react-refresh/only-export-components */
 /* eslint-disable react/prop-types */
-import React from "react";
+import React, { useCallback, useState } from "react";
 import { StyledProfile } from "./styledProfile";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -18,13 +18,34 @@ const Profile = ({
   icon,
   radius = "50%",
 }) => {
-  console.log("🚀 ~ id:", id);
   const navigate = useNavigate();
+  const [isError, setIsError] = useState(false);
 
   const { username } = useSelector(getCurrentUser) ?? {};
+  const visitProfile = useCallback(
+    (userId) => {
+      navigate(`/profile/${userId}`);
+    },
+    [id]
+  );
 
-  console.log("🚀  ~ img:", img);
-  console.log("🚀  ~ pics:", pics);
+  const handleImageError = (error) => {
+    setIsError(error);
+  };
+
+  const getActiveImage = () => {
+    let imageUrl = "/default-user.png";
+    if (!isError) {
+      if (img?.length > 0) {
+        imageUrl = img[0].url;
+      }
+      if (pics) {
+        imageUrl = `/${pics}`;
+      }
+    }
+    return imageUrl;
+  };
+
   const nickname = name !== username ? `${name}` : "Your Story";
   return (
     <StyledProfile>
@@ -35,19 +56,14 @@ const Profile = ({
           cursor: `${profile ? "pointer" : "default"}`,
           borderRadius: radius,
         }}
-        onClick={profile ? () => navigate(`/profile/${id}`) : null}
+        onClick={profile ? () => visitProfile(id) : null}
         className="img_wrapper"
       >
         <img
-          src={`${
-            img?.length
-              ? `${img[0]?.url}`
-              : pics
-              ? `/${pics}`
-              : "/default-user.png"
-          }`}
+          src={getActiveImage()}
           alt="avatar"
           loading="lazy"
+          onError={(e) => handleImageError(e)}
         />
       </div>
       <div className="text tac">{status ? <p>{nickname}</p> : null}</div>

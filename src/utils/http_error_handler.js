@@ -16,7 +16,7 @@ export default class HttpErrorHandler {
     const isDevelopment = typeof window !== "undefined";
 
     // Check network status only if not in development mode
-    if (isDevelopment) {
+    if (!isDevelopment) {
       errorMessage = navigator.onLine
         ? "Sorry, something went wrong. Please try again later"
         : "Oops! An error occurred!.\nEnsure your data connection is still right.";
@@ -25,6 +25,7 @@ export default class HttpErrorHandler {
     if (e !== undefined && e !== null) {
       if (e.hasOwnProperty("response")) {
         let response = e.response;
+        console.log("err response: ", response);
         if (response !== undefined && response !== null) {
           if (response.hasOwnProperty("data")) {
             let responseData = response["data"];
@@ -36,6 +37,7 @@ export default class HttpErrorHandler {
       }
       if (e.hasOwnProperty("data")) {
         let responseData = e["data"];
+        console.log("responseData: ", JSON.stringify(responseData));
         if (responseData && responseData.hasOwnProperty("message")) {
           errorMessage = responseData["message"];
         }

@@ -26,7 +26,6 @@ const PersistLogin = () => {
           return;
         }
         const refreshToken = await refresh();
-        console.log("🚀 ~ verifyRefreshToken ~ refreshToken:", refreshToken);
         if (!refreshToken) {
           setIsLoading(false);
           return;

@@ -8,12 +8,7 @@ const baseQuery = fetchBaseQuery({
   baseUrl: EndPoints.ROOT_DOMAIN,
   credentials: "include",
   prepareHeaders: (headers, { getState }) => {
-    // const session = Cookies.get("session");
-    // token = session ? JSON.parse(session).token : null;
     const token = getState().auth.token;
-    // if (stateToken) {
-    //   token = stateToken;
-    // }
 
     if (token) {
       headers.set("authorization", `Bearer ${token}`);
@@ -37,7 +32,6 @@ const refreshAccessToken = async (api, extraOptions) => {
   userId = session ? JSON.parse(session).id : null;
 
   const persist = JSON.parse(localStorage.getItem("Persist"));
-  console.log("persist", persist);
 
   try {
     if (!persist && !stateToken) {

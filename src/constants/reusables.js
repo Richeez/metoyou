@@ -2,6 +2,7 @@ import { toast } from "react-toastify";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { v4 } from "uuid";
 import { storage } from "../../firebase";
+import { useEffect, useState } from "react";
 
 export const formatDate = (dateString) => {
   if (!dateString) return null;
@@ -30,15 +31,18 @@ export const formatDate = (dateString) => {
 
   const now = new Date();
   const timeDifference = now - date;
-  const hoursAgo = Math.floor(timeDifference / (1000 * 60 * 60));
+  const minutesAgo = Math.floor(timeDifference / (1000 * 60));
+  const hoursAgo = Math.floor(minutesAgo / 60);
 
   let time = date.toLocaleString("en-US", optionsTime);
   let formattedDate = date.toLocaleString("en-US", optionsDate);
   let day = date.toLocaleString("en-US", optionsDay);
   let ago = "";
 
-  if (hoursAgo < 1) {
+  if (minutesAgo < 1) {
     ago = "just now";
+  } else if (minutesAgo < 60) {
+    ago = `${minutesAgo} minute${minutesAgo > 1 ? "s" : ""} ago`;
   } else if (hoursAgo < 24) {
     ago = `${hoursAgo} hour${hoursAgo > 1 ? "s" : ""} ago`;
   }
@@ -49,6 +53,31 @@ export const formatDate = (dateString) => {
     day: day,
     ago: ago,
   };
+};
+
+export const useDynamicDate = (initialDateString) => {
+  const [formattedDate, setFormattedDate] = useState(null);
+
+  useEffect(() => {
+    // console.log("useDynamicDate: initialDateString", initialDateString);
+
+    const formatted = formatDate(initialDateString); // Format the initial date string
+    // console.log("useDynamicDate: formatted", formatted);
+
+    setFormattedDate(formatted);
+
+    const intervalId = setInterval(() => {
+      // console.log("useDynamicDate: setInterval triggered");
+      const updatedFormatted = formatDate(initialDateString); // Re-format the date string
+      // console.log("useDynamicDate: updatedFormatted", updatedFormatted);
+      setFormattedDate(updatedFormatted);
+    }, 60000); // Update every minute
+
+    // Clean up the interval on unmount or when the initialDateString changes
+    return () => clearInterval(intervalId);
+  }, [initialDateString]); // Run effect whenever initialDateString changes
+
+  return formattedDate;
 };
 
 const toastOptions = {
@@ -73,7 +102,7 @@ export const isValidEmail = (email) => {
 
   if (!isValid) {
     // Display a toast message when the email is not valid
-    toaster(errorMessage.message, toast.error);
+    toaster(errorMessage.message, true);
   }
 
   return { isValid };
@@ -141,6 +170,8 @@ export const uploadFile = async (editField) => {
       const uploadedFiles = await Promise.all(uploadPromises);
       return uploadedFiles.flat(); // Flatten the array of arrays
     } catch (error) {
+      toaster(error, true);
+
       console.error("Error uploading files:", error);
       throw error; // Re-throw the error for the caller to handle
     }
@@ -166,6 +197,7 @@ const uploadSingleFile = async (file, target) => {
       target, // Add the target property to the file object
     };
   } catch (error) {
+    toaster(error, true);
     console.error("Error uploading file:", error);
     throw error; // Re-throw the error for better error handling
   }

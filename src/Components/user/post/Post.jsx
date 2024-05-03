@@ -13,7 +13,7 @@ import { getCurrentUserId, setPost } from "../../../manager/auth/authSlice";
 import { useLikeMutation } from "../../../manager/auth/authApiSlice";
 import Comment from "../widgets/comments/Comment";
 import { useEffect, useState } from "react";
-import { formatDate } from "../../../constants/reusables";
+import { useDynamicDate } from "../../../constants/reusables";
 import EndPoints from "../../../app/api/http/endPoints";
 
 const Post = ({
@@ -21,7 +21,7 @@ const Post = ({
   postUserId,
   username,
   description,
-  location,
+  // location,
   picsPath,
   userPicsPath,
   likes,
@@ -36,12 +36,9 @@ const Post = ({
   const isLiked = Boolean(likes[loggedInUserId]);
   const likeCount = Object.keys(likes).length;
   const [like] = useLikeMutation();
+  const formattedDate = useDynamicDate(timestamp);
 
   useEffect(() => {}, [isLiked]);
-
-  useEffect(() => {
-    console.log(formatDate(timestamp));
-  }, []);
 
   const handleLike = async () => {
     const credentials = {
@@ -65,19 +62,19 @@ const Post = ({
     <StyledPost>
       <div className="profile">
         <Profile img={userPicsPath} id={postUserId} profile size={"60px"} />
-        <div className="text tac">
+        <div className="text">
           <p>{name}</p>
-          <p>{location}</p>
+          <p>Published: {formattedDate?.ago}</p>
         </div>
         <BsThreeDots className="icon" />
       </div>
       <div className="post">
         {picsPath.length !== 0 && (
           <div className="img-wrapper">
-            <img src={picsPath[0].url} alt="post" />
+            <img src={picsPath[0]?.url} alt="post" />
           </div>
         )}
-        <p style={{ paddingTop: "1rem" }}>{description}</p>
+        <p className="desc">{description}</p>
 
         <div className="icons_wrapper">
           <div className="left-icons">
