@@ -182,6 +182,7 @@ const PostsWidget = ({ userId, isProfile = false }) => {
             username,
             description,
             // location,
+            createdAt,
             picsPath,
             userPicsPath,
             likes,
@@ -201,7 +202,7 @@ const PostsWidget = ({ userId, isProfile = false }) => {
                 likes={likes}
                 comments={comments}
                 following={following}
-                timestamp={details[0].time}
+                timestamp={!details?.length ? createdAt : details[0].time}
               />
             </div>
           )

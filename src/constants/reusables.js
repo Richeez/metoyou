@@ -7,11 +7,7 @@ import { useEffect, useState } from "react";
 export const formatDate = (dateString) => {
   if (!dateString) return null;
 
-  let date = dateString; // Assume the input is a date string
-  if (typeof dateString !== "string") {
-    // If it's not a string, assume it's a timestamp and convert it to a Date object
-    date = new Date(dateString);
-  }
+  let date = dateString instanceof Date ? dateString : new Date(dateString);
 
   const optionsTime = {
     hour: "numeric",

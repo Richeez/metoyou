@@ -64,7 +64,7 @@ const Post = ({
         <Profile img={userPicsPath} id={postUserId} profile size={"60px"} />
         <div className="text">
           <p>{name}</p>
-          <p>Published: {formattedDate?.ago}</p>
+          <p>Published: {formattedDate?.ago || formattedDate?.date}</p>
         </div>
         <BsThreeDots className="icon" />
       </div>
