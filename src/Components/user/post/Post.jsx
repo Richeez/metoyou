@@ -108,14 +108,9 @@ const Post = ({
             {likes?.length > 0 && (
               <div className="img_cont">
                 {likes?.slice(0, 3).map(({ picsPath }, index) => {
-                  console.log("picsPath", picsPath); // You can keep the console log here for debugging
-
                   return (
                     <div className="img-wrapper" key={index}>
-                      <img
-                        src={picsPath[0]?.url || "/default-user.png"}
-                        alt="avatar"
-                      />
+                      <Profile img={picsPath} size="40px" radius="0" />
                     </div>
                   );
                 })}
@@ -126,15 +121,20 @@ const Post = ({
               <div className="text_cont">
                 <span>
                   Liked by{" "}
-                  <span className="bold">{`${
-                    notFirst ? likes[0]?.username : "You"
-                  } ${
-                    loggedInUser && notFirst
-                      ? `${likes?.length === 2 ? "and" : ","} You`
-                      : ""
-                  }`}</span>
                   <span className="bold">
-                    {likes?.length > 2 ? `and ${likes.length - 2} others` : ""}
+                    {`${notFirst ? likes[0]?.username : "You"} ${
+                      loggedInUser && notFirst
+                        ? `${likes?.length === 2 ? "and" : ","} You`
+                        : ""
+                    }`}{" "}
+                    &nbsp;
+                  </span>
+                  <span className="bold">
+                    {likes?.length > 2
+                      ? `and ${likes.length - 2} other${
+                          likes.length - 2 > 1 ? "s" : ""
+                        }`
+                      : ""}
                   </span>{" "}
                 </span>
               </div>

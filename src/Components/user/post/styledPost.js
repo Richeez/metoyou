@@ -136,6 +136,16 @@ export const StyledPost = styled.div`
             }
           }
 
+          /* & .img_cont > :first-child {
+            transform: translateX(0%);
+          }
+
+          & .img_cont > :nth-child(2) {
+            transform: translateX(50%);
+          }
+          & .img_cont > :nth-child(3) {
+            transform: translateX(110%);
+          } */
           .img-wrapper:nth-of-type(1) {
             transform: translateX(0%);
           }

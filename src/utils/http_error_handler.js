@@ -37,7 +37,6 @@ export default class HttpErrorHandler {
       }
       if (e.hasOwnProperty("data")) {
         let responseData = e["data"];
-        console.log("responseData: ", JSON.stringify(responseData));
         if (responseData && responseData.hasOwnProperty("message")) {
           errorMessage = responseData["message"];
         }

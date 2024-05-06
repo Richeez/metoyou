@@ -92,11 +92,7 @@ const DropDownMenu = ({
 
   const signOut = async () => {
     try {
-      const response = await axiosPrivate.post(
-        `${EndPoints.ROOT_DOMAIN}/logout/${token}`
-      );
-      console.log("response", response);
-      // Clear user session token from cookies
+      await axiosPrivate.post(`${EndPoints.ROOT_DOMAIN}/logout/${token}`); // Clear user session token from cookies
       Cookies.remove("session");
       dispatch(logOut()); // Dispatch redux action
     } catch (error) {

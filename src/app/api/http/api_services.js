@@ -46,7 +46,6 @@ export default class APIService {
       const { data: response } = isProfile
         ? await userPosts(userId).unwrap()
         : await usersPosts().unwrap();
-      console.log("response", response);
       cb(true, null, null);
       const responseData =
         HttpSuccessDataHandler.getSuccessResponseData(response);
