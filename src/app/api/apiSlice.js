@@ -119,3 +119,104 @@ export const apiSlice = createApi({
   baseQuery: baseQueryWithReAuth,
   endpoints: (builder) => ({}),
 });
+
+//? USING AXIOS
+
+// import { createApi } from "@reduxjs/toolkit/query/react";
+// import axios from "axios";
+// import { setToken, logOut } from "../../manager/auth/authSlice";
+// import Cookies from "js-cookie";
+// import EndPoints from "./http/endPoints";
+
+// const api = axios.create({
+//   baseURL: EndPoints.ROOT_DOMAIN,
+//   withCredentials: true,
+// });
+
+// api.interceptors.request.use(
+//   (config) => {
+//     const token = localStorage.getItem("token");
+//     if (token) {
+//       config.headers["Authorization"] = `Bearer ${token}`;
+//     }
+//     return config;
+//   },
+//   (error) => {
+//     return Promise.reject(error);
+//   }
+// );
+
+// api.interceptors.response.use(
+//   (response) => {
+//     return response;
+//   },
+//   async (error) => {
+//     const originalRequest = error.config;
+//     if (error.response.status === 401 && !originalRequest._retry) {
+//       originalRequest._retry = true;
+//       try {
+//         const token = await refreshAccessToken();
+//         if (token) {
+//           originalRequest.headers["Authorization"] = `Bearer ${token}`;
+//           return api(originalRequest);
+//         } else {
+//           logOut();
+//           return Promise.reject(error);
+//         }
+//       } catch (error) {
+//         logOut();
+//         return Promise.reject(error);
+//       }
+//     }
+//     return Promise.reject(error);
+//   }
+// );
+
+// const refreshAccessToken = async () => {
+//   const session = Cookies.get("session");
+//   const token = session ? JSON.parse(session).token : null;
+//   const userId = session ? JSON.parse(session).id : null;
+//   try {
+//     const response = await api.get(`/refresh/${userId}`, {
+//       headers: {
+//         Authorization: `Bearer ${token}`,
+//       },
+//       params: {
+//         userId: userId,
+//       },
+//     });
+//     const userData = response.data;
+//     setToken(userData.key);
+//     const access = {
+//       id: userData.rest._id,
+//       token: userData.key,
+//     };
+//     Cookies.set("session", JSON.stringify(access));
+//     return userData.key;
+//   } catch (error) {
+//     console.error("Error:", error);
+//     await api.get(`/logout/${token}`, {
+//       headers: {
+//         Authorization: `Bearer ${token}`,
+//       },
+//       params: {
+//         token: token,
+//       },
+//     });
+//     logOut();
+//     return null;
+//   }
+// };
+
+// export const apiSlice = createApi({
+//   reducerPath: "api",
+//   baseQuery: async (args, api, extraOptions) => {
+//     try {
+//       const result = await api(args);
+//       return result.data;
+//     } catch (error) {
+//       throw error;
+//     }
+//   },
+//   endpoints: (builder) => ({}),
+// });

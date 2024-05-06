@@ -14,7 +14,6 @@ import { useLikeMutation } from "../../../manager/auth/authApiSlice";
 import Comment from "../widgets/comments/Comment";
 import { useEffect, useState } from "react";
 import { useDynamicDate } from "../../../constants/reusables";
-import EndPoints from "../../../app/api/http/endPoints";
 
 const Post = ({
   postId,
@@ -26,15 +25,21 @@ const Post = ({
   userPicsPath,
   likes,
   comments,
-  followers,
   timestamp,
 }) => {
-  const name = username ? `${username}` : "username";
+  const name = username;
   const dispatch = useDispatch();
   const [isComments, setIsComments] = useState(false);
+  // const [likedUsers, setLikedUsers] = useState(null);
+  // const [commentedUsers, setCommentedUsers] = useState(null);
   const loggedInUserId = useSelector(getCurrentUserId);
-  const isLiked = Boolean(likes[loggedInUserId]);
-  const likeCount = Object.keys(likes).length;
+  // const isLiked = Boolean(likes[loggedInUserId].userId);
+  const isLiked = likes?.some((like) => like.userId === loggedInUserId);
+  const loggedInUser =
+    likes?.find(({ userId }) => userId === loggedInUserId) ?? {};
+  const notFirst = loggedInUserId !== likes[0]?.userId;
+  // const likeCount = Object.keys(likes).length;
+  const likeCount = likes?.length;
   const [like] = useLikeMutation();
   const formattedDate = useDynamicDate(timestamp);
 
@@ -45,6 +50,7 @@ const Post = ({
       userId: loggedInUserId,
       id: postId,
     };
+
     try {
       // Assuming you have the necessary data for the like in a "credentials" object
       const updatedPost = await like(credentials).unwrap();
@@ -71,7 +77,7 @@ const Post = ({
       <div className="post">
         {picsPath.length !== 0 && (
           <div className="img-wrapper">
-            <img src={picsPath[0]?.url} alt="post" />
+            <img src={picsPath[0]?.url} alt="post's image" />
           </div>
         )}
         <p className="desc">{description}</p>
@@ -99,46 +105,37 @@ const Post = ({
         </div>
         <div className="engagements">
           <div className="items_wrapper">
-            <div className="img_cont">
-              <div className="img-wrapper">
-                <img
-                  src={`${
-                    followers
-                      ? `${EndPoints.ROOT_DOMAIN}
-/assets/${followers}`
-                      : "/default-user.png"
-                  }`}
-                  alt="avatar"
-                />
+            {likes?.length > 0 && (
+              <div className="img_cont">
+                {likes?.slice(0, 3).map(({ picsPath }, index) => {
+                  console.log("picsPath", picsPath); // You can keep the console log here for debugging
+
+                  return (
+                    <div className="img-wrapper" key={index}>
+                      <img
+                        src={picsPath[0]?.url || "/default-user.png"}
+                        alt="avatar"
+                      />
+                    </div>
+                  );
+                })}
               </div>
-              <div className="img-wrapper">
-                <img
-                  src={`${
-                    followers
-                      ? `${EndPoints.ROOT_DOMAIN}
-/assets/${followers}`
-                      : "/default-user.png"
-                  }`}
-                  alt="avatar"
-                />
-              </div>
-              <div className="img-wrapper">
-                <img
-                  src={`${
-                    followers
-                      ? `${EndPoints.ROOT_DOMAIN}
-/assets/${followers}`
-                      : "/default-user.png"
-                  }`}
-                  alt="avatar"
-                />
-              </div>
-            </div>
+            )}
+
             {isLiked && (
               <div className="text_cont">
                 <span>
-                  Liked by <span className="bold">Big Fame</span> and
-                  <span className="bold">1,993 others</span>
+                  Liked by{" "}
+                  <span className="bold">{`${
+                    notFirst ? likes[0]?.username : "You"
+                  } ${
+                    loggedInUser && notFirst
+                      ? `${likes?.length === 2 ? "and" : ","} You`
+                      : ""
+                  }`}</span>
+                  <span className="bold">
+                    {likes?.length > 2 ? `and ${likes.length - 2} others` : ""}
+                  </span>{" "}
                 </span>
               </div>
             )}

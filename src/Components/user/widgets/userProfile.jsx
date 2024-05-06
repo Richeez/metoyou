@@ -23,7 +23,6 @@ import OutsideClickHandler from "../../../hooks/useClickOutside";
 import { Section } from "../../features/container";
 
 const UserProfile = () => {
-  useTitle("Profile");
   const [toggle, setToggle] = useState(false);
   const editor = useRef(null);
   const cover = useRef(null);
@@ -32,6 +31,8 @@ const UserProfile = () => {
   const _id = useSelector(getCurrentUserId);
   const [id, setUserId] = useState(null); // Assuming you have a state to store the current user ID
   const [user, setUser] = useState(null);
+  const firstName = user?.username.split(" ")[0];
+  useTitle(`${firstName} Profile`);
   const closeRef = useRef(null);
   const [editField, setEditField] = useState({
     nickname: "",

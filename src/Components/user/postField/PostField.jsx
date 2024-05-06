@@ -1,6 +1,6 @@
 import { useState, useRef } from "react";
 import { MdAttachment, MdOutlineInsertPhoto } from "react-icons/md";
-import { VscReactions } from "react-icons/vsc";
+// import { VscReactions } from "react-icons/vsc";
 import Profile from "../profile/profile";
 import { StyledPostField } from "./styledPostField";
 import { useDispatch, useSelector } from "react-redux";
@@ -9,26 +9,31 @@ import { getCurrentUser, setPosts } from "../../../manager/auth/authSlice";
 import { CustomButton } from "../../features/button";
 import { StyledInput } from "../../features/inputs/styledInput";
 import Button from "../../features/animated buttons/Button";
-import { ImageBox } from "../../features";
+// import { ImageBox } from "../../features";
 import { FaTimes } from "react-icons/fa";
 import { toaster, uploadFile } from "../../../constants/reusables";
+// import LightboxGallery from "../../features/LightBoxGallery/LightBoxGallery";
 
 const PostField = () => {
-  const fileInputRef = useRef(null);
+  const imageInputRef = useRef(null);
+  const docInputRef = useRef(null);
   const dispatch = useDispatch();
   // const [textareaHeight, setTextareaHeight] = useState("auto"); // Initial height
 
   let attachments;
 
-  const handleButtonClick = () => {
-    fileInputRef.current.click();
+  const handleImageButtonClick = () => {
+    imageInputRef.current.click();
+  };
+  const handleDocButtonClick = () => {
+    docInputRef.current.click();
   };
 
   const [formData, setFormData] = useState({
     description: "",
-    file: null,
+    files: [],
   });
-  const { description, file } = formData;
+  const { description, files } = formData;
 
   const createPost = (e) => {
     const { name, value } = e.target;
@@ -46,10 +51,57 @@ const PostField = () => {
   };
 
   const handleFileInputChange = (e) => {
-    const selectedFile = e?.target?.files[0];
-    setFormData((prev) => ({ ...prev, file: selectedFile }));
+    const selectedFiles = Array.from(e?.target?.files);
+    setFormData((prev) => ({ ...prev, files: selectedFiles }));
   };
 
+  const removeFile = (index) => {
+    const updatedFiles = [...formData.files];
+    updatedFiles.splice(index, 1); // Remove the file at the specified index
+    setFormData({
+      ...formData,
+      files: updatedFiles,
+    });
+  };
+  const displayFile = (file, index) => {
+    return file?.type?.startsWith("image/") ? (
+      <img
+        src={URL.createObjectURL(file)}
+        alt={`uploaded file no. ${index}`}
+        style={{
+          width: "100%",
+          height: "100%",
+          objectFit: "cover",
+          aspectRatio: "1/1",
+        }}
+      />
+    ) : file?.type?.startsWith("video/") ? (
+      <video
+        controls
+        style={{
+          width: "100%",
+          height: "100%",
+        }}
+      >
+        <source src={URL.createObjectURL(file)} type={file?.type} />
+      </video>
+    ) : file?.type?.startsWith("application/pdf") ? ( // Check if it's a PDF file
+      <iframe
+        src={URL.createObjectURL(file)}
+        width="100%"
+        height="600px"
+        title={`uploaded file no. ${index}`}
+      />
+    ) : (
+      <p
+        style={{
+          color: "red",
+        }}
+      >
+        Unsupported file type
+      </p>
+    );
+  };
   const { _id: userId, picsPath } = useSelector(getCurrentUser) ?? {};
 
   const [post, { isLoading }] = usePostMutation();
@@ -57,13 +109,13 @@ const PostField = () => {
   const handlePost = async (e) => {
     e.preventDefault();
 
-    if (file) {
-      attachments = await uploadFile(file);
+    if (files?.length > 0) {
+      attachments = await uploadFile(files);
 
       console.log("fileUrl", attachments);
     }
 
-    if (!file && !description) {
+    if (!files.length && !description) {
       //? No file and description available
       return toaster("You do not have any post to publish.", true);
     }
@@ -79,7 +131,7 @@ const PostField = () => {
 
       setFormData({
         description: "",
-        file: null,
+        files: [],
       });
       toaster("Post Published Successfully!");
     } catch (err) {
@@ -108,43 +160,117 @@ const PostField = () => {
       <div className="actions_cont">
         <div className="icons_cont">
           <div className="icon_wrapper">
-            <MdAttachment className="icon" />
-            <span className="desc">attachment</span>
+            <StyledInput
+              type="file"
+              id="file"
+              name="files"
+              title="Choose a file"
+              multiple
+              accept=".pdf, .doc, .docx, .txt, .ppt, .pptx, .xls, .xlsx"
+              ref={docInputRef}
+              onChange={handleFileInputChange}
+            />
+            <CustomButton type="button" onClick={handleDocButtonClick}>
+              <MdAttachment className="icon" />
+              <span className="desc">attachment</span>
+            </CustomButton>
           </div>
           <div className="icon_wrapper">
             <StyledInput
               type="file"
               id="file"
-              name="file"
+              name="files"
               title="Choose a file"
+              multiple
               accept="image/*"
-              ref={fileInputRef}
+              ref={imageInputRef}
               onChange={handleFileInputChange}
             />
-            <CustomButton type="button" onClick={handleButtonClick}>
+            <CustomButton type="button" onClick={handleImageButtonClick}>
               <MdOutlineInsertPhoto className="icon" />
               <span className="desc">photo</span>
             </CustomButton>
           </div>
-          <div className="icon_wrapper">
+          {/* <div className="icon_wrapper">
             <VscReactions className="icon" />
 
             <span className="desc">feeling</span>
-          </div>
+          </div> */}
         </div>
         <Button onClick={handlePost} disabled={isLoading} filled>
           {isLoading ? "uploading..." : "share"}
         </Button>
       </div>
-      {file && (
-        <div className="previewImg">
-          <FaTimes
-            className="icon"
-            onClick={() => setFormData((prev) => ({ ...prev, file: null }))}
-          />
-          <ImageBox src={URL.createObjectURL(file)} />
+      {files?.length > 0 && (
+        <div
+          className="previewFiles"
+          style={{
+            display: "grid",
+            gridAutoFlow: "dense",
+            gap: ".5rem",
+            maxWidth: "100%",
+            maxHeight: "200px",
+            overflowX: "hidden",
+            overflowY: "auto",
+            backdropFilter: "blur(20px)",
+            gridTemplateColumns:
+              " repeat(auto-fit, minmax(min(100%, 100px), 1fr))",
+            padding: 0,
+            // zIndex: 4,
+          }}
+        >
+          {files?.map((file, index) => (
+            <div
+              key={index}
+              className="previewFile"
+              style={{
+                display: "grid",
+                placeItems: "center",
+                gap: "0",
+                whiteSpace: "nowrap",
+                position: "relative",
+                overflow: " hidden",
+                padding: "8px",
+                width: "100px",
+                height: "100px",
+                border: "1px solid #ccc",
+                borderRadius: "8px",
+                boxShadow: "0 0 4px rgba(0, 0, 0, 0.2)",
+              }}
+            >
+              <FaTimes className="icon" onClick={() => removeFile(index)} />
+              {displayFile(file, index)}
+            </div>
+          ))}
+          <div
+            style={{
+              position: "sticky",
+              gridColumn: "1 / -1",
+              display: "grid",
+              placeItems: "center",
+              bottom: "0",
+              top: "50px",
+              marginBottom: "20px",
+              width: "100%",
+            }}
+          >
+            {/* <button
+              type="submit"
+              style={{
+                backgroundColor: "#2c7be5",
+                borderRadius: "20px",
+                padding: "10px",
+                border: "0",
+                color: "white",
+                width: "200px",
+              }}
+              >
+              Send
+            </button> */}
+          </div>
         </div>
       )}
+      {/* <LightboxGallery files={files} /> */}
     </StyledPostField>
   );
 };

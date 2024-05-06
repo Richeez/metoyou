@@ -133,48 +133,48 @@ export const uploadFile = async (editField) => {
   const isCoverArray = Array.isArray(editField.cover);
   const isEditArray = Array.isArray(editField);
 
-  if (isProfileArray || isCoverArray) {
-    const uploadPromises = [];
+  // if (isProfileArray || isCoverArray) {
+  const uploadPromises = [];
 
-    if (isProfileArray) {
-      uploadPromises.push(
-        ...editField.profile
-          .filter((file) => !file.uploaded)
-          .map((file) => uploadSingleFile(file, "profile"))
-      );
-    }
-
-    if (isCoverArray) {
-      uploadPromises.push(
-        ...editField.cover
-          .filter((file) => !file.uploaded)
-          .map((file) => uploadSingleFile(file, "cover"))
-      );
-    }
-
-    if (isEditArray) {
-      uploadPromises.push(
-        ...editField
-          .filter((file) => !file.uploaded)
-          .map(async (file) => {
-            return uploadSingleFile(file);
-          })
-      );
-    }
-
-    try {
-      const uploadedFiles = await Promise.all(uploadPromises);
-      return uploadedFiles.flat(); // Flatten the array of arrays
-    } catch (error) {
-      toaster(error, true);
-
-      console.error("Error uploading files:", error);
-      throw error; // Re-throw the error for the caller to handle
-    }
-  } else {
-    // Handle differently when editField is not an object with profile and cover arrays
-    return uploadSingleFile(editField);
+  if (isProfileArray) {
+    uploadPromises.push(
+      ...editField.profile
+        .filter((file) => !file.uploaded)
+        .map((file) => uploadSingleFile(file, "profile"))
+    );
   }
+
+  if (isCoverArray) {
+    uploadPromises.push(
+      ...editField.cover
+        .filter((file) => !file.uploaded)
+        .map((file) => uploadSingleFile(file, "cover"))
+    );
+  }
+
+  if (isEditArray) {
+    uploadPromises.push(
+      ...editField
+        .filter((file) => !file.uploaded)
+        .map(async (file) => {
+          return uploadSingleFile(file);
+        })
+    );
+  }
+
+  try {
+    const uploadedFiles = await Promise.all(uploadPromises);
+    return uploadedFiles.flat(); // Flatten the array of arrays
+  } catch (error) {
+    toaster(error, true);
+
+    console.error("Error uploading files:", error);
+    throw error; // Re-throw the error for the caller to handle
+  }
+  // } else {
+  // Handle differently when editField is not an object with profile and cover arrays
+  // return uploadSingleFile(editField);
+  // }
 };
 
 const uploadSingleFile = async (file, target) => {
@@ -184,6 +184,8 @@ const uploadSingleFile = async (file, target) => {
   try {
     const imageRef = ref(storage, `images/${file.name + v4()}`);
     const result = await uploadBytes(imageRef, file);
+    console.log("🚀 ~ uploadSingleFile ~ imageRef:", imageRef);
+    console.log("🚀 ~ uploadSingleFile ~ result:", result);
     const url = await getDownloadURL(result.ref);
 
     return {

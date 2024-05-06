@@ -124,18 +124,19 @@ export const StyledPostField = styled.form`
     }
   }
 
-  .previewImg {
+  .previewFiles {
     position: relative;
     width: 100%;
     height: 100%;
 
     .icon {
+      --color-red: red;
       position: absolute;
       top: 5%;
       right: 3%;
-      background-color: var(--blueViolet);
-      width: 1.5rem;
-      height: 1.5rem;
+      background-color: var(--color-red);
+      width: 1.3rem;
+      height: 1.3rem;
       padding: 0.2rem;
       border-radius: 50%;
       color: var(--color-white);

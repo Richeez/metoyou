@@ -111,6 +111,7 @@ export const StyledPost = styled.div`
         gap: 1rem;
         width: fit-content;
         padding-bottom: 1rem;
+        /* background-color: pink; */
 
         .img_cont {
           display: flex;
