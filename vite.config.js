@@ -14,4 +14,9 @@ import svgr from "vite-plugin-svgr";
 // // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [svgr(), react()],
+  define: {
+    "process.env.NODE_ENV": JSON.stringify(
+      import.meta?.env?.NODE_ENV || "development"
+    ),
+  },
 });

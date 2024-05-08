@@ -34,16 +34,35 @@ const Post = ({
   // const [commentedUsers, setCommentedUsers] = useState(null);
   const loggedInUserId = useSelector(getCurrentUserId);
   // const isLiked = Boolean(likes[loggedInUserId].userId);
-  const isLiked = likes?.some((like) => like.userId === loggedInUserId);
-  const loggedInUser =
-    likes?.find(({ userId }) => userId === loggedInUserId) ?? {};
-  const notFirst = loggedInUserId !== likes[0]?.userId;
+  const isLikedByLoggedInUser = likes?.some(
+    (like) => like.userId === loggedInUserId
+  );
+
+  const isFirstInLikes = loggedInUserId === likes[0]?.userId;
+  console.log("isFirstInLikes", !isFirstInLikes);
   // const likeCount = Object.keys(likes).length;
   const likeCount = likes?.length;
   const [like] = useLikeMutation();
   const formattedDate = useDynamicDate(timestamp);
 
-  useEffect(() => {}, [isLiked]);
+  // function renderLikedBy() {
+  //   if (isFirstInLikes) {
+  //     return likes[0]?.username;
+  //   } else {
+  //     return "You";
+  //   }
+  // }
+
+  // function renderAdditionalLikes() {
+  //   if (likes && likes.length > 2) {
+  //     const additionalLikesCount = likes.length - 2;
+  //     const plural = additionalLikesCount > 1 ? "s" : "";
+  //     return `and ${additionalLikesCount} other${plural}`;
+  //   }
+  //   return "";
+  // }
+
+  useEffect(() => {}, [isLikedByLoggedInUser]);
 
   const handleLike = async () => {
     const credentials = {
@@ -89,12 +108,14 @@ const Post = ({
                 onClick={handleLike}
                 style={{
                   color: `${
-                    isLiked ? "var(--blueViolet)" : "var(--color-gray)"
+                    isLikedByLoggedInUser
+                      ? "var(--blueViolet)"
+                      : "var(--color-gray)"
                   } `,
                 }}
                 className="icon"
-              />{" "}
-              <p>{likeCount}</p>
+              />
+              <p>{likeCount !== 0 ? likeCount : null}</p>
             </div>
             <FaRegComment onClick={handleComment} className="icon" />
             <BiShareAlt className="icon" />
@@ -117,25 +138,34 @@ const Post = ({
               </div>
             )}
 
-            {isLiked && (
+            {(isLikedByLoggedInUser || likes?.length !== 0) && (
               <div className="text_cont">
                 <span>
-                  Liked by{" "}
+                  Liked by &nbsp;
                   <span className="bold">
-                    {`${notFirst ? likes[0]?.username : "You"} ${
-                      loggedInUser && notFirst
-                        ? `${likes?.length === 2 ? "and" : ","} You`
-                        : ""
-                    }`}{" "}
+                    {isFirstInLikes ? "You" : likes[0]?.username}
+                    {isLikedByLoggedInUser &&
+                      !isFirstInLikes &&
+                      likes.length > 1 &&
+                      ((likes.length === 2 && " and You") ||
+                        (likes.length > 2 && ", You"))}
                     &nbsp;
                   </span>
                   <span className="bold">
-                    {likes?.length > 2
-                      ? `and ${likes.length - 2} other${
-                          likes.length - 2 > 1 ? "s" : ""
-                        }`
-                      : ""}
-                  </span>{" "}
+                    {likes &&
+                      likes.length > 1 &&
+                      likes.length - (isLikedByLoggedInUser ? 2 : 1) > 0 &&
+                      `and ${
+                        likes.length -
+                        (isLikedByLoggedInUser && !isFirstInLikes ? 2 : 1)
+                      } other${
+                        likes.length -
+                          (isLikedByLoggedInUser && !isFirstInLikes ? 2 : 1) >
+                        1
+                          ? "s"
+                          : ""
+                      }`}
+                  </span>
                 </span>
               </div>
             )}
