@@ -71,7 +71,7 @@ function useOutsideClick(ref, callback, menuRefs) {
           (menuRef) =>
             menuRef &&
             menuRef.current &&
-            menuRef.current.classList.contains("toggle")
+            menuRef.current.classList.contains("close_menu")
         )
       ) {
         callback();

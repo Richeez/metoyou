@@ -7,23 +7,7 @@ export const StyledPost = styled.div`
     align-items: center;
     justify-content: space-between;
     padding-bottom: 2rem;
-
-    .img_wrapper {
-      &:hover {
-        img {
-          transform: scale(1.1);
-          transition: var(--transition);
-        }
-      }
-      img {
-        width: 100%;
-        aspect-ratio: 1/1;
-        border-radius: 50%;
-        object-fit: cover;
-        /* border: 2px solid var(--color-white); */
-        object-position: center;
-      }
-    }
+    position: relative;
 
     .text {
       display: flex;
@@ -46,7 +30,42 @@ export const StyledPost = styled.div`
     }
 
     .icon {
-      align-self: flex-start;
+      /* align-self: flex-start; */
+      position: absolute;
+      top: 2%;
+      right: 3%;
+    }
+
+    .post_options {
+      position: absolute;
+      bottom: -15%;
+      /* top: auto; */
+      right: 1%;
+      display: flex;
+      flex-direction: column;
+      padding: 5px 0.5rem;
+      border-radius: 10px;
+      height: fit-content;
+      background: var(--color-white);
+      box-shadow: 2px 3px 5px var(--blueViolet);
+      gap: 0.5rem;
+      list-style: none;
+      text-transform: capitalize;
+      li {
+        cursor: pointer;
+        border-radius: 5px;
+        padding: 2px 1rem;
+        width: 100%;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        text-align: center;
+        font-size: var(--sm-font-size);
+        transition: var(--transition);
+        &:hover {
+          background: var(--color-gray-lyt);
+        }
+      }
     }
   }
   .post {
@@ -60,8 +79,7 @@ export const StyledPost = styled.div`
         width: 100%;
         height: 100%;
         object-fit: cover;
-        /* border: 2px solid var(--color-white); */
-        object-position: center;
+        object-position: top;
       }
     }
     .desc {
@@ -80,7 +98,6 @@ export const StyledPost = styled.div`
         align-items: center;
         justify-content: space-between;
         width: fit-content;
-        /* background-color: yellow; */
         gap: 2rem;
 
         & {
@@ -89,7 +106,6 @@ export const StyledPost = styled.div`
           }
           .icon:nth-of-type(1) {
             font-size: 1.8rem;
-            /* color: var(--blueViolet); */
           }
         }
       }
@@ -107,60 +123,39 @@ export const StyledPost = styled.div`
 
     .engagements {
       .items_wrapper {
-        display: flex;
-        gap: 1rem;
+        display: grid;
+        grid-template-columns: 80px 1fr;
         width: fit-content;
-        padding-bottom: 1rem;
-        /* background-color: pink; */
 
         .img_cont {
           display: flex;
           width: max-content;
-          align-items: center;
           position: relative;
-
-          .img-wrapper {
-            width: 40px;
-            height: 40px;
-            cursor: pointer;
+          align-items: center;
+          & > div {
             position: absolute;
-            border-radius: 50%;
-            overflow: hidden;
-            border: 3px solid var(--color-white);
-
-            img {
-              width: 100%;
-              height: 100%;
-              object-fit: cover;
-              object-position: center;
-            }
+            top: 0;
+            left: 0;
+            transform: translateY(-100%);
+          }
+          & > div .img_wrapper {
+            border: 2px solid var(--color-white);
           }
 
-          /* & .img_cont > :first-child {
+          & > div:nth-of-type(1) {
             transform: translateX(0%);
           }
 
-          & .img_cont > :nth-child(2) {
-            transform: translateX(50%);
-          }
-          & .img_cont > :nth-child(3) {
-            transform: translateX(110%);
-          } */
-          .img-wrapper:nth-of-type(1) {
-            transform: translateX(0%);
-          }
-
-          .img-wrapper:nth-of-type(2) {
+          & > div:nth-of-type(2) {
             transform: translateX(50%);
           }
 
-          .img-wrapper:nth-of-type(3) {
+          & > div:nth-of-type(3) {
             transform: translateX(110%);
           }
         }
 
         .text_cont {
-          margin-left: 5rem;
           padding: 0.5rem;
           color: var(--color-gray-dark);
         }

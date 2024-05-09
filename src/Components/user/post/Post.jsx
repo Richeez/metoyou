@@ -1,19 +1,28 @@
 /* eslint-disable react/no-unescaped-entities */
 /* eslint-disable react/prop-types */
 import { AiFillLike } from "react-icons/ai";
-import { BiShareAlt } from "react-icons/bi";
+import { BiEdit, BiShareAlt } from "react-icons/bi";
 import { BsBookmark, BsThreeDots } from "react-icons/bs";
 import { FaRegComment } from "react-icons/fa";
 import Profile from "../profile/profile";
 import { StyledPost } from "./styledPost";
 
 import { useDispatch, useSelector } from "react-redux";
-import { getCurrentUserId, setPost } from "../../../manager/auth/authSlice";
+import {
+  getCurrentUserId,
+  setPost,
+  setPosts,
+} from "../../../manager/auth/authSlice";
 
-import { useLikeMutation } from "../../../manager/auth/authApiSlice";
+import {
+  useDeletePostMutation,
+  useLikeMutation,
+} from "../../../manager/auth/authApiSlice";
 import Comment from "../widgets/comments/Comment";
-import { useEffect, useState } from "react";
-import { useDynamicDate } from "../../../constants/reusables";
+import { useRef, useState } from "react";
+import { toaster, useDynamicDate } from "../../../constants/reusables";
+import OutsideClickHandler from "../../../hooks/useClickOutside";
+import { MdDeleteForever } from "react-icons/md";
 
 const Post = ({
   postId,
@@ -30,6 +39,8 @@ const Post = ({
   const name = username;
   const dispatch = useDispatch();
   const [isComments, setIsComments] = useState(false);
+  const [isPostOptions, setIsPostOptions] = useState(false);
+  const optionsMenuRef = useRef(null);
   // const [likedUsers, setLikedUsers] = useState(null);
   // const [commentedUsers, setCommentedUsers] = useState(null);
   const loggedInUserId = useSelector(getCurrentUserId);
@@ -39,11 +50,14 @@ const Post = ({
   );
 
   const isFirstInLikes = loggedInUserId === likes[0]?.userId;
-  console.log("isFirstInLikes", !isFirstInLikes);
   // const likeCount = Object.keys(likes).length;
   const likeCount = likes?.length;
   const [like] = useLikeMutation();
+  const [deletePost] = useDeletePostMutation();
   const formattedDate = useDynamicDate(timestamp);
+  const handlePostOptions = () => {
+    setIsPostOptions((prev) => !prev);
+  };
 
   // function renderLikedBy() {
   //   if (isFirstInLikes) {
@@ -62,8 +76,6 @@ const Post = ({
   //   return "";
   // }
 
-  useEffect(() => {}, [isLikedByLoggedInUser]);
-
   const handleLike = async () => {
     const credentials = {
       userId: loggedInUserId,
@@ -79,8 +91,25 @@ const Post = ({
       // Handle error here
     }
   };
+
   const handleComment = async () => {
     setIsComments((prev) => !prev);
+  };
+  const handlePostDeletion = async () => {
+    const credentials = {
+      postId,
+    };
+    try {
+      const updatedPost = await deletePost(credentials).unwrap();
+      dispatch(setPosts({ posts: updatedPost }));
+      toaster("Post Deleted Successfully!");
+      setIsPostOptions(false);
+    } catch (error) {
+      toaster(
+        "An unexpected error occurred while trying to delete post!",
+        true
+      );
+    }
   };
 
   return (
@@ -91,12 +120,30 @@ const Post = ({
           <p>{name}</p>
           <p>Published: {formattedDate?.ago || formattedDate?.date}</p>
         </div>
-        <BsThreeDots className="icon" />
+        <span ref={optionsMenuRef} className="close_menu">
+          <BsThreeDots onClick={handlePostOptions} className="icon" />
+        </span>
+
+        {isPostOptions && (
+          <OutsideClickHandler
+            onOutsideClick={setIsPostOptions}
+            menuRefs={[optionsMenuRef]}
+          >
+            <ul className="post_options">
+              <li onClick={handlePostDeletion}>
+                <MdDeleteForever /> delete
+              </li>
+              <li>
+                <BiEdit /> edit
+              </li>
+            </ul>
+          </OutsideClickHandler>
+        )}
       </div>
       <div className="post">
         {picsPath.length !== 0 && (
           <div className="img-wrapper">
-            <img src={picsPath[0]?.url} alt="post's image" />
+            <img src={picsPath[0]?.url || picsPath[0]} alt="post's image" />
           </div>
         )}
         <p className="desc">{description}</p>
@@ -130,14 +177,13 @@ const Post = ({
               <div className="img_cont">
                 {likes?.slice(0, 3).map(({ picsPath }, index) => {
                   return (
-                    <div className="img-wrapper" key={index}>
-                      <Profile img={picsPath} size="40px" radius="0" />
+                    <div key={index}>
+                      <Profile img={picsPath} size="40px" radius="50%" />
                     </div>
                   );
                 })}
               </div>
             )}
-
             {(isLikedByLoggedInUser || likes?.length !== 0) && (
               <div className="text_cont">
                 <span>
@@ -170,7 +216,6 @@ const Post = ({
               </div>
             )}
           </div>
-          {/* <p>{description}</p> */}
         </div>
         {isComments &&
           comments?.map(({ user, username, picsPath, comment }) => {

@@ -36,6 +36,7 @@ const refreshAccessToken = async (api, extraOptions) => {
   try {
     if (!persist && !stateToken) {
       api.dispatch(logOut());
+      Cookies.remove("session");
       return null;
     }
     const refreshResult = await baseQuery(`/refresh/${userId}`, api, {
@@ -59,6 +60,7 @@ const refreshAccessToken = async (api, extraOptions) => {
 
       return userData.key;
     }
+    Cookies.remove("session");
 
     return null; // Return null if refresh fails
   } catch (error) {
@@ -73,6 +75,8 @@ const refreshAccessToken = async (api, extraOptions) => {
         token: token, // Include the user ID as a parameter
       },
     });
+    Cookies.remove("session");
+
     api.dispatch(logOut());
 
     return null; // Return null if refresh fails
@@ -102,6 +106,7 @@ const baseQueryWithReAuth = async (args, api, extraOptions) => {
         });
       } else {
         console.log("Token refresh failed. Logging out...");
+        Cookies.remove("session");
 
         api.dispatch(logOut());
         return null;

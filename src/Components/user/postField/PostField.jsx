@@ -33,7 +33,7 @@ const PostField = () => {
     description: "",
     files: [],
   });
-  const { description, files } = formData;
+  const { description, files } = formData ?? {};
 
   const createPost = (e) => {
     const { name, value } = e.target;

@@ -15,6 +15,10 @@ export const GlobalStyles = createGlobalStyle`
 
 :root {
 --primary-color: #ffff;
+--lg-font-size: 3rem;
+--md-font-size: 2rem;
+--sm-font-size:.8rem;
+--df-font-size: 1rem;
 /* --primary-color: #000000; */
 --color-gray: #cccccc;
 --transparent-color: rgba(0, 0, 0, 0.514);

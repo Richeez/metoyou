@@ -20,9 +20,6 @@ export const useRefreshToken = ({ persist }) => {
 
       return response.data; // Return the refresh token
     } catch (error) {
-      // Handle error during refresh token request
-      // For example, perform logout or display an error message
-      console.log("Error refreshing token:", error);
       // Return null or handle the error accordingly based on your application's logic
       return null;
     }

@@ -60,7 +60,7 @@ const MobNavBar = ({ handleMenu, mobMenuRef }) => {
           <LinkCont>
             <LinkWrapper data-title="menu">
               <div onClick={(e) => handleMobMenuBar(e)} className="cover">
-                <MenuBar className="toggle" ref={mobMenuRef}>
+                <MenuBar className="close_menu" ref={mobMenuRef}>
                   <div />
                 </MenuBar>
               </div>

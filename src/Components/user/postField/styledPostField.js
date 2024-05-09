@@ -28,16 +28,6 @@ export const StyledPostField = styled.form`
     gap: 1.5rem;
   }
 
-  .img_wrapper {
-    img {
-      width: 100%;
-      height: 100%;
-      aspect-ratio: 1/1;
-      border-radius: 50%;
-      object-fit: cover;
-      object-position: center;
-    }
-  }
   .input_cont {
     width: 100%;
     height: max-content;

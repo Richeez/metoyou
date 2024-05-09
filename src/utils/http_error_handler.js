@@ -13,15 +13,14 @@ export default class HttpErrorHandler {
   static spitHttpErrorMsg(e, errorCallback) {
     let errorMessage;
     //? Check if environment is development
-    const isDevelopment = import.meta.env.MODE === "development";
-
+    // const isDevelopment = import.meta.env.MODE === "development";
+    const isDevelopment = typeof window !== "undefined";
+    console.log("isDevelopment", isDevelopment);
     // Check network status only if not in development mode
     if (isDevelopment) {
       errorMessage = navigator.onLine
         ? "Sorry, something went wrong. Please try again later"
         : "Oops! An error occurred!.\nEnsure your data connection is still right.";
-    } else {
-      errorMessage = "Sorry, something went wrong. Please try again later";
     }
 
     if (e !== undefined && e !== null) {

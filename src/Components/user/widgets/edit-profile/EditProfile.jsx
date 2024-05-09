@@ -52,7 +52,6 @@ const EditProfile = ({
   const dispatch = useDispatch();
 
   useEffect(() => {
-    console.log("🚀 ~ useEffect ~ newData:", newData);
     if (newData) {
       dispatch(setPosts({ posts: newData.posts }));
       dispatch(setCredentials({ ...newData }));
@@ -145,7 +144,6 @@ const EditProfile = ({
       imageArray,
     }).unwrap();
     setNewData(profileRes);
-    console.log("🚀 ~ handleUpdate ~ newData:", profileRes);
     // dispatch(setPosts({ ...newData }));
     setEditField({
       nickname: "",
@@ -173,7 +171,7 @@ const EditProfile = ({
       >
         <div className="header">
           <h1>Edit Profile</h1>
-          <div className="toggle" ref={closeRef}>
+          <div className="close_menu" ref={closeRef}>
             <MdClose onClick={handleToggle} className="icon" />
           </div>
         </div>

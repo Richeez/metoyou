@@ -55,7 +55,7 @@ const DeskNavBar = ({ handleMenu, deskMenuRef }) => {
                   className="tooltip"
                 /> */}
               <div onClick={(e) => handleDeskMenuBar(e)} className="cover">
-                <MenuBar className="toggle" ref={deskMenuRef}>
+                <MenuBar className="close_menu" ref={deskMenuRef}>
                   <div />
                 </MenuBar>
               </div>
