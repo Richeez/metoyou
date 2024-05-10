@@ -213,7 +213,7 @@ const PostField = () => {
           style={{
             display: "grid",
             gridAutoFlow: "dense",
-            gap: ".5rem",
+            gap: "0.2rem",
             maxWidth: "100%",
             maxHeight: "200px",
             overflowX: "hidden",
