@@ -50,10 +50,16 @@ const PostField = () => {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
+  //const handleFileInputChange = (e) => {
+   // const selectedFiles = Array.from(e?.target?.files);
+  //  setFormData((prev) => ({ ...prev, files: selectedFiles }));
+  //};
+
   const handleFileInputChange = (e) => {
     const selectedFiles = Array.from(e?.target?.files);
-    setFormData((prev) => ({ ...prev, files: selectedFiles }));
-  };
+    setFormData((prev) => ({ ...prev, files: [...prev.files, ...selectedFiles] }));
+};
+
 
   const removeFile = (index) => {
     const updatedFiles = [...formData.files];
