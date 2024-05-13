@@ -2,82 +2,46 @@ import { useState } from "react";
 import Carousel from "react-elastic-carousel";
 import "./LightboxGallery.css";
 import PropTypes from "prop-types";
+import { renderFileType } from "../../../constants/reusables";
 
-const LightboxGallery = ({ files }) => {
-  console.log("🚀 ~ LightboxGallery ~ files:", files);
-  const [isOpen, setIsOpen] = useState(true);
-  const [selectedFileIndex, setSelectedFileIndex] = useState(0);
+const LightBoxGallery = ({ children, files, imgIndex, setImgIndex }) => {
+  const [isOpen, setIsOpen] = useState(false);
 
-  const openLightbox = (index) => {
-    console.log("🚀 ~ openLightbox ~ index:", index);
-    setSelectedFileIndex(index);
+  const openLightBox = () => {
+    // if (typeof index === "object" && index.index !== undefined) {
+    //   selectedIndex = index.index;
+    // } else {
+    //   selectedIndex = index;
+    // }
     setIsOpen(true);
   };
 
-  const closeLightbox = () => {
+  const closeLightBox = () => {
     setIsOpen(false);
+    setImgIndex(0);
   };
 
   return (
-    <div>
-      <div className="gallery">
-        {files.map((file, index) => (
-          <div
-            key={index}
-            className="gallery-item"
-            onClick={() => openLightbox(index)}
-          >
-            {/* You can use different types of file previews based on the file type */}
-            {file.type.startsWith("image/") && (
-              <img src={file.src} alt={file.alt} />
-            )}
-            {file.type.startsWith("video/") && (
-              <video controls>
-                <source src={file.src} type={file.type} />
-              </video>
-            )}
-            {file.type.startsWith("audio/") && (
-              <audio controls>
-                <source src={file.src} type={file.type} />
-              </audio>
-            )}
-            {!file.type.startsWith("image/") &&
-              !file.type.startsWith("video/") &&
-              !file.type.startsWith("audio/") && <div>{file.name}</div>}
-          </div>
-        ))}
+    <div className="gallery">
+      <div className="gallery-item" onClick={openLightBox}>
+        {children}
       </div>
 
       {isOpen && (
-        <div className="lightbox">
-          <div className="close-button" onClick={closeLightbox}>
+        <div className="lightbox-gallery">
+          <div className="close-button" onClick={closeLightBox}>
             X
           </div>
           <Carousel
             itemsToShow={1}
             enableAutoPlay={false}
-            currentIndex={selectedFileIndex}
-            onChange={(index) => setSelectedFileIndex(index)}
+            initialActiveIndex={imgIndex ?? 0} // This should correctly set the current index of the Carousel
+            onChange={(index) => setImgIndex(index)} // This updates the image index when the Carousel index changes
           >
             {files.map((file, index) => (
-              <div key={index}>
-                {file.type.startsWith("image/") && (
-                  <img src={file.src} alt={file.alt} />
-                )}
-                {file.type.startsWith("video/") && (
-                  <video controls>
-                    <source src={file.src} type={file.type} />
-                  </video>
-                )}
-                {file.type.startsWith("audio/") && (
-                  <audio controls>
-                    <source src={file.src} type={file.type} />
-                  </audio>
-                )}
-                {!file.type.startsWith("image/") &&
-                  !file.type.startsWith("video/") &&
-                  !file.type.startsWith("audio/") && <div>{file.name}</div>}
-              </div>
+              <div style={{ width: "clamp( 200px, 30rem, 65vw)" }} key={index}>
+                {renderFileType(file)}
+              </div> // Ensure that each image has a unique key
             ))}
           </Carousel>
         </div>
@@ -86,8 +50,11 @@ const LightboxGallery = ({ files }) => {
   );
 };
 
-LightboxGallery.propTypes = {
+LightBoxGallery.propTypes = {
   files: PropTypes.array,
+  children: PropTypes.node,
+  imgIndex: PropTypes.number,
+  setImgIndex: PropTypes.func,
 };
 
-export default LightboxGallery;
+export default LightBoxGallery;

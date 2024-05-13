@@ -17,7 +17,7 @@ export const GlobalStyles = createGlobalStyle`
 --primary-color: #ffff;
 --lg-font-size: 3rem;
 --md-font-size: 2rem;
---sm-font-size:.8rem;
+--sm-font-size:0.8rem;
 --df-font-size: 1rem;
 /* --primary-color: #000000; */
 --color-gray: #cccccc;
@@ -369,16 +369,7 @@ button{
     font-weight: bold;
 
 }
-.imageBox{
-    width: 100%;
-    
-    img{
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        object-position: center;
-    }
-}
+
 
 .prev, .next {
   cursor: pointer;

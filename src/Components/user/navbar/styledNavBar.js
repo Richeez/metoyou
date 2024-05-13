@@ -1,28 +1,25 @@
 import styled, { css, keyframes } from "styled-components";
 
-
 export const StyledNavBar = styled.div`
-display: flex;
-align-items: center;
-width: 100%;
-height: 4.4rem;
-position: fixed;
-top: 0;
-transition: all 0.5s ease-in-out;
-font-family: inherit;
-z-index: 999;
-background-color: var(--primary-color);
-box-shadow: 2px 2px 5px var(--blueViolet);
-padding: 0.7rem;
-color: var(--color-gray-dark);
-
+  display: flex;
+  align-items: center;
+  width: 100%;
+  height: 4.4rem;
+  position: fixed;
+  top: 0;
+  transition: all 0.5s ease-in-out;
+  font-family: inherit;
+  z-index: 999;
+  background-color: var(--primary-color);
+  box-shadow: 2px 2px 5px var(--blueViolet);
+  padding: 0.7rem;
+  color: var(--color-gray-dark);
 `;
-
 
 export const NavCont = styled.nav`
   display: flex;
   width: 100%;
-background: var(--primary-color);
+  background: var(--primary-color);
   align-items: center;
   justify-content: center;
   padding: 0.7rem 1rem;
@@ -44,25 +41,24 @@ background: var(--primary-color);
   .search-area {
     display: flex;
     margin-right: auto;
-    width: fit-content ;
+    width: fit-content;
     align-items: center;
     justify-content: flex-start;
     overflow: hidden;
 
+    ${({ navTwo }) =>
+      navTwo &&
+      css`
+        padding-right: 0.5rem;
 
-    ${({ navTwo }) => navTwo && css`
-    padding-right: .5rem;
-    
-      .slideOpen {
-        width: 100%;
-        padding: 0.8rem 0.5rem 0.8rem .5rem;
-      }
-      .change {
-        border-radius: 1.5rem 0 0 1.5rem;
-      }
-
-    
-    `}
+        .slideOpen {
+          width: 100%;
+          padding: 0.8rem 0.5rem 0.8rem 0.5rem;
+        }
+        .change {
+          border-radius: 1.5rem 0 0 1.5rem;
+        }
+      `}
 
     @media screen and (min-width: 64rem) {
       width: 100%;
@@ -115,10 +111,7 @@ background: var(--primary-color);
       }
     }
   }
-    
-
 `;
-
 
 export const LinkCont = styled.ul`
   width: fit-content;
@@ -132,16 +125,15 @@ export const LinkCont = styled.ul`
   pointer-events: all;
   position: relative;
   margin-left: auto;
-  
+
   @media screen and (min-width: 45rem) {
     flex-direction: row;
     gap: 2rem;
   }
-  
+
   /* @media screen and (max-width: 884px) {
     flex-direction: row-reverse;
   } */
-  
 
   a {
     text-decoration: none;
@@ -187,21 +179,23 @@ export const LinkWrapper = styled.li`
   background: var(--color-gray-lyt);
   position: relative;
 
-  
-  &:not( :first-of-type ,:last-of-type):hover{
+  &:not(:first-of-type, :last-of-type):hover {
     background: var(--blueViolet);
-    .icon{
+    .icon {
       color: var(--primary-color);
     }
     transition: var(--transition);
-
-  }
-  
-  &[data-title="profile"]{
-    background: linear-gradient(to top right, var(--blueViolet-lyt), var(--color-gray-lyt));
   }
 
-  span{
+  &[data-title="profile"] {
+    background: linear-gradient(
+      to top right,
+      var(--blueViolet-lyt),
+      var(--color-gray-lyt)
+    );
+  }
+
+  span {
     position: absolute;
     width: 1.5rem;
     height: 1.5rem;
@@ -212,14 +206,13 @@ export const LinkWrapper = styled.li`
     justify-content: center;
     border-radius: 50%;
     text-align: center;
-font-weight: bolder;
-border: 1px solid var(--blueViolet);
+    font-weight: bolder;
+    border: 1px solid var(--blueViolet);
     top: 0;
     right: -10%;
     background: var(--color-gray);
     color: var(--blueViolet);
   }
-
 
   ${({ hide }) =>
     hide &&
@@ -244,24 +237,20 @@ border: 1px solid var(--blueViolet);
     font-size: 1.5rem;
   }
 
-  
-  
-  &:not(:first-of-type, :nth-of-type(4), :nth-of-type(5), :last-of-type){
+  &:not(:first-of-type, :nth-of-type(4), :nth-of-type(5), :last-of-type) {
     @media screen and (max-width: 912px) {
       display: none;
     }
-    
   }
 
   &:last-of-type {
     width: 3rem;
     height: 3rem;
-    
-    .cover{
+
+    .cover {
       border-radius: 50%;
       overflow: hidden;
     }
-    
   }
   &:nth-of-type(1) {
     border-radius: 10%;
@@ -274,23 +263,20 @@ border: 1px solid var(--blueViolet);
   &:nth-of-type(4) {
     display: flex;
 
-        @media screen and (max-width: 360px) {
+    @media screen and (max-width: 360px) {
       display: none;
     }
 
-    .icon{
+    .icon {
       color: var(--blueViolet);
     }
   }
   &:nth-of-type(5) {
     display: flex;
-    
 
     @media screen and (max-width: 280px) {
       display: none;
     }
-
-
   }
 
   @media screen and (min-width: 45rem) {
@@ -299,10 +285,7 @@ border: 1px solid var(--blueViolet);
     justify-content: center;
     font-size: 0.6rem;
   }
-
-
 `;
-
 
 const slideIn = keyframes`
 0%{
@@ -338,7 +321,6 @@ export const MenuBar = styled.div`
     background-color: var(--color-gray-dark);
     height: 2px;
     transition: all 1s ease-in-out;
-
   }
   &::before {
     width: 30%;
@@ -357,7 +339,7 @@ export const MenuBar = styled.div`
     width: 65%;
     border-radius: 2rem 0 0 2rem;
     padding: 0.1rem;
-    transition: width .5s ease-in-out;
+    transition: width 0.5s ease-in-out;
   }
 
   &:hover {
@@ -383,4 +365,3 @@ export const Image = styled.img`
   object-fit: cover;
   object-position: center;
 `;
-

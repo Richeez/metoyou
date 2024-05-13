@@ -18,7 +18,7 @@ export const StyledPost = styled.div`
         font-weight: bold;
         opacity: 0.6;
         /* color:var(--color-gray-dark); */
-        font-size: 0.8rem;
+        font-size: var(--sm-font-size);
         &:nth-of-type(1) {
           opacity: 1;
 
@@ -51,6 +51,7 @@ export const StyledPost = styled.div`
       gap: 0.5rem;
       list-style: none;
       text-transform: capitalize;
+      z-index: 5;
       li {
         cursor: pointer;
         border-radius: 5px;
@@ -70,18 +71,7 @@ export const StyledPost = styled.div`
   }
   .post {
     width: 100%;
-    .img-wrapper {
-      background: var(--color-white);
-      width: 100%;
-      height: 400px;
-      img {
-        aspect-ratio: 1/1;
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        object-position: top;
-      }
-    }
+
     .desc {
       padding-top: 1rem;
     }
@@ -139,7 +129,7 @@ export const StyledPost = styled.div`
             transform: translateY(-100%);
           }
           & > div .img_wrapper {
-            border: 2px solid var(--color-white);
+            /* border: 2px solid var(--color-white); */
           }
 
           & > div:nth-of-type(1) {
@@ -157,6 +147,7 @@ export const StyledPost = styled.div`
 
         .text_cont {
           padding: 0.5rem;
+          font-size: 0.9rem;
           color: var(--color-gray-dark);
         }
       }

@@ -20,9 +20,14 @@ import {
 } from "../../../manager/auth/authApiSlice";
 import Comment from "../widgets/comments/Comment";
 import { useRef, useState } from "react";
-import { toaster, useDynamicDate } from "../../../constants/reusables";
+import {
+  renderFileType,
+  toaster,
+  useDynamicDate,
+} from "../../../constants/reusables";
 import OutsideClickHandler from "../../../hooks/useClickOutside";
 import { MdDeleteForever } from "react-icons/md";
+import LightBoxGallery from "../../features/LightBoxGallery/LightboxGallery";
 
 const Post = ({
   postId,
@@ -40,6 +45,7 @@ const Post = ({
   const dispatch = useDispatch();
   const [isComments, setIsComments] = useState(false);
   const [isPostOptions, setIsPostOptions] = useState(false);
+  const [imgIndex, setImgIndex] = useState(0);
   const optionsMenuRef = useRef(null);
   // const [likedUsers, setLikedUsers] = useState(null);
   // const [commentedUsers, setCommentedUsers] = useState(null);
@@ -58,23 +64,6 @@ const Post = ({
   const handlePostOptions = () => {
     setIsPostOptions((prev) => !prev);
   };
-
-  // function renderLikedBy() {
-  //   if (isFirstInLikes) {
-  //     return likes[0]?.username;
-  //   } else {
-  //     return "You";
-  //   }
-  // }
-
-  // function renderAdditionalLikes() {
-  //   if (likes && likes.length > 2) {
-  //     const additionalLikesCount = likes.length - 2;
-  //     const plural = additionalLikesCount > 1 ? "s" : "";
-  //     return `and ${additionalLikesCount} other${plural}`;
-  //   }
-  //   return "";
-  // }
 
   const handleLike = async () => {
     const credentials = {
@@ -120,10 +109,11 @@ const Post = ({
           <p>{name}</p>
           <p>Published: {formattedDate?.ago || formattedDate?.date}</p>
         </div>
-        <span ref={optionsMenuRef} className="close_menu">
-          <BsThreeDots onClick={handlePostOptions} className="icon" />
-        </span>
-
+        {postUserId === loggedInUserId && (
+          <span ref={optionsMenuRef} className="close_menu">
+            <BsThreeDots onClick={handlePostOptions} className="icon" />
+          </span>
+        )}
         {isPostOptions && (
           <OutsideClickHandler
             onOutsideClick={setIsPostOptions}
@@ -142,8 +132,72 @@ const Post = ({
       </div>
       <div className="post">
         {picsPath.length !== 0 && (
-          <div className="img-wrapper">
-            <img src={picsPath[0]?.url || picsPath[0]} alt="post's image" />
+          <div
+            className="previewFiles"
+            style={{
+              display: "grid",
+              gridAutoFlow: "dense",
+              position: "relative",
+              gap: ".2rem",
+              maxWidth: "100%",
+              gridTemplateColumns:
+                "repeat(auto-fit, minmax(min(100%, 150px), 1fr))",
+              padding: 0,
+            }}
+          >
+            {picsPath?.length > 1 && (
+              <div
+                key="remaining"
+                className="previewFile"
+                style={{
+                  display: "grid",
+                  placeItems: "center",
+                  position: "absolute",
+                  right: "5%",
+                  bottom: "5%",
+                  zIndex: "4",
+                  overflow: " hidden",
+                  padding: ".2rem",
+                  borderRadius: "3px",
+                  background: "rgba(0, 0, 0, 0.2)",
+                }}
+              >
+                <div
+                  style={{
+                    fontSize: "20px",
+                    color: "#ffffff",
+                    fontWeight: "bold",
+                  }}
+                >
+                  +{picsPath?.length - 2}
+                </div>
+              </div>
+            )}
+
+            {picsPath?.slice(0, 4).map((attachment, index) => (
+              <div
+                key={index}
+                className="previewFile"
+                style={{
+                  display: "grid",
+                  placeItems: "center",
+                  position: "relative",
+                  overflow: " hidden",
+                  border: "1px solid #ccc",
+                  borderRadius: "8px",
+                  boxShadow: "0 0 4px rgba(0, 0, 0, 0.2)",
+                }}
+                onClick={() => setImgIndex(index)} // Pass the index of the child clicked
+              >
+                <LightBoxGallery
+                  files={picsPath}
+                  imgIndex={Number(imgIndex)} // Ensure imgIndex is a number
+                  setImgIndex={setImgIndex}
+                >
+                  {renderFileType(attachment, index, setImgIndex)}
+                </LightBoxGallery>
+              </div>
+            ))}
           </div>
         )}
         <p className="desc">{description}</p>

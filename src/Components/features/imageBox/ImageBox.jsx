@@ -1,9 +1,28 @@
 /* eslint-disable react/prop-types */
 
-const ImageBox = ({ src }) => {
+const ImageBox = ({ src, curve, others, onclick }) => {
   return (
-    <div className="imageBox">
-      {src ? <img src={src} loading="lazy" alt="acad segment" /> : null}
+    <div
+      onClick={onclick}
+      style={{
+        borderRadius: curve ? "1rem" : "",
+        ...others,
+      }}
+    >
+      {src ? (
+        <img
+          src={src}
+          style={{
+            objectFit: "cover",
+            objectPosition: "top",
+            aspectRatio: "1/1",
+            width: " 100%",
+            height: "100%",
+          }}
+          loading="lazy"
+          alt="graphics"
+        />
+      ) : null}
     </div>
   );
 };

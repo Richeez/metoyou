@@ -21,6 +21,7 @@ import useTitle from "../../../hooks/useTitle";
 // import PostsWidget from "../post/postsWidget";
 import OutsideClickHandler from "../../../hooks/useClickOutside";
 import { Section } from "../../features/container";
+import LightBoxGallery from "../../features/LightBoxGallery/LightboxGallery";
 
 const UserProfile = () => {
   const [toggle, setToggle] = useState(false);
@@ -28,6 +29,7 @@ const UserProfile = () => {
   const cover = useRef(null);
   const picture = useRef(null);
   const { userId } = useParams();
+  const [imgIndex, setImgIndex] = useState(0);
   const _id = useSelector(getCurrentUserId);
   const [id, setUserId] = useState(null); // Assuming you have a state to store the current user ID
   const [user, setUser] = useState(null);
@@ -155,7 +157,13 @@ const UserProfile = () => {
               />
             </div>
             <div className="profile-info flex-cont">
-              <Profile img={picsPath} size={"110px"} />
+              <LightBoxGallery
+                files={picsPath}
+                imgIndex={imgIndex}
+                setImgIndex={setImgIndex}
+              >
+                <Profile img={picsPath} size={"110px"} />
+              </LightBoxGallery>
               <div className="profile-user tac">
                 <p className="profile-name">
                   {username ? username : "username"}

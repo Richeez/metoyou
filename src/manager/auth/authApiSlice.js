@@ -51,7 +51,7 @@ export const authApiSlice = apiSlice.injectEndpoints({
         return {
           url: `/posts/edit/post?postId=${postId}`,
           method: "PATCH",
-          body: { contents },
+          body: { ...contents },
         };
       },
     }),

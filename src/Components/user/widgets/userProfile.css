@@ -36,8 +36,8 @@
 }
 
 .profile-info .img_wrapper {
-  border: 2px solid var(--color-white);
   position: absolute;
+  cursor: pointer;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -120%);
