@@ -50,10 +50,16 @@ const PostField = () => {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
+  //const handleFileInputChange = (e) => {
+   // const selectedFiles = Array.from(e?.target?.files);
+  //  setFormData((prev) => ({ ...prev, files: selectedFiles }));
+  //};
+
   const handleFileInputChange = (e) => {
     const selectedFiles = Array.from(e?.target?.files);
-    setFormData((prev) => ({ ...prev, files: selectedFiles }));
-  };
+    setFormData((prev) => ({ ...prev, files: [...prev.files, ...selectedFiles] }));
+};
+
 
   const removeFile = (index) => {
     const updatedFiles = [...formData.files];
@@ -207,7 +213,7 @@ const PostField = () => {
           style={{
             display: "grid",
             gridAutoFlow: "dense",
-            gap: ".5rem",
+            gap: "0.2rem",
             maxWidth: "100%",
             maxHeight: "200px",
             overflowX: "hidden",
@@ -231,8 +237,8 @@ const PostField = () => {
                 position: "relative",
                 overflow: " hidden",
                 padding: "8px",
-                width: "100px",
-                height: "100px",
+               // width: "100px",
+               // height: "100px",
                 border: "1px solid #ccc",
                 borderRadius: "8px",
                 boxShadow: "0 0 4px rgba(0, 0, 0, 0.2)",

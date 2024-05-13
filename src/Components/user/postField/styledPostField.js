@@ -119,6 +119,11 @@ export const StyledPostField = styled.form`
     width: 100%;
     height: 100%;
 
+    &::-webkit-scrollbar {
+      width: 0.3rem;
+      height: 0.2rem;
+    }
+
     .icon {
       --color-red: red;
       position: absolute;
