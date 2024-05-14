@@ -38,7 +38,7 @@ function App() {
         </Route>
         <Route path="/login" element={<LogIn />} />
         <Route path="/sign-up" element={<SignUp />} />
-        <Route path="/error" element={<ExpSession />} />
+        <Route path="/token_expired" element={<ExpSession />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </main>

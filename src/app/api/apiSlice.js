@@ -3,6 +3,7 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { setToken, logOut } from "../../manager/auth/authSlice";
 import Cookies from "js-cookie";
 import EndPoints from "./http/endPoints";
+import { useNavigate } from "react-router-dom";
 
 const baseQuery = fetchBaseQuery({
   baseUrl: EndPoints.ROOT_DOMAIN,
@@ -84,7 +85,6 @@ const refreshAccessToken = async (api, extraOptions) => {
 };
 
 const baseQueryWithReAuth = async (args, api, extraOptions) => {
-  // const location = useLocation();
   try {
     const result = await baseQuery(args, api, extraOptions);
 
@@ -105,11 +105,10 @@ const baseQueryWithReAuth = async (args, api, extraOptions) => {
           },
         });
       } else {
-        console.log("Token refresh failed. Logging out...");
+        console.log("Token expired. Redirecting...");
         Cookies.remove("session");
-
-        api.dispatch(logOut());
-        return null;
+        window.location.href = "/token_expired";
+        // api.dispatch(logOut());
       }
     }
 

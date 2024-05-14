@@ -2,14 +2,18 @@ import { useNavigate } from "react-router-dom";
 import { StyledExpSession } from "./styledExpSession";
 import { NavBtn } from "../../features/button";
 import { Section } from "../../features/container";
-import PropTypes from "prop-types";
+// import PropTypes from "prop-types";
+import { useDispatch } from "react-redux";
+import { logOut } from "../../../manager/auth/authSlice";
 
-const ExpSession = ({ location }) => {
-  console.log("🚀 ~ ExpSession ~ location:", location);
+const ExpSession = () => {
+  // console.log("🚀 ~ ExpSession ~ location:", location);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const redirect = () => {
-    navigate("/login", { state: { from: location }, replace: true });
+    dispatch(logOut());
+    navigate("/login");
   };
   return (
     <StyledExpSession>
@@ -21,8 +25,8 @@ const ExpSession = ({ location }) => {
   );
 };
 
-ExpSession.propTypes = {
-  location: PropTypes.object,
-};
+// ExpSession.propTypes = {
+//   location: PropTypes.object,
+// };
 
 export default ExpSession;

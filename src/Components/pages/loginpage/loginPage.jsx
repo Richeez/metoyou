@@ -10,8 +10,7 @@ import { Logging } from "../../../svgs";
 import Cookies from "js-cookie";
 import { FileInputWrapper } from "../../features/inputs/styledInput";
 import useToggle from "../../../hooks/useToggle";
-import APIService from "../../../app/api/http/api_services";
-import { toaster } from "../../../constants/reusables";
+import HttpErrorHandler from "../../../utils/http_error_handler";
 
 function LoginPage() {
   const [eyesOpen, setEyesOpen] = useState(false);
@@ -37,42 +36,70 @@ function LoginPage() {
   const location = useLocation();
   const from = location?.state?.from?.pathname || "/";
   const [login, { isLoading }] = useLoginMutation();
+  // console.log("error", error);
+
+  // const handleLogin = async (e) => {
+  //   e.preventDefault();
+  //   try {
+  //     const requestBody = {
+  //       username,
+  //       password,
+  //     };
+  //     APIService.logUserIn(login, requestBody, (response, error) => {
+  //       //? Assuming response is an object with a 'data' property
+  //       const data = response ?? {};
+  //       if (error) {
+  //         return;
+  //       }
+  //       let message = response?.message;
+  //       toaster(message);
+
+  //       dispatch(setCredentials({ ...data }));
+  //       dispatch(setToken(data.key));
+  //       const access = {
+  //         id: data.rest?._id,
+  //         token: data.key,
+  //       };
+  //       Cookies.set(
+  //         "session",
+  //         JSON.stringify(access) /*, { expires: 1 / 720 }*/
+  //       );
+  //       setUserInfo({
+  //         username: "",
+  //         password: "",
+  //       });
+  //       navigate(from, { replace: true });
+  //     });
+  //   } catch (err) {
+  //     toaster(err?.message, true);
+  //   }
+  // };
 
   // --- The Login function ---
+  // console.log("isError", isError);
   const handleLogin = async (e) => {
     e.preventDefault();
-    try {
-      const requestBody = {
-        username,
-        password,
-      };
-      APIService.logUserIn(login, requestBody, (response, error) => {
-        //? Assuming response is an object with a 'data' property
-        const data = response ?? {};
-        if (error) {
-          return;
-        }
-        let message = response?.message;
-        toaster(message);
 
-        dispatch(setCredentials({ ...data }));
-        dispatch(setToken(data.key));
-        const access = {
-          id: data.rest?._id,
-          token: data.key,
-        };
-        Cookies.set(
-          "session",
-          JSON.stringify(access) /*, { expires: 1 / 720 }*/
-        );
-        setUserInfo({
-          username: "",
-          password: "",
-        });
-        navigate(from, { replace: true });
+    try {
+      const data = await login({
+        user: username.trim(),
+        pwd: password.trim(),
+      }).unwrap();
+
+      dispatch(setCredentials({ ...data }));
+      dispatch(setToken(data.key));
+      const access = {
+        id: data.rest?._id,
+        token: data.key,
+      };
+      Cookies.set("session", JSON.stringify(access) /*, { expires: 1 / 720 }*/);
+      setUserInfo({
+        username: "",
+        password: "",
       });
+      navigate(from, { replace: true });
     } catch (err) {
-      toaster(err?.message, true);
+      HttpErrorHandler.spitHttpErrorMsg(err);
     }
   };
 

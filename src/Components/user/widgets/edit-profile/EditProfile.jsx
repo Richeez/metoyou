@@ -20,6 +20,7 @@ import {
   toaster,
   uploadFile,
 } from "../../../../constants/reusables";
+import HttpErrorHandler from "../../../../utils/http_error_handler";
 
 const EditProfile = ({
   handleToggle,
@@ -135,24 +136,28 @@ const EditProfile = ({
       }
     }
 
-    const profileRes = await updateProfile({
-      userId: id,
-      nickname,
-      occupation,
-      email,
-      location,
-      imageArray,
-    }).unwrap();
-    setNewData(profileRes);
+    try {
+      const profileRes = await updateProfile({
+        userId: id,
+        nickname,
+        occupation,
+        email,
+        location,
+        imageArray,
+      }).unwrap();
+      setNewData(profileRes);
+      setEditField({
+        nickname: "",
+        occupation: "",
+        email: "",
+        location: "",
+        images: [],
+      });
+      handleToggle();
+    } catch (error) {
+      HttpErrorHandler.spitHttpErrorMsg(error);
+    }
     // dispatch(setPosts({ ...newData }));
-    setEditField({
-      nickname: "",
-      occupation: "",
-      email: "",
-      location: "",
-      images: [],
-    });
-    handleToggle();
   };
 
   return (

@@ -12,6 +12,7 @@ import Button from "../../features/animated buttons/Button";
 // import { ImageBox } from "../../features";
 import { FaTimes } from "react-icons/fa";
 import { toaster, uploadFile } from "../../../constants/reusables";
+import HttpErrorHandler from "../../../utils/http_error_handler";
 // import LightboxGallery from "../../features/LightBoxGallery/LightBoxGallery";
 
 const PostField = () => {
@@ -51,15 +52,17 @@ const PostField = () => {
   };
 
   //const handleFileInputChange = (e) => {
-   // const selectedFiles = Array.from(e?.target?.files);
+  // const selectedFiles = Array.from(e?.target?.files);
   //  setFormData((prev) => ({ ...prev, files: selectedFiles }));
   //};
 
   const handleFileInputChange = (e) => {
     const selectedFiles = Array.from(e?.target?.files);
-    setFormData((prev) => ({ ...prev, files: [...prev.files, ...selectedFiles] }));
-};
-
+    setFormData((prev) => ({
+      ...prev,
+      files: [...prev.files, ...selectedFiles],
+    }));
+  };
 
   const removeFile = (index) => {
     const updatedFiles = [...formData.files];
@@ -116,9 +119,13 @@ const PostField = () => {
     e.preventDefault();
 
     if (files?.length > 0) {
-      attachments = await uploadFile(files);
-
-      console.log("fileUrl", attachments);
+      try {
+        attachments = await uploadFile(files);
+        console.log("fileUrl", attachments);
+      } catch (error) {
+        console.log("error", error);
+        HttpErrorHandler.spitHttpErrorMsg(error);
+      }
     }
 
     if (!files.length && !description) {
@@ -141,7 +148,7 @@ const PostField = () => {
       });
       toaster("Post Published Successfully!");
     } catch (err) {
-      return toaster(err, true);
+      HttpErrorHandler.spitHttpErrorMsg(err);
     }
   };
 
@@ -237,8 +244,8 @@ const PostField = () => {
                 position: "relative",
                 overflow: " hidden",
                 padding: "8px",
-               // width: "100px",
-               // height: "100px",
+                // width: "100px",
+                // height: "100px",
                 border: "1px solid #ccc",
                 borderRadius: "8px",
                 boxShadow: "0 0 4px rgba(0, 0, 0, 0.2)",

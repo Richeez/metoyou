@@ -11,17 +11,29 @@ import Post from "./Post";
 import { Fetching } from "../../../svgs";
 import Lottie from "lottie-react";
 import Empty from "../profile/empty-state.json";
+import HttpErrorHandler from "../../../utils/http_error_handler";
 
 const PostsWidget = React.memo(({ userId, isProfile = false }) => {
   const dispatch = useDispatch();
   const posts = useSelector(getCurrentPost);
 
-  const {
-    data: post,
-    isLoading,
-    isError,
-    error,
-  } = isProfile ? useGetUserPostsQuery(userId) : useGetUsersPostsQuery();
+  let post = null;
+  let isLoading = true;
+  let isError = false;
+  let error = null;
+
+  try {
+    ({
+      data: post,
+      isLoading,
+      isError,
+      error,
+    } = isProfile ? useGetUserPostsQuery(userId) : useGetUsersPostsQuery());
+  } catch (error) {
+    isError = true;
+    HttpErrorHandler.spitHttpErrorMsg(error);
+    console.error("Error fetching posts:", error);
+  }
 
   const memoizedDispatch = useMemo(() => dispatch, [dispatch]);
 

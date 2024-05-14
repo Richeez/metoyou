@@ -28,6 +28,7 @@ import {
 import OutsideClickHandler from "../../../hooks/useClickOutside";
 import { MdDeleteForever } from "react-icons/md";
 import LightBoxGallery from "../../features/LightBoxGallery/LightboxGallery";
+import HttpErrorHandler from "../../../utils/http_error_handler";
 
 const Post = ({
   postId,
@@ -67,8 +68,7 @@ const Post = ({
 
   const handleLike = async () => {
     const credentials = {
-      userId: loggedInUserId,
-      id: postId,
+      postId,
     };
 
     try {
@@ -76,8 +76,8 @@ const Post = ({
       const updatedPost = await like(credentials).unwrap();
       dispatch(setPost({ post: updatedPost }));
     } catch (error) {
-      console.error("Like error:", error);
-      // Handle error here
+      //? Handle error here
+      HttpErrorHandler.spitHttpErrorMsg(error);
     }
   };
 
@@ -110,9 +110,9 @@ const Post = ({
           <p>Published: {formattedDate?.ago || formattedDate?.date}</p>
         </div>
         {postUserId === loggedInUserId && (
-          <span ref={optionsMenuRef} className="close_menu">
-            <BsThreeDots onClick={handlePostOptions} className="icon" />
-          </span>
+        <span ref={optionsMenuRef} className="close_menu">
+          <BsThreeDots onClick={handlePostOptions} className="icon" />
+        </span>
         )}
         {isPostOptions && (
           <OutsideClickHandler
@@ -145,7 +145,7 @@ const Post = ({
               padding: 0,
             }}
           >
-            {picsPath?.length > 1 && (
+            {picsPath?.length > 4 && (
               <div
                 key="remaining"
                 className="previewFile"
@@ -169,7 +169,7 @@ const Post = ({
                     fontWeight: "bold",
                   }}
                 >
-                  +{picsPath?.length - 2}
+                  +{picsPath?.length - 4}
                 </div>
               </div>
             )}

@@ -1,4 +1,6 @@
 import { apiSlice } from "../../app/api/apiSlice";
+import HttpErrorHandler from "../../utils/http_error_handler";
+import HttpSuccessDataHandler from "../../utils/http_success_data_handler";
 
 export const authApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
@@ -8,6 +10,13 @@ export const authApiSlice = apiSlice.injectEndpoints({
         method: "POST",
         body: { ...credentials },
       }),
+      async onfulfilled(response) {
+        return HttpSuccessDataHandler.getSuccessResponseData(response);
+      },
+      async onrejected(error) {
+        HttpErrorHandler.spitHttpErrorMsg(error);
+        console.error("Login error:", error);
+      },
     }),
     post: builder.mutation({
       query: (credentials) => ({
@@ -15,6 +24,13 @@ export const authApiSlice = apiSlice.injectEndpoints({
         method: "POST",
         body: { ...credentials },
       }),
+      async onfulfilled(response) {
+        return HttpSuccessDataHandler.getSuccessResponseData(response);
+      },
+      async onrejected(error) {
+        HttpErrorHandler.spitHttpErrorMsg(error);
+        console.error("Post error:", error);
+      },
     }),
     updateProfile: builder.mutation({
       query: (credentials) => ({
@@ -22,16 +38,29 @@ export const authApiSlice = apiSlice.injectEndpoints({
         method: "PATCH",
         body: { ...credentials },
       }),
+
+      async onfulfilled(response) {
+        return HttpSuccessDataHandler.getSuccessResponseData(response);
+      },
+      async onrejected(error) {
+        HttpErrorHandler.spitHttpErrorMsg(error);
+        console.error("profile update error:", error);
+      },
     }),
     like: builder.mutation({
       query: (credentials) => {
-        const { id, userId } = credentials;
+        const { postId } = credentials;
 
         return {
-          url: `/posts/${id}/like`,
+          url: `/posts/${postId}/like`,
           method: "PATCH",
-          body: { userId },
         };
+      },
+      async onfulfilled(response) {
+        return HttpSuccessDataHandler.getSuccessResponseData(response);
+      },
+      async onrejected(error) {
+        return HttpErrorHandler.spitHttpErrorMsg(error);
       },
     }),
     deletePost: builder.mutation({
@@ -42,6 +71,13 @@ export const authApiSlice = apiSlice.injectEndpoints({
           url: `/posts/delete/post?postId=${postId}`,
           method: "DELETE",
         };
+      },
+      async onfulfilled(response) {
+        return HttpSuccessDataHandler.getSuccessResponseData(response);
+      },
+      async onrejected(error) {
+        HttpErrorHandler.spitHttpErrorMsg(error);
+        console.error("delete error:", error);
       },
     }),
     editPost: builder.mutation({
@@ -55,6 +91,13 @@ export const authApiSlice = apiSlice.injectEndpoints({
         };
       },
     }),
+    async onfulfilled(response) {
+      return HttpSuccessDataHandler.getSuccessResponseData(response);
+    },
+    async onrejected(error) {
+      HttpErrorHandler.spitHttpErrorMsg(error);
+      console.error("Edit error:", error);
+    },
   }),
 });
 

@@ -4,8 +4,10 @@ import { FaEyeSlash, FaEye, FaArrowRight } from "react-icons/fa";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Logging } from "../../../svgs";
-import { toaster } from "../../../constants/reusables";
-import APIService from "../../../app/api/http/api_services";
+import { axiosPrivate } from "../../../app/api/axios";
+import EndPoints from "../../../app/api/http/endPoints";
+import HttpSuccessDataHandler from "../../../utils/http_success_data_handler";
+import HttpErrorHandler from "../../../utils/http_error_handler";
 
 function SignUpPage() {
   const navigate = useNavigate();
@@ -29,30 +31,22 @@ function SignUpPage() {
   const signUp = async () => {
     setLoadingDiv(true);
 
-    const requestBody = {
-      fullName,
-      email,
-      password,
-    };
-
     try {
-      APIService.signUp(requestBody, (response, error) => {
-        console.log("🚀 ~ APIService.signUp ~ error:", error);
-        //? Assuming response is an object with a 'data' property
-        const data = response ?? {};
-        if (error) {
-          setLoadingDiv(false);
-          return;
-        }
-        let message = data?.message;
-        toaster(message);
+      const response = await axiosPrivate.post(
+        `${EndPoints.ROOT_DOMAIN}/register`,
+        JSON.stringify({
+          user: fullName.trim(),
+          email: email.trim(),
+          pwd: password.trim(),
+        })
+      );
 
-        setLoadingDiv(false);
-        navigate("/login");
-      });
+      HttpSuccessDataHandler.getSuccessResponseData(response);
+      setLoadingDiv(false);
+      navigate("/login");
     } catch (err) {
       setLoadingDiv(false);
-      toaster(err?.message, true);
+      HttpErrorHandler.spitHttpErrorMsg(err);
     }
   };
 

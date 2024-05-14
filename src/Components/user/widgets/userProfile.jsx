@@ -14,14 +14,14 @@ import { BackDrop } from "../../features/backdrop";
 import EditProfile from "./edit-profile/EditProfile";
 import { MdLocationPin } from "react-icons/md";
 import { getCurrentUserId } from "../../../manager/auth/authSlice";
-import { Navigate, useParams } from "react-router-dom";
-import { NotFound } from "../../pages";
+import { useParams } from "react-router-dom";
 import { Fetching } from "../../../svgs";
 import useTitle from "../../../hooks/useTitle";
 // import PostsWidget from "../post/postsWidget";
 import OutsideClickHandler from "../../../hooks/useClickOutside";
 import { Section } from "../../features/container";
 import LightBoxGallery from "../../features/LightBoxGallery/LightboxGallery";
+import HttpErrorHandler from "../../../utils/http_error_handler";
 
 const UserProfile = () => {
   const [toggle, setToggle] = useState(false);
@@ -83,12 +83,25 @@ const UserProfile = () => {
     });
   }, []);
 
+  let res = null;
+  let isLoading = true;
+  let isError = false;
+  let error = null;
+  let isSuccess = null;
+
   const profileUserId = userId;
-  const currentUserId =
-    profileUserId === id
-      ? useGetUserIdQuery(_id)
-      : useGetUserIdQuery(profileUserId);
-  const { data: res, error, isLoading, isSuccess, isError } = currentUserId;
+
+  try {
+    const currentUserId =
+      profileUserId === id
+        ? useGetUserIdQuery(_id)
+        : useGetUserIdQuery(profileUserId);
+    ({ data: res, isLoading, isError, isSuccess, error } = currentUserId);
+  } catch (error) {
+    isError = true;
+    HttpErrorHandler.spitHttpErrorMsg(error);
+    console.error("Error fetching user:", error);
+  }
 
   useEffect(() => {
     setUserId(res); // Set the current user ID based on your logic
@@ -111,8 +124,8 @@ const UserProfile = () => {
     );
   } else if (isError) {
     const statusCode = error?.status;
-
-    profile = statusCode === 404 ? <NotFound /> : <Navigate to="/login" />;
+    console.log("statusCode", statusCode);
+    // profile = statusCode === 404 ? <NotFound /> : <Navigate to="/login" />;
   } else if (isSuccess && user) {
     const {
       username,

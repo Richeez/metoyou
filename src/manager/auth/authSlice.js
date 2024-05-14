@@ -37,6 +37,10 @@ const authSlice = createSlice({
       });
       state.posts = updatedPosts;
     },
+    // ,
+    // navigateToLogin: () => {
+    //   navigate("/token-expired"); // Example navigation action
+    // },
   },
 });
 
