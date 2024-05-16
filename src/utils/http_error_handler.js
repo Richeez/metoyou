@@ -1,5 +1,5 @@
 /* eslint-disable no-prototype-builtins */
-import { toaster } from "../constants/reusables";
+import { toaster } from "../helpers/reusables";
 
 // Define UnauthorizedError as a standalone class
 class UnauthorizedError extends Error {

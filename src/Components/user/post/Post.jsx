@@ -21,14 +21,15 @@ import {
 import Comment from "../widgets/comments/Comment";
 import { useRef, useState } from "react";
 import {
-  renderFileType,
+  capitalizeFirstLetter,
   toaster,
   useDynamicDate,
-} from "../../../constants/reusables";
+} from "../../../helpers/reusables";
 import OutsideClickHandler from "../../../hooks/useClickOutside";
 import { MdDeleteForever } from "react-icons/md";
 import LightBoxGallery from "../../features/LightBoxGallery/LightboxGallery";
 import HttpErrorHandler from "../../../utils/http_error_handler";
+import RenderFileType from "../../features/RenderFileType";
 
 const Post = ({
   postId,
@@ -42,7 +43,8 @@ const Post = ({
   comments,
   timestamp,
 }) => {
-  const name = username;
+  const name = capitalizeFirstLetter(username);
+
   const dispatch = useDispatch();
   const [isComments, setIsComments] = useState(false);
   const [isPostOptions, setIsPostOptions] = useState(false);
@@ -55,6 +57,21 @@ const Post = ({
   const isLikedByLoggedInUser = likes?.some(
     (like) => like.userId === loggedInUserId
   );
+
+  const dynamicGridFlow = (length) => {
+    if (length === 1) return "map_1";
+    if (length === 2) return "map_2";
+    if (length === 3) return "map_3";
+    if (length === 4) return "map_4";
+    if (length >= 5) return "map_5";
+  };
+
+  console.log(dynamicGridFlow(1)); // Expected output: "map_1"
+  console.log(dynamicGridFlow(2)); // Expected output: "map_2"
+  console.log(dynamicGridFlow(3)); // Expected output: "map_3"
+  console.log(dynamicGridFlow(4)); // Expected output: "map_4"
+  console.log(dynamicGridFlow(5)); // Expected output: "map_5"
+  console.log(dynamicGridFlow(6));
 
   const isFirstInLikes = loggedInUserId === likes[0]?.userId;
   // const likeCount = Object.keys(likes).length;
@@ -110,9 +127,9 @@ const Post = ({
           <p>Published: {formattedDate?.ago || formattedDate?.date}</p>
         </div>
         {postUserId === loggedInUserId && (
-        <span ref={optionsMenuRef} className="close_menu">
-          <BsThreeDots onClick={handlePostOptions} className="icon" />
-        </span>
+          <span ref={optionsMenuRef} className="close_menu">
+            <BsThreeDots onClick={handlePostOptions} className="icon" />
+          </span>
         )}
         {isPostOptions && (
           <OutsideClickHandler
@@ -132,56 +149,17 @@ const Post = ({
       </div>
       <div className="post">
         {picsPath.length !== 0 && (
-          <div
-            className="previewFiles"
-            style={{
-              display: "grid",
-              gridAutoFlow: "dense",
-              position: "relative",
-              gap: ".2rem",
-              maxWidth: "100%",
-              gridTemplateColumns:
-                "repeat(auto-fit, minmax(min(100%, 150px), 1fr))",
-              padding: 0,
-            }}
-          >
-            {picsPath?.length > 4 && (
-              <div
-                key="remaining"
-                className="previewFile"
-                style={{
-                  display: "grid",
-                  placeItems: "center",
-                  position: "absolute",
-                  right: "5%",
-                  bottom: "5%",
-                  zIndex: "4",
-                  overflow: " hidden",
-                  padding: ".2rem",
-                  borderRadius: "3px",
-                  background: "rgba(0, 0, 0, 0.2)",
-                }}
-              >
-                <div
-                  style={{
-                    fontSize: "20px",
-                    color: "#ffffff",
-                    fontWeight: "bold",
-                  }}
-                >
-                  +{picsPath?.length - 4}
-                </div>
-              </div>
-            )}
-
-            {picsPath?.slice(0, 4).map((attachment, index) => (
+          <div className={`files_cont ${dynamicGridFlow(picsPath?.length)}`}>
+            {picsPath?.slice(0, 5).map((attachment, index) => (
               <div
                 key={index}
-                className="previewFile"
+                className="file_wrapper"
                 style={{
                   display: "grid",
                   placeItems: "center",
                   position: "relative",
+                  width: "100%",
+                  height: "100%",
                   overflow: " hidden",
                   border: "1px solid #ccc",
                   borderRadius: "8px",
@@ -189,12 +167,46 @@ const Post = ({
                 }}
                 onClick={() => setImgIndex(index)} // Pass the index of the child clicked
               >
+                {picsPath?.length > 5 && (
+                  <span
+                    key="remaining"
+                    className="previewFile"
+                    style={{
+                      placeItems: "center",
+                      position: "absolute",
+                      inset: "0",
+                      zIndex: "4",
+                      overflow: " hidden",
+                      padding: ".2rem",
+                      borderRadius: "3px",
+                      filter: "brightness(90%)",
+                      // background: "var(--blueViolet-lyt)",
+                      background: "rgba(0, 0, 0, 0.658)",
+                    }}
+                  >
+                    <div
+                      style={{
+                        fontSize: "25px",
+                        color: "#ffffff",
+                        fontWeight: "bold",
+                      }}
+                    >
+                      +{picsPath?.length - 5}
+                    </div>
+                  </span>
+                )}
                 <LightBoxGallery
                   files={picsPath}
                   imgIndex={Number(imgIndex)} // Ensure imgIndex is a number
                   setImgIndex={setImgIndex}
                 >
-                  {renderFileType(attachment, index, setImgIndex)}
+                  {
+                    <RenderFileType
+                      attachment={attachment}
+                      index={index}
+                      setImgIndex={setImgIndex}
+                    />
+                  }
                 </LightBoxGallery>
               </div>
             ))}

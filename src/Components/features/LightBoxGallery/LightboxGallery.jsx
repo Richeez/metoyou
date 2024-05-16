@@ -2,17 +2,12 @@ import { useState } from "react";
 import Carousel from "react-elastic-carousel";
 import "./LightboxGallery.css";
 import PropTypes from "prop-types";
-import { renderFileType } from "../../../constants/reusables";
+import RenderFileType from "../RenderFileType";
 
 const LightBoxGallery = ({ children, files, imgIndex, setImgIndex }) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const openLightBox = () => {
-    // if (typeof index === "object" && index.index !== undefined) {
-    //   selectedIndex = index.index;
-    // } else {
-    //   selectedIndex = index;
-    // }
     setIsOpen(true);
   };
 
@@ -39,9 +34,19 @@ const LightBoxGallery = ({ children, files, imgIndex, setImgIndex }) => {
             onChange={(index) => setImgIndex(index)} // This updates the image index when the Carousel index changes
           >
             {files.map((file, index) => (
-              <div style={{ width: "clamp( 200px, 30rem, 65vw)" }} key={index}>
-                {renderFileType(file)}
-              </div> // Ensure that each image has a unique key
+              <div
+                style={{
+                  display: "grid",
+                  width: "500px",
+                  maxWidth: "100%",
+                  height: "500px",
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+                key={index}
+              >
+                <RenderFileType preview attachment={file} />
+              </div>
             ))}
           </Carousel>
         </div>

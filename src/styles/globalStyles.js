@@ -199,7 +199,9 @@ background-repeat:no-repeat;
     }
 
 }
-
+.cap{
+  text-transform: capitalize;
+}
 
 .unactive-screen{
 position: relative;

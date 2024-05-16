@@ -19,7 +19,7 @@ import {
   isValidEmail,
   toaster,
   uploadFile,
-} from "../../../../constants/reusables";
+} from "../../../../helpers/reusables";
 import HttpErrorHandler from "../../../../utils/http_error_handler";
 
 const EditProfile = ({

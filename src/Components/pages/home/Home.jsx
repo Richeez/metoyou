@@ -32,7 +32,7 @@ const Home = () => {
       <StyledHome>
         <Section>
           <LeftSideBar />
-          <div className="wrapper grid ">
+          <div className="wrapper grid dashboard ">
             <div className="item">
               <span onClick={() => slideFunc("left")} className="prev">
                 &#10094;

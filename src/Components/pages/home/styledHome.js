@@ -64,6 +64,7 @@ export const StyledHome = styled.div`
 
       &:nth-of-type(2) {
         container-type: inline-size;
+        position: relative;
         max-height: max-content;
       }
       &:nth-of-type(3) {

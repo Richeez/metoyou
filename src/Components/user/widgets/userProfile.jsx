@@ -22,6 +22,7 @@ import OutsideClickHandler from "../../../hooks/useClickOutside";
 import { Section } from "../../features/container";
 import LightBoxGallery from "../../features/LightBoxGallery/LightboxGallery";
 import HttpErrorHandler from "../../../utils/http_error_handler";
+import { capitalizeFirstLetter } from "../../../helpers/reusables";
 
 const UserProfile = () => {
   const [toggle, setToggle] = useState(false);
@@ -33,7 +34,9 @@ const UserProfile = () => {
   const _id = useSelector(getCurrentUserId);
   const [id, setUserId] = useState(null); // Assuming you have a state to store the current user ID
   const [user, setUser] = useState(null);
-  const firstName = user?.username.split(" ")[0];
+  const firstName = user?.username
+    ? capitalizeFirstLetter(user.username.split(" ")[0])
+    : "";
   useTitle(`${firstName} Profile`);
   const closeRef = useRef(null);
   const [editField, setEditField] = useState({
@@ -178,7 +181,7 @@ const UserProfile = () => {
                 <Profile img={picsPath} size={"110px"} />
               </LightBoxGallery>
               <div className="profile-user tac">
-                <p className="profile-name">
+                <p className="profile-name cap">
                   {username ? username : "username"}
                 </p>
                 <p className="handle-name">{`@${nickname}`}</p>

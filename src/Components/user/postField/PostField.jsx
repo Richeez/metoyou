@@ -11,7 +11,7 @@ import { StyledInput } from "../../features/inputs/styledInput";
 import Button from "../../features/animated buttons/Button";
 // import { ImageBox } from "../../features";
 import { FaTimes } from "react-icons/fa";
-import { toaster, uploadFile } from "../../../constants/reusables";
+import { toaster, uploadFile } from "../../../helpers/reusables";
 import HttpErrorHandler from "../../../utils/http_error_handler";
 // import LightboxGallery from "../../features/LightBoxGallery/LightBoxGallery";
 

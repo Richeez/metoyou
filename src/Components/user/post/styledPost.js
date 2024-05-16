@@ -45,7 +45,7 @@ export const StyledPost = styled.div`
       flex-direction: column;
       padding: 5px 0.5rem;
       border-radius: 10px;
-      height: fit-content;
+      height: max-content;
       background: var(--color-white);
       box-shadow: 2px 3px 5px var(--blueViolet);
       gap: 0.5rem;
@@ -71,6 +71,150 @@ export const StyledPost = styled.div`
   }
   .post {
     width: 100%;
+
+    .files_cont {
+      --grid-col: 3;
+      --grid-row: 1;
+      display: grid;
+      /* position: relative; */
+      grid-auto-flow: dense;
+      grid-template-columns: repeat(var(--grid-col), minmax(70px, 150px));
+      grid-template-rows: repeat(var(--grid-row), minmax(70px, 150px));
+      place-items: center;
+      padding: 0;
+      width: clamp(200px, 40rem, 100%);
+      height: clamp(200px, 40rem, 100%);
+      gap: 0.2rem;
+    }
+
+    .map_5 {
+      .file_wrapper {
+        .previewFile {
+          display: none;
+        }
+        &:nth-of-type(1) {
+          grid-row: span 2;
+          grid-column: span 2;
+        }
+        &:nth-of-type(4) {
+          grid-column: span 2;
+        }
+        &:is(:last-of-type) {
+          .previewFile {
+            display: grid;
+          }
+        }
+      }
+
+      @media screen and (min-width: 40rem) {
+        --grid-col: 4;
+        --grid-row: 2;
+
+        .file_wrapper:nth-of-type(1) {
+          grid-row: span 2;
+          grid-column: span 2;
+        }
+        .file_wrapper:nth-of-type(4) {
+          grid-column: unset;
+        }
+      }
+    }
+
+    .map_4 {
+      .file_wrapper {
+        &:nth-of-type(1) {
+          grid-row: span 1;
+          grid-column: span 2;
+        }
+        &:nth-of-type(2) {
+          grid-row: span 2;
+        }
+      }
+
+      @media screen and (min-width: 40rem) {
+        --grid-col: 4;
+        --grid-row: 2;
+
+        .file_wrapper:nth-of-type(1) {
+          grid-row: span 2;
+          grid-column: span 2;
+        }
+        .file_wrapper:nth-of-type(2) {
+          grid-column: span 1;
+          grid-row: span 2;
+        }
+      }
+    }
+
+    .map_3 {
+      .file_wrapper {
+        &:nth-of-type(1) {
+          grid-row: span 2;
+          grid-column: span 2;
+        }
+      }
+
+      @media screen and (min-width: 40rem) {
+        --grid-col: 4;
+        --grid-row: 2;
+
+        .file_wrapper:nth-of-type(1) {
+          grid-row: span 2;
+          grid-column: span 2;
+        }
+        .file_wrapper:nth-of-type(2) {
+          grid-column: span 2;
+        }
+        .file_wrapper:last-of-type {
+          grid-column: span 2;
+        }
+      }
+    }
+
+    .map_2 {
+      .file_wrapper {
+        &:nth-of-type(1) {
+          grid-row: unset;
+          grid-column: unset;
+        }
+
+        &:last-of-type {
+          grid-column: unset;
+          grid-row: unset;
+        }
+      }
+
+      @media screen and (min-width: 40rem) {
+        --grid-col: 4;
+        --grid-row: 2;
+
+        .file_wrapper:nth-of-type(1) {
+          grid-row: span 2;
+          grid-column: span 2;
+        }
+        .file_wrapper:nth-of-type(2) {
+          grid-column: span 2;
+        }
+        .file_wrapper:last-of-type {
+          grid-column: span 2;
+          grid-row: span 2;
+        }
+      }
+    }
+
+    .map_1 {
+      .file_wrapper {
+        grid-row: span 2;
+        grid-column: span 3;
+      }
+
+      @media screen and (min-width: 40rem) {
+        .file_wrapper {
+          grid-row: span 2;
+          grid-column: span 4;
+        }
+      }
+    }
 
     .desc {
       padding-top: 1rem;
@@ -112,6 +256,7 @@ export const StyledPost = styled.div`
     }
 
     .engagements {
+      width: 100%;
       .items_wrapper {
         display: grid;
         grid-template-columns: 80px 1fr;

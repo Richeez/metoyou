@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
 
-const ImageBox = ({ src, curve, others, onclick }) => {
+const ImageBox = ({ src, curve, others, onclick, preview }) => {
   return (
     <div
       onClick={onclick}
@@ -13,14 +13,14 @@ const ImageBox = ({ src, curve, others, onclick }) => {
         <img
           src={src}
           style={{
-            objectFit: "cover",
-            objectPosition: "top",
-            aspectRatio: "1/1",
+            objectFit: preview ? " contain" : "cover",
+            objectPosition: "center",
+            aspectRatio: preview ? "" : "1/1",
             width: " 100%",
             height: "100%",
           }}
           loading="lazy"
-          alt="graphics"
+          alt="post image"
         />
       ) : null}
     </div>
