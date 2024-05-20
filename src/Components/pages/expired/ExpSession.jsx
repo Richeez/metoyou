@@ -18,7 +18,10 @@ const ExpSession = () => {
   return (
     <StyledExpSession>
       <Section>
-        <p>Your Session has expired, try logging in again</p> <br />
+        <p style={{ fontSize: "clamp(16px, 3vw, 24px)" }}>
+          Your Session has expired, try logging in again
+        </p>{" "}
+        <br />
         <NavBtn onClick={redirect}>Log in</NavBtn>
       </Section>
     </StyledExpSession>

@@ -129,6 +129,7 @@ export const StyledPostField = styled.form`
       position: absolute;
       top: 5%;
       right: 3%;
+      z-index: 2;
       background-color: var(--color-red);
       width: 1.3rem;
       height: 1.3rem;

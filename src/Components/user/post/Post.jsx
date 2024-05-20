@@ -66,13 +66,6 @@ const Post = ({
     if (length >= 5) return "map_5";
   };
 
-  console.log(dynamicGridFlow(1)); // Expected output: "map_1"
-  console.log(dynamicGridFlow(2)); // Expected output: "map_2"
-  console.log(dynamicGridFlow(3)); // Expected output: "map_3"
-  console.log(dynamicGridFlow(4)); // Expected output: "map_4"
-  console.log(dynamicGridFlow(5)); // Expected output: "map_5"
-  console.log(dynamicGridFlow(6));
-
   const isFirstInLikes = loggedInUserId === likes[0]?.userId;
   // const likeCount = Object.keys(likes).length;
   const likeCount = likes?.length;

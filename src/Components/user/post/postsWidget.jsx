@@ -82,7 +82,7 @@ const PostsWidget = React.memo(({ userId, isProfile = false }) => {
   }
 
   return (
-    <>
+    <div className="item">
       {posts
         ?.map(
           ({
@@ -99,7 +99,7 @@ const PostsWidget = React.memo(({ userId, isProfile = false }) => {
             following,
             details,
           }) => (
-            <div key={`${_id}-${userId}`} className="item">
+            <div key={`${_id}-${userId}`}>
               <Post
                 postId={_id}
                 postUserId={userId}
@@ -117,7 +117,7 @@ const PostsWidget = React.memo(({ userId, isProfile = false }) => {
           )
         )
         .reverse()}
-    </>
+    </div>
   );
 });
 

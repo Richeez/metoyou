@@ -4,18 +4,29 @@
   justify-content: center;
   position: fixed;
   inset: 0;
-  padding: 0 2rem;
+  padding: 0 1rem;
   user-select: none;
   background: rgba(0, 0, 0, 0.8);
   z-index: 999;
 
   .close-button {
+    z-index: 9999;
+    --color-red: red;
     position: absolute;
-    top: 1%;
-    right: 3%;
+    top: 5%;
+    right: 5%;
     cursor: pointer;
     color: var(--primary-color);
-    font-size: 1.5rem;
+    font-size: 2rem;
+    font-weight: bolder;
+    width: 2.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 2.5rem;
+    padding: 0.2rem;
+    border-radius: 50%;
+    background-color: var(--color-red);
   }
 }
 

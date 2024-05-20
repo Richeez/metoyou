@@ -5,7 +5,7 @@ import { StyledLeftSideBar } from "./styledLeft";
 const LeftSideBar = () => {
   return (
     <StyledLeftSideBar>
-      <div className="wrapper grid">
+      <div className=" grid">
         <div className="item">
           <Activity />
         </div>

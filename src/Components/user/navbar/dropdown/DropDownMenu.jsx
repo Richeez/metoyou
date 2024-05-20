@@ -37,7 +37,6 @@ import {
 } from "../../../../manager/auth/authSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation } from "react-router-dom";
-import { VscWorkspaceTrusted } from "react-icons/vsc";
 import { axiosPrivate } from "../../../../app/api/axios";
 import Cookies from "js-cookie";
 import useToggle from "../../../../hooks/useToggle";
@@ -64,9 +63,9 @@ const DropDownMenu = ({
   const settingsRef = useRef(null);
   const notificationRef = useRef(null);
 
-  const [persist, togglePersist] = useToggle("Persist", false);
-  const [pushNotify, togglePushNotify] = useToggle("Push_notification", false);
-  const [notifySMS, toggleNotifySMS] = useToggle("Sms_manager", false);
+  // const [persist, togglePersist] = useToggle("persist", false);
+  const [pushNotify, togglePushNotify] = useToggle("push_notification", false);
+  const [notifySMS, toggleNotifySMS] = useToggle("sms_manager", false);
   const [notifyEmail, toggleNotifyEmail] = useToggle("email_notify", false);
   const dispatch = useDispatch();
   const location = useLocation();
@@ -284,15 +283,15 @@ const DropDownMenu = ({
               >
                 Support
               </DropDownItem>
-              <DropDownItem
+              {/* <DropDownItem
                 leftIcon={<VscWorkspaceTrusted />}
-                rightIcon={
-                  <Switch action={togglePersist} isChecked={persist} />
-                }
+                // rightIcon={
+                //   <Switch action={togglePersist} isChecked={persist} />
+                // }
                 title={"trust device"}
               >
                 Trust Device
-              </DropDownItem>
+              </DropDownItem> */}
             </ul>
           </div>
         </CSSTransition>

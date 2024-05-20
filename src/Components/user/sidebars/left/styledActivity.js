@@ -1,86 +1,87 @@
 import styled from "styled-components";
 
 export const StyledActivity = styled.div`
-    width: 100%;
+  width: 100%;
 
-.upper-most {
+  .upper-most {
     display: flex;
     width: 100%;
     align-items: center;
     justify-content: space-between;
 
-    &  h2{
-        font-size: 1.2rem;
-        width: 100%;
-        text-transform: capitalize;
+    & h2 {
+      font-size: 1.2rem;
+      width: 100%;
+      text-transform: capitalize;
     }
-     .see-all {
-        color: grey;
-        font-weight: bold;
-        font-size: 14px;
-        cursor: pointer;
-        transition: all 0.07 ease-in;
-        white-space: nowrap;
+    .see-all {
+      color: grey;
+      font-weight: bold;
+      font-size: 14px;
+      cursor: pointer;
+      transition: all 0.07 ease-in;
+      white-space: nowrap;
 
-        &:hover {
-            color: rgb(26, 25, 25);
-        }
+      &:hover {
+        color: rgb(26, 25, 25);
+      }
     }
-}
+  }
 
-
-.heading{
+  .heading {
     width: 100%;
     padding: 1rem 0;
-    h3{
-        width: 100%;
-        font-size: 1rem;
-        text-transform: capitalize;
-
+    h3 {
+      width: 100%;
+      font-size: 1rem;
+      text-transform: capitalize;
     }
-}
+  }
 
-.mentions{
+  .mentions {
     width: 100%;
     overflow-x: hidden;
     overflow-y: auto;
     max-height: 246px;
 
-
-&::-webkit-scrollbar {
-    width: 0.3rem;
-    height: 0.1rem;
-  }
-
-    .mention{
-        display: flex;
-        width: 100%;
-        gap: .8rem;
-        padding: .5rem;
-        align-items: center;
-
-        .img_wrapper {
-            background: linear-gradient(to top right, var(--blueViolet-lyt), var(--color-gray-lyt));        }
-
-        .texts{
-            width: 100%;
-            p,span{
-                width: 100%;
-                font-size: .9rem;
-
-            }
-            p{
-                text-transform: capitalize;
-            }
-            span{
-                color: gray;
-            }
-        }
-
+    &::-webkit-scrollbar {
+      width: 0.3rem;
+      height: 0.1rem;
     }
-}
-.all-suggestion {
 
+    .mention {
+      display: flex;
+      width: 100%;
+      gap: 0.8rem;
+      padding: 0.5rem;
+      align-items: center;
+
+      .img_wrapper {
+        width: 100%;
+        background: linear-gradient(
+          to top right,
+          var(--blueViolet-lyt),
+          var(--color-gray-lyt)
+        );
+      }
+
+      .texts {
+        width: 100%;
+        p,
+        span {
+          width: 100%;
+          font-size: 0.9rem;
+        }
+        p {
+          text-transform: capitalize;
+        }
+        span {
+          color: gray;
+        }
+      }
+    }
+  }
+  .all-suggestion {
     display: flex;
     gap: 15px;
     flex-direction: column-reverse;
@@ -88,37 +89,34 @@ export const StyledActivity = styled.div`
     overflow-y: auto;
     max-height: 246px;
 
-
     &::-webkit-scrollbar {
-        width: 0.3rem;
-        height: 0.1rem;
-      }
-}
+      width: 0.3rem;
+      height: 0.1rem;
+    }
+  }
 
-
-
-.add-new {
+  .add-new {
     display: flex;
     align-items: center;
     gap: 10px;
-}
-.new-name {
+  }
+  .new-name {
     flex: 2;
-}
+  }
 
-.new-name p {
-    font-size: .9rem;
+  .new-name p {
+    font-size: 0.9rem;
     font-weight: bolder;
-}
+  }
 
-.time {
+  .time {
+    width: 100%;
     color: gray;
-    font-size: .9rem;
+    font-size: 0.9rem;
+  }
 
-}
-
-.add-icon {
-    width: calc(30px * 0.7) ;
+  .add-icon {
+    width: calc(30px * 0.7);
     height: calc(30px * 0.7);
     border-radius: 50%;
     display: flex;
@@ -129,8 +127,8 @@ export const StyledActivity = styled.div`
     cursor: pointer;
     transition: all 0.07s ease-in;
     margin-right: 0.8rem;
-}
-.image {
+  }
+  .image {
     width: calc(30px * 0.7);
     height: calc(30px * 0.7);
     border-radius: 10%;
@@ -143,16 +141,16 @@ export const StyledActivity = styled.div`
     border: 1px solid var(--blueViolet);
     margin-right: 0.8rem;
     overflow: hidden;
-    img{
-        width: 100%;
-        height: 100%;
-        object-fit: contain;
-        object-position: center;
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      object-position: center;
     }
-}
+  }
 
-.add-icon:hover, .image:hover {
+  .add-icon:hover,
+  .image:hover {
     opacity: 0.6;
-}
-
+  }
 `;

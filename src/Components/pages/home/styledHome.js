@@ -23,15 +23,16 @@ export const StyledHome = styled.div`
       gap: 2rem;
     }
 
-    & > .item {
+    /* & > .item {
       max-width: 40rem;
       margin: 0 auto;
-    }
+    } */
   }
 
-  .wrapper {
+  .dashboard {
     width: 100%;
     grid-area: 1;
+    gap: 2rem;
 
     @media screen and (min-width: 45rem) {
       grid-area: unset;
@@ -39,13 +40,16 @@ export const StyledHome = styled.div`
     }
 
     .item {
-      width: 100%;
-      grid-column: span 2;
-      padding: 2rem 1rem;
-      border-radius: 1rem;
-      background: var(--color-white);
-      box-shadow: 2px 3px 5px var(--blueViolet);
       /* padding: 2rem  1rem; */
+
+      grid-column: span 2;
+      &:not(:last-of-type) {
+        width: 100%;
+        padding: 2rem 1rem;
+        border-radius: 1rem;
+        background: var(--color-white);
+        box-shadow: 2px 3px 5px var(--blueViolet);
+      }
 
       & > {
         width: 100%;
@@ -57,18 +61,22 @@ export const StyledHome = styled.div`
       }
 
       &:nth-of-type(1) {
-        position: relative;
         max-width: 100%;
         margin: 0 auto;
+        position: relative;
       }
 
       &:nth-of-type(2) {
         container-type: inline-size;
-        position: relative;
         max-height: max-content;
       }
       &:nth-of-type(3) {
+        display: grid;
         position: relative;
+        background: transparent;
+        width: 100%;
+        max-height: max-content;
+        gap: 3rem;
       }
     }
   }

@@ -1,6 +1,12 @@
 import styled from "styled-components";
 
 export const StyledPost = styled.div`
+  width: 100%;
+  /* grid-column: span 2; */
+  padding: 2rem 1rem;
+  border-radius: 1rem;
+  background: var(--color-white);
+  box-shadow: 2px 3px 5px var(--blueViolet);
   .profile {
     width: 100%;
     display: flex;

@@ -1,6 +1,5 @@
 import { useState, useRef } from "react";
 import { MdAttachment, MdOutlineInsertPhoto } from "react-icons/md";
-// import { VscReactions } from "react-icons/vsc";
 import Profile from "../profile/profile";
 import { StyledPostField } from "./styledPostField";
 import { useDispatch, useSelector } from "react-redux";
@@ -9,11 +8,10 @@ import { getCurrentUser, setPosts } from "../../../manager/auth/authSlice";
 import { CustomButton } from "../../features/button";
 import { StyledInput } from "../../features/inputs/styledInput";
 import Button from "../../features/animated buttons/Button";
-// import { ImageBox } from "../../features";
 import { FaTimes } from "react-icons/fa";
 import { toaster, uploadFile } from "../../../helpers/reusables";
 import HttpErrorHandler from "../../../utils/http_error_handler";
-// import LightboxGallery from "../../features/LightBoxGallery/LightBoxGallery";
+import useInput from "../../../hooks/useInput";
 
 const PostField = () => {
   const imageInputRef = useRef(null);
@@ -31,25 +29,25 @@ const PostField = () => {
   };
 
   const [formData, setFormData] = useState({
-    description: "",
     files: [],
   });
-  const { description, files } = formData ?? {};
+  const [description, descAttributes, resetDesc] = useInput("desc", "");
+  const { files } = formData ?? {};
 
-  const createPost = (e) => {
-    const { name, value } = e.target;
-    // Calculate the new height based on the content
-    // const lineHeight = 20; // Adjust this value based on your font size
-    // const minRows = 1; // Minimum number of rows
-    // const maxRows = 10; // Maximum number of rows
-    // const newRows = Math.min(
-    //   maxRows,
-    //   Math.max(minRows, Math.ceil(e.target.scrollHeight / lineHeight))
-    // );
-    // const newHeight = newRows * lineHeight + "px";
-    // setTextareaHeight(newHeight);
-    setFormData((prev) => ({ ...prev, [name]: value }));
-  };
+  // const createPost = (e) => {
+  //   const { name, value } = e.target;
+  //   // Calculate the new height based on the content
+  //   // const lineHeight = 20; // Adjust this value based on your font size
+  //   // const minRows = 1; // Minimum number of rows
+  //   // const maxRows = 10; // Maximum number of rows
+  //   // const newRows = Math.min(
+  //   //   maxRows,
+  //   //   Math.max(minRows, Math.ceil(e.target.scrollHeight / lineHeight))
+  //   // );
+  //   // const newHeight = newRows * lineHeight + "px";
+  //   // setTextareaHeight(newHeight);
+  //   setFormData((prev) => ({ ...prev, [name]: value }));
+  // };
 
   //const handleFileInputChange = (e) => {
   // const selectedFiles = Array.from(e?.target?.files);
@@ -117,18 +115,29 @@ const PostField = () => {
 
   const handlePost = async (e) => {
     e.preventDefault();
+    // const isDevelopment = typeof window !== "undefined";
 
+    // Check the environment and internet connection
+    const isDevMode = import.meta.env.VITE_ENV === "development";
+    if (!isDevMode && !navigator.onLine) {
+      return toaster("No internet connection. Please try again later.", true);
+    }
     if (files?.length > 0) {
       try {
         attachments = await uploadFile(files);
         console.log("fileUrl", attachments);
+        if (!attachments) {
+          return toaster("An unresolved error occurred.", true);
+        }
+        console.log("fileUrl", attachments);
       } catch (error) {
         console.log("error", error);
         HttpErrorHandler.spitHttpErrorMsg(error);
+        return;
       }
     }
 
-    if (!files.length && !description) {
+    if (!files?.length && !description) {
       //? No file and description available
       return toaster("You do not have any post to publish.", true);
     }
@@ -143,11 +152,13 @@ const PostField = () => {
       dispatch(setPosts({ posts: postData }));
 
       setFormData({
-        description: "",
         files: [],
       });
+      resetDesc();
       toaster("Post Published Successfully!");
     } catch (err) {
+      console.log("error", err);
+
       HttpErrorHandler.spitHttpErrorMsg(err);
     }
   };
@@ -162,9 +173,10 @@ const PostField = () => {
             type="text"
             name="description"
             autoComplete="off"
-            value={description}
+            // value={description}
             // style={{ height: textareaHeight }}
-            onChange={createPost}
+            // onChange={createPost}
+            {...descAttributes}
             onKeyDown={(e) => e.key === "Enter" && e.preventDefault()} // Prevent form submission on Enter key press
             placeholder="Let out your mind"
           />
@@ -179,7 +191,8 @@ const PostField = () => {
               name="files"
               title="Choose a file"
               multiple
-              accept=".pdf, .doc, .docx, .txt, .ppt, .pptx, .xls, .xlsx"
+              // accept=".pdf , .doc, .docx, .txt, .ppt, .pptx, .xls, .xlsx, .mp4, .avi, .mov, .wmv, .flv, .mkv"
+              accept=".pdf , .mp4, .avi, .mov, .wmv, .flv, .mkv"
               ref={docInputRef}
               onChange={handleFileInputChange}
             />
@@ -227,7 +240,7 @@ const PostField = () => {
             overflowY: "auto",
             backdropFilter: "blur(20px)",
             gridTemplateColumns:
-              " repeat(auto-fit, minmax(min(100%, 100px), 1fr))",
+              " repeat(auto-fit, minmax(min(100%, 150px), 1fr))",
             padding: 0,
             // zIndex: 4,
           }}
@@ -244,8 +257,8 @@ const PostField = () => {
                 position: "relative",
                 overflow: " hidden",
                 padding: "8px",
-                // width: "100px",
-                // height: "100px",
+                width: "100%",
+                height: "100%",
                 border: "1px solid #ccc",
                 borderRadius: "8px",
                 boxShadow: "0 0 4px rgba(0, 0, 0, 0.2)",
@@ -255,7 +268,7 @@ const PostField = () => {
               {displayFile(file, index)}
             </div>
           ))}
-          <div
+          {/* <div
             style={{
               position: "sticky",
               gridColumn: "1 / -1",
@@ -267,7 +280,7 @@ const PostField = () => {
               width: "100%",
             }}
           >
-            {/* <button
+             <button
               type="submit"
               style={{
                 backgroundColor: "#2c7be5",
@@ -279,8 +292,8 @@ const PostField = () => {
               }}
               >
               Send
-            </button> */}
-          </div>
+            </button> 
+          </div> */}
         </div>
       )}
       {/* <LightboxGallery files={files} /> */}

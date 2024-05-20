@@ -8,7 +8,6 @@ import { setCredentials, setToken } from "../../../manager/auth/authSlice";
 import { useLoginMutation } from "../../../manager/auth/authApiSlice";
 import { Logging } from "../../../svgs";
 import Cookies from "js-cookie";
-import { FileInputWrapper } from "../../features/inputs/styledInput";
 import useToggle from "../../../hooks/useToggle";
 import HttpErrorHandler from "../../../utils/http_error_handler";
 
@@ -18,7 +17,7 @@ function LoginPage() {
     username: "",
     password: "",
   });
-  const [persist, togglePersist] = useToggle("Persist", false);
+  useToggle("persist", true);
 
   const { username, password } = userInfo;
   const fillingData = (e) => {
@@ -159,21 +158,20 @@ function LoginPage() {
                 </span>
               )}
               <div className=" due-text-cont ">
-                <FileInputWrapper>
+                {/* <FileInputWrapper>
                   <input
                     style={{ marginRight: "5px", cursor: "pointer" }}
-                    onChange={togglePersist}
+                    // onChange={togglePersist}
                     checked={persist}
                     name="trust_device"
                     type="checkbox"
                   />
                   <span
                     className="forget-password"
-                    onClick={() => navigate("/forget")}
                   >
                     Remember me
                   </span>
-                </FileInputWrapper>
+                </FileInputWrapper> */}
                 <span
                   className="forget-password"
                   onClick={() => navigate("/forget")}

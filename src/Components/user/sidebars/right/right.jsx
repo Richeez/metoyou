@@ -5,7 +5,7 @@ import Suggestions from "./suggestions";
 const RightSideBar = () => {
   return (
     <StyledRightSideBar>
-      <div className="wrapper grid">
+      <div className=" grid">
         <div className="item">
           <Messages />
         </div>

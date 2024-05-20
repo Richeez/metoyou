@@ -26,7 +26,10 @@ const RenderFileType = ({
       );
     case "video":
       return (
-        <video style={{ width: "100%", borderRadius: "1rem" }} controls>
+        <video
+          style={{ width: "100%", height: "100%", borderRadius: "1rem" }}
+          controls
+        >
           <source src={attachment.url} type="video/mp4" />
           Your browser does not support the video tag.
         </video>

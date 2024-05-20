@@ -13,7 +13,7 @@ import useLocalStorage from "../hooks/useLocalStorage";
 
 const PersistLogin = () => {
   const [isLoading, setIsLoading] = useState(true);
-  const [persist] = useLocalStorage("Persist", false);
+  const [persist] = useLocalStorage("persist", true);
   const refresh = useRefreshToken({ persist });
   const token = useSelector(getCurrentToken);
   const dispatch = useDispatch();
@@ -48,7 +48,7 @@ const PersistLogin = () => {
         <Outlet />
       ) : isLoading ? (
         <div className="loading-div">
-          <ReactLoading type={"bubbles"} color={"#0052cc"} />
+          <ReactLoading type={"bubbles"} color={"#8a2be2"} width={"3rem"} />
         </div>
       ) : (
         <Outlet />

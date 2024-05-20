@@ -644,6 +644,7 @@ position: relative;
 
 .grid{
   display: grid;
+  width:100%;
   grid-template-columns: 1fr;
   gap: 1rem;
   width: 100%;

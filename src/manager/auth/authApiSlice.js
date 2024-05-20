@@ -90,14 +90,14 @@ export const authApiSlice = apiSlice.injectEndpoints({
           body: { ...contents },
         };
       },
+      async onfulfilled(response) {
+        return HttpSuccessDataHandler.getSuccessResponseData(response);
+      },
+      async onrejected(error) {
+        HttpErrorHandler.spitHttpErrorMsg(error);
+        console.error("Edit error:", error);
+      },
     }),
-    async onfulfilled(response) {
-      return HttpSuccessDataHandler.getSuccessResponseData(response);
-    },
-    async onrejected(error) {
-      HttpErrorHandler.spitHttpErrorMsg(error);
-      console.error("Edit error:", error);
-    },
   }),
 });
 

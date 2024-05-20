@@ -116,9 +116,10 @@ export const isValidEmail = (email) => {
 };
 
 // Display a toast message when the email is not valid using the exported options
-export const toaster = (message, error = false) => {
+export const toaster = (message, isError = false) => {
   const toastId = new Date().getTime().toString();
-  if (error) {
+  console[isError ? "error" : "log"]("message:", message);
+  if (isError) {
     return toast.error(message, { ...toastOptions, toastId });
   }
   return toast.success(message, { ...toastOptions, toastId });
@@ -132,6 +133,15 @@ const getFileType = (fileName) => {
     return "image";
   } else if (extension === "pdf") {
     return "pdf";
+  } else if (
+    extension === "mp4" ||
+    extension === "avi" ||
+    extension === "mov" ||
+    extension === "wmv" ||
+    extension === "flv" ||
+    extension === "mkv"
+  ) {
+    return "video";
   } else {
     return "unknown";
   }
@@ -148,52 +158,44 @@ export function capitalizeFirstLetter(string) {
 //? FILE UPLOADER
 
 export const uploadFile = async (editField) => {
-  const isProfileArray = Array.isArray(editField.profile);
-  const isCoverArray = Array.isArray(editField.cover);
-  const isEditArray = Array.isArray(editField);
-
-  // if (isProfileArray || isCoverArray) {
-  const uploadPromises = [];
-
-  if (isProfileArray) {
-    uploadPromises.push(
-      ...editField.profile
-        .filter((file) => !file.uploaded)
-        .map((file) => uploadSingleFile(file, "profile"))
-    );
-  }
-
-  if (isCoverArray) {
-    uploadPromises.push(
-      ...editField.cover
-        .filter((file) => !file.uploaded)
-        .map((file) => uploadSingleFile(file, "cover"))
-    );
-  }
-
-  if (isEditArray) {
-    uploadPromises.push(
-      ...editField
-        .filter((file) => !file.uploaded)
-        .map(async (file) => {
-          return uploadSingleFile(file);
-        })
-    );
-  }
-
   try {
+    const isProfileArray = Array.isArray(editField.profile);
+    const isCoverArray = Array.isArray(editField.cover);
+    const isEditArray = Array.isArray(editField);
+
+    const uploadPromises = [];
+
+    if (isProfileArray) {
+      uploadPromises.push(
+        ...editField.profile
+          .filter((file) => !file.uploaded)
+          .map((file) => uploadSingleFile(file, "profile"))
+      );
+    }
+
+    if (isCoverArray) {
+      uploadPromises.push(
+        ...editField.cover
+          .filter((file) => !file.uploaded)
+          .map((file) => uploadSingleFile(file, "cover"))
+      );
+    }
+
+    if (isEditArray) {
+      uploadPromises.push(
+        ...editField
+          .filter((file) => !file.uploaded)
+          .map(async (file) => {
+            return uploadSingleFile(file);
+          })
+      );
+    }
+
     const uploadedFiles = await Promise.all(uploadPromises);
     return uploadedFiles.flat(); // Flatten the array of arrays
   } catch (error) {
     toaster(error, true);
-
-    console.error("Error uploading files:", error);
-    throw error; // Re-throw the error for the caller to handle
   }
-  // } else {
-  // Handle differently when editField is not an object with profile and cover arrays
-  // return uploadSingleFile(editField);
-  // }
 };
 
 const uploadSingleFile = async (file, target) => {
@@ -201,9 +203,9 @@ const uploadSingleFile = async (file, target) => {
   const type = getFileType(file.name);
 
   try {
-    const imageRef = ref(storage, `images/${file.name + v4()}`);
-    const result = await uploadBytes(imageRef, file);
-    console.log("🚀 ~ uploadSingleFile ~ imageRef:", imageRef);
+    const fileRef = ref(storage, `assets/${file.name + v4()}`);
+    const result = await uploadBytes(fileRef, file);
+    console.log("🚀 ~ uploadSingleFile ~ fileRef:", fileRef);
     console.log("🚀 ~ uploadSingleFile ~ result:", result);
     const url = await getDownloadURL(result.ref);
 
@@ -211,10 +213,10 @@ const uploadSingleFile = async (file, target) => {
       url,
       type,
       size,
-      target, // Add the target property to the file object
+      target, //? Add the target property to the file object
     };
   } catch (error) {
-    toaster(error, true);
+    toaster(error?.message, true);
     console.error("Error uploading file:", error);
     throw error; // Re-throw the error for better error handling
   }
@@ -228,8 +230,8 @@ const uploadSingleFile = async (file, target) => {
 //             const type = file.type;
 
 //             try {
-//                 const imageRef = ref(storage, `images/${file.name + v4()}`);
-//                 const result = await uploadBytes(imageRef, file);
+//                 const fileRef = ref(storage, `images/${file.name + v4()}`);
+//                 const result = await uploadBytes(fileRef, file);
 //                 const url = await getDownloadURL(result.ref);
 
 //                 return {
