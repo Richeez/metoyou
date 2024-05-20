@@ -1,7 +1,7 @@
 /* eslint-disable react/no-unescaped-entities */
 /* eslint-disable react-hooks/rules-of-hooks */
 import { IoMdBriefcase, IoMdSettings } from "react-icons/io";
-import { FaGreaterThan } from "react-icons/fa";
+import { FaChevronLeft, FaGreaterThan } from "react-icons/fa";
 import "../../user/widgets/userProfile.css";
 import Lottie from "lottie-react";
 import Empty from "../profile/empty-state.json";
@@ -14,10 +14,9 @@ import { BackDrop } from "../../features/backdrop";
 import EditProfile from "./edit-profile/EditProfile";
 import { MdLocationPin } from "react-icons/md";
 import { getCurrentUserId } from "../../../manager/auth/authSlice";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { Fetching } from "../../../svgs";
 import useTitle from "../../../hooks/useTitle";
-// import PostsWidget from "../post/postsWidget";
 import OutsideClickHandler from "../../../hooks/useClickOutside";
 import { Section } from "../../features/container";
 import LightBoxGallery from "../../features/LightBoxGallery/LightboxGallery";
@@ -34,6 +33,8 @@ const UserProfile = () => {
   const _id = useSelector(getCurrentUserId);
   const [id, setUserId] = useState(null); // Assuming you have a state to store the current user ID
   const [user, setUser] = useState(null);
+  const navigate = useNavigate();
+
   const firstName = user?.username
     ? capitalizeFirstLetter(user.username.split(" ")[0])
     : "";
@@ -163,6 +164,9 @@ const UserProfile = () => {
 
           <div className="flex-cont">
             <div className="background-image">
+              <button className="icon" onClick={() => navigate(-1)}>
+                <FaChevronLeft />
+              </button>
               <img
                 src={
                   backgroundBg.length !== 0

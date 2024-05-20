@@ -6,17 +6,41 @@
   width: 100%;
   gap: 20px;
   padding-bottom: 60px;
-  position: relative;
-  /* height: 100vh; */
 }
 
 .flex-cont {
   display: flex;
   flex-direction: column;
+  position: relative;
 }
 
 .background-image {
   height: 25vh;
+  position: relative;
+}
+
+.profile-cont .icon {
+  margin: 2px 5px 0;
+  width: 50px;
+  height: 50px;
+  position: absolute;
+  padding: 2rem;
+  /* width: calc(70px * 0.8); */
+  /* height: calc(70px * 0.8); */
+  padding: 5px;
+  font-size: 1rem;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: filter 300ms;
+  background: var(--color-gray-lyt);
+
+  &:hover {
+    filter: brightness(1.2);
+    color: var(--blueViolet);
+  }
 }
 
 .background-image img {

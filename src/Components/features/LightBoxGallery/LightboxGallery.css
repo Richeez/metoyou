@@ -4,7 +4,7 @@
   justify-content: center;
   position: fixed;
   inset: 0;
-  padding: 0 1rem;
+  /* padding: 0 1rem; */
   user-select: none;
   background: rgba(0, 0, 0, 0.8);
   z-index: 999;

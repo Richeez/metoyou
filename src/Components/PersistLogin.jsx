@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import useRefreshToken from "../hooks/useRefreshToken";
-import ReactLoading from "react-loading";
+// import ReactLoading from "react-loading";
 import { Outlet } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -10,6 +10,7 @@ import {
 } from "../manager/auth/authSlice";
 import PropTypes from "prop-types";
 import useLocalStorage from "../hooks/useLocalStorage";
+import { Logging } from "../svgs";
 
 const PersistLogin = () => {
   const [isLoading, setIsLoading] = useState(true);
@@ -48,7 +49,8 @@ const PersistLogin = () => {
         <Outlet />
       ) : isLoading ? (
         <div className="loading-div">
-          <ReactLoading type={"bubbles"} color={"#8a2be2"} width={"3rem"} />
+          <Logging />
+          {/* <ReactLoading type={"bubbles"} color={"#8a2be2"} width={"3rem"} /> */}
         </div>
       ) : (
         <Outlet />
