@@ -1,4 +1,4 @@
-import { toaster } from "../helpers/reusables";
+import { toaster } from "../helpers/reuseable";
 
 export default class HttpSuccessDataHandler {
   static getSuccessResponseData(response) {

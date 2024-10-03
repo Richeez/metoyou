@@ -22,7 +22,6 @@ function App() {
 
     if (!token) {
       return <Navigate to="/login" state={{ from: location }} replace />;
-      // return <ExpSession location={location} />;
     }
 
     return <Outlet />;

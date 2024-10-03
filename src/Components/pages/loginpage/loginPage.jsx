@@ -5,7 +5,7 @@ import { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { setCredentials, setToken } from "../../../manager/auth/authSlice";
-import { useLoginMutation } from "../../../manager/auth/authApiSlice";
+import { useAuthApi } from "../../../manager/auth/authApiSlice";
 import { Logging } from "../../../svgs";
 import Cookies from "js-cookie";
 import useToggle from "../../../hooks/useToggle";
@@ -34,64 +34,35 @@ function LoginPage() {
   const dispatch = useDispatch();
   const location = useLocation();
   const from = location?.state?.from?.pathname || "/";
-  const [login, { isLoading }] = useLoginMutation();
-  // console.log("error", error);
+  const { login } = useAuthApi();
+  const [loginMutation, { isLoading }] = login;
 
-  // const handleLogin = async (e) => {
-  //   e.preventDefault();
-  //   try {
-  //     const requestBody = {
-  //       username,
-  //       password,
-  //     };
-  //     APIService.logUserIn(login, requestBody, (response, error) => {
-  //       //? Assuming response is an object with a 'data' property
-  //       const data = response ?? {};
-  //       if (error) {
-  //         return;
-  //       }
-  //       let message = response?.message;
-  //       toaster(message);
-
-  //       dispatch(setCredentials({ ...data }));
-  //       dispatch(setToken(data.key));
-  //       const access = {
-  //         id: data.rest?._id,
-  //         token: data.key,
-  //       };
-  //       Cookies.set(
-  //         "session",
-  //         JSON.stringify(access) /*, { expires: 1 / 720 }*/
-  //       );
-  //       setUserInfo({
-  //         username: "",
-  //         password: "",
-  //       });
-  //       navigate(from, { replace: true });
-  //     });
-  //   } catch (err) {
-  //     toaster(err?.message, true);
-  //   }
-  // };
-
-  // --- The Login function ---
-  // console.log("isError", isError);
   const handleLogin = async (e) => {
     e.preventDefault();
 
     try {
-      const data = await login({
+      const data = await loginMutation({
         user: username.trim(),
         pwd: password.trim(),
       }).unwrap();
+      console.log("🚀 ~ handleLogin ~ data:", data);
 
       dispatch(setCredentials({ ...data }));
       dispatch(setToken(data.key));
       const access = {
-        id: data.rest?._id,
-        token: data.key,
+        id: data?.data?.user?._id,
+        token: data?.data?.key,
       };
-      Cookies.set("session", JSON.stringify(access) /*, { expires: 1 / 720 }*/);
+      console.log("🚀 ~ handleLogin ~ access:", access);
+      // Setting the cookie
+      Cookies.set("session", JSON.stringify(access), {
+        path: "/",
+        expires: 1, // 1 day
+        sameSite: "Strict",
+        secure: false, // Set to true if using HTTPS
+      });
+
+      // Cookies.set("session", JSON.stringify(access) /*, { expires: 1 / 720 }*/);
       setUserInfo({
         username: "",
         password: "",

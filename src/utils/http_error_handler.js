@@ -1,5 +1,5 @@
 /* eslint-disable no-prototype-builtins */
-import { toaster } from "../helpers/reusables";
+import { toaster } from "../helpers/reuseable";
 
 // Define UnauthorizedError as a standalone class
 class UnauthorizedError extends Error {
@@ -15,7 +15,7 @@ export default class HttpErrorHandler {
     //? Check if environment is development
     // const isDevelopment = import.meta.env.MODE === "development";
     const isDevelopment = typeof window !== "undefined";
-    console.log("isDevelopment", isDevelopment);
+
     // Check network status only if not in development mode
     if (isDevelopment) {
       errorMessage = navigator.onLine
@@ -38,8 +38,8 @@ export default class HttpErrorHandler {
       }
       if (e.hasOwnProperty("data")) {
         let responseData = e["data"];
-        if (responseData && responseData.hasOwnProperty("message")) {
-          errorMessage = responseData["message"];
+        if (responseData && responseData.hasOwnProperty("error")) {
+          errorMessage = responseData["error"];
         }
       }
     }
@@ -62,41 +62,3 @@ export default class HttpErrorHandler {
     }
   }
 }
-
-//?CONSTRUCTION LOGIC
-
-// static async getUserRoomMessages(userId, cb) {
-//     try {
-//       const response = await axios.get(
-//         `${EndPoints.SOCIAL_INBOX_BASE}/${userId}/room_messages`,
-//         {
-//           withCredentials: true,
-//         }
-//       );
-
-//       // Call the callback function with the success response data and no error
-//       cb(HttpSuccessDataHandler.getSuccessResponseData(response), null);
-//     } catch (error) {
-//       // Call the callback function with null data and the error
-//       cb(null, HttpErrorHandler.spitHttpErrorMsg(error));
-//     }
-//   }
-
-//!============================================================================
-
-//? USE CASE
-// await Promise.all([
-//     new Promise((resolve) => setTimeout(resolve, 2000)),
-//     APIService.sendMessageFromSocialInbox(
-//       chatRoomId,
-//       requestData,
-//       (response, error) => {
-//         if (error) {
-//           toast.error(error, { theme: "colored" });
-//           return;
-//         }
-//         let message = response["message"];
-//         toast.success(message, { theme: "colored" });
-//       }
-//     ),
-//   ]);

@@ -5,7 +5,7 @@ import HttpSuccessDataHandler from "../../utils/http_success_data_handler";
 export const usersApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     getUsers: builder.query({
-      query: () => "/users",
+      query: () => "/user/all",
       async onfulfilled(response) {
         //? Extract data from successful response
         return HttpSuccessDataHandler.getSuccessResponseData(response);
@@ -28,8 +28,18 @@ export const usersApiSlice = apiSlice.injectEndpoints({
         HttpErrorHandler.spitHttpErrorMsg(error);
       },
     }),
-    getUserId: builder.query({
-      query: (userId) => `/users/${userId}`,
+    getUser: builder.query({
+      query: () => `/user`,
+      async onfulfilled(response) {
+        //? Extract data from successful response
+        return HttpSuccessDataHandler.getSuccessResponseData(response);
+      },
+      async onrejected(error) {
+        HttpErrorHandler.spitHttpErrorMsg(error);
+      },
+    }),
+    getUserById: builder.query({
+      query: (userId) => `/user/${userId}`,
       async onfulfilled(response) {
         //? Extract data from successful response
         return HttpSuccessDataHandler.getSuccessResponseData(response);
@@ -75,7 +85,8 @@ export const usersApiSlice = apiSlice.injectEndpoints({
 
 export const {
   useGetUsersQuery,
-  useGetUserIdQuery,
+  useGetUserByIdQuery,
+  useGetUserQuery,
   useGetUserPostsQuery,
   useGetUsersPostsQuery,
   useGetUserProfileQuery,

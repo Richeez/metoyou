@@ -5,19 +5,26 @@ import { BrowserRouter } from "react-router-dom";
 import { GlobalStyles } from "./styles/globalStyles";
 import { store } from "./app/store";
 import { Provider } from "react-redux";
-import { ToastContainer } from "react-toastify";
+import { Toaster as ToastContainer } from "react-hot-toast";
 import "react-toastify/dist/ReactToastify.css";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+
+const queryClient = new QueryClient();
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     <BrowserRouter>
-      <GlobalStyles />
-      <Provider store={store}>
-        {/* <AuthContextProvider> */}
-        <App />
-        {/* </AuthContextProvider> */}
-      </Provider>
-      <ToastContainer />
+      <QueryClientProvider client={queryClient}>
+        <GlobalStyles />
+        <Provider store={store}>
+          {/* <AuthContextProvider> */}
+          <App />
+          {/* </AuthContextProvider> */}
+        </Provider>
+        <ToastContainer />
+      </QueryClientProvider>
     </BrowserRouter>
+    {/* <ReactQueryDevtools initialIsOpen={false} /> */}
   </React.StrictMode>
 );

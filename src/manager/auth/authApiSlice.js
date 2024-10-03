@@ -1,3 +1,4 @@
+import { useQueryClient } from "@tanstack/react-query";
 import { apiSlice } from "../../app/api/apiSlice";
 import HttpErrorHandler from "../../utils/http_error_handler";
 import HttpSuccessDataHandler from "../../utils/http_success_data_handler";
@@ -101,10 +102,35 @@ export const authApiSlice = apiSlice.injectEndpoints({
   }),
 });
 
+// Define a custom hook to handle login and update profile
+export const useAuthApi = () => {
+  const queryClient = useQueryClient();
+
+  const { useLoginMutation, useUpdateProfileMutation } = authApiSlice;
+
+  const login = useLoginMutation({
+    async onSuccess(data) {
+      console.log("🚀 ~ onSuccess ~ data:", data);
+      const userData = data.data; // Assuming user data is in response.data
+      queryClient.setQueryData(["currentUser"], userData); // Update current user data in the cache
+    },
+  });
+
+  const updateProfile = useUpdateProfileMutation({
+    async onSuccess(data) {
+      const updatedUserData = data.data; // Assuming updated user data is in response.data
+      queryClient.setQueryData(["currentUser"], (prevData) => ({
+        ...prevData, // Merge previous data with updated data
+        ...updatedUserData,
+      }));
+    },
+  });
+
+  return { login, updateProfile };
+};
+
 export const {
-  useLoginMutation,
   usePostMutation,
-  useUpdateProfileMutation,
   useUploadMutation,
   useLikeMutation,
   useDeletePostMutation,

@@ -88,10 +88,6 @@ const baseQueryWithReAuth = async (args, api, extraOptions) => {
   try {
     const result = await baseQuery(args, api, extraOptions);
 
-    console.log(
-      "🚀 ~ baseQueryWithReAuth ~ result?.error?.originalStatus:",
-      result?.error?.originalStatus
-    );
     if (result?.error?.originalStatus === 401) {
       // console.log("Access forbidden. Refreshing token...");
 

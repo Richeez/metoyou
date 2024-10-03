@@ -1,4 +1,4 @@
-import { toast } from "react-toastify";
+import { toast } from "react-hot-toast";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { v4 } from "uuid";
 import { storage } from "../../firebase";
@@ -118,7 +118,6 @@ export const isValidEmail = (email) => {
 // Display a toast message when the email is not valid using the exported options
 export const toaster = (message, isError = false) => {
   const toastId = new Date().getTime().toString();
-  console[isError ? "error" : "log"]("message:", message);
   if (isError) {
     return toast.error(message, { ...toastOptions, toastId });
   }
@@ -126,7 +125,6 @@ export const toaster = (message, isError = false) => {
 };
 
 const getFileType = (fileName) => {
-  console.log("🚀 ~ file: reusables.js:45 ~ getFileType ~ fileName:", fileName);
   const extension = fileName.split(".").pop().toLowerCase();
 
   if (extension === "jpg" || extension === "jpeg" || extension === "png") {

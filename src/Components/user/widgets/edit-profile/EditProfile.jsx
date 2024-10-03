@@ -5,7 +5,7 @@ import { useEffect, useRef, useState } from "react";
 import { StyledInput } from "../../../features/inputs/styledInput";
 import { CustomButton } from "../../../features/button";
 // import { useState } from "react";
-import { useUpdateProfileMutation } from "../../../../manager/auth/authApiSlice";
+import { useAuthApi } from "../../../../manager/auth/authApiSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import {
@@ -19,7 +19,7 @@ import {
   isValidEmail,
   toaster,
   uploadFile,
-} from "../../../../helpers/reusables";
+} from "../../../../helpers/reuseable";
 import HttpErrorHandler from "../../../../utils/http_error_handler";
 
 const EditProfile = ({
@@ -49,7 +49,10 @@ const EditProfile = ({
 
   const [newData, setNewData] = useState(null);
 
-  const [updateProfile, { isLoading }] = useUpdateProfileMutation();
+  // const [updateProfile, { isLoading }] = useUpdateProfileMutation();
+  const { updateProfile } = useAuthApi();
+  const [updateMutation, { isLoading }] = updateProfile;
+
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -137,7 +140,7 @@ const EditProfile = ({
     }
 
     try {
-      const profileRes = await updateProfile({
+      const profileRes = await updateMutation({
         userId: id,
         nickname,
         occupation,

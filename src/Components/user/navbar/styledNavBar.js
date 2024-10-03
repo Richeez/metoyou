@@ -42,6 +42,7 @@ export const NavCont = styled.nav`
     display: flex;
     margin-right: auto;
     width: fit-content;
+    height: 100%;
     align-items: center;
     justify-content: flex-start;
     overflow: hidden;

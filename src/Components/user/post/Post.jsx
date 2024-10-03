@@ -24,7 +24,7 @@ import {
   capitalizeFirstLetter,
   toaster,
   useDynamicDate,
-} from "../../../helpers/reusables";
+} from "../../../helpers/reuseable";
 import OutsideClickHandler from "../../../hooks/useClickOutside";
 import { MdDeleteForever } from "react-icons/md";
 import LightBoxGallery from "../../features/LightBoxGallery/LightboxGallery";

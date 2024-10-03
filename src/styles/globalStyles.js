@@ -40,6 +40,7 @@ export const GlobalStyles = createGlobalStyle`
   width: 0;
   height: 0;
   background:var(--color-white);  
+  display: none
 }
 
 

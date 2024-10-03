@@ -9,7 +9,7 @@ import { CustomButton } from "../../features/button";
 import { StyledInput } from "../../features/inputs/styledInput";
 import Button from "../../features/animated buttons/Button";
 import { FaTimes } from "react-icons/fa";
-import { toaster, uploadFile } from "../../../helpers/reusables";
+import { toaster, uploadFile } from "../../../helpers/reuseable";
 import HttpErrorHandler from "../../../utils/http_error_handler";
 import useInput from "../../../hooks/useInput";
 
@@ -149,7 +149,7 @@ const PostField = () => {
         attachments,
       }).unwrap();
 
-      dispatch(setPosts({ posts: postData }));
+      dispatch(setPosts({ posts: postData?.data }));
 
       setFormData({
         files: [],

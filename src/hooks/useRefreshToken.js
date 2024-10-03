@@ -18,7 +18,8 @@ export const useRefreshToken = ({ persist }) => {
     try {
       const response = await axiosPrivate.get(`/refresh/${userId}`);
 
-      return response.data; // Return the refresh token
+      console.log("🚀 ~ refresh ~ response:", response?.data);
+      return response?.data?.data; // Return the refresh token
     } catch (error) {
       // Return null or handle the error accordingly based on your application's logic
       return null;

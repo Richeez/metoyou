@@ -7,7 +7,10 @@ import Lottie from "lottie-react";
 import Empty from "../profile/empty-state.json";
 import StartFromTop from "../../StartFromTop";
 import { useState, useEffect, useRef, useCallback } from "react";
-import { useGetUserIdQuery } from "../../../manager/usersReq/usersApiSlice";
+import {
+  useGetUserByIdQuery,
+  useGetUserQuery,
+} from "../../../manager/usersReq/usersApiSlice";
 import { useSelector } from "react-redux";
 import Profile from "../profile/profile";
 import { BackDrop } from "../../features/backdrop";
@@ -21,7 +24,7 @@ import OutsideClickHandler from "../../../hooks/useClickOutside";
 import { Section } from "../../features/container";
 import LightBoxGallery from "../../features/LightBoxGallery/LightboxGallery";
 import HttpErrorHandler from "../../../utils/http_error_handler";
-import { capitalizeFirstLetter } from "../../../helpers/reusables";
+import { capitalizeFirstLetter } from "../../../helpers/reuseable";
 
 const UserProfile = () => {
   const [toggle, setToggle] = useState(false);
@@ -98,8 +101,8 @@ const UserProfile = () => {
   try {
     const currentUserId =
       profileUserId === id
-        ? useGetUserIdQuery(_id)
-        : useGetUserIdQuery(profileUserId);
+        ? useGetUserQuery()
+        : useGetUserByIdQuery(profileUserId);
     ({ data: res, isLoading, isError, isSuccess, error } = currentUserId);
   } catch (error) {
     isError = true;
