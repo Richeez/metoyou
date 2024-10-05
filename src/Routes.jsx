@@ -7,7 +7,6 @@ import LoginPage from "./modules/auth/pages/loginpage/loginPage";
 import SignUpPage from "./modules/common/pages/signupPage/signUp";
 import ExpSession from "./modules/common/pages/expired/ExpSession";
 import NotFound from "./modules/common/pages/404-Page/NotFound";
-import Home from "./modules/common/pages/dashboard/Dashboard";
 import MainContent from "./layouts/main/main";
 
 //TODO: integrate Posting
