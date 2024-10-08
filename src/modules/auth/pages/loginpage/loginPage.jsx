@@ -45,15 +45,13 @@ function LoginPage() {
         user: username.trim(),
         pwd: password.trim(),
       }).unwrap();
-      console.log("🚀 ~ handleLogin ~ data:", data);
 
-      dispatch(setCredentials({ ...data }));
-      dispatch(setToken(data.key));
+      dispatch(setCredentials({ ...data?.data }));
+      dispatch(setToken(data?.data?.key));
       const access = {
         id: data?.data?.user?._id,
         token: data?.data?.key,
       };
-      console.log("🚀 ~ handleLogin ~ access:", access);
       // Setting the cookie
       Cookies.set("session", JSON.stringify(access), {
         path: "/",
@@ -69,6 +67,7 @@ function LoginPage() {
       });
       navigate(from, { replace: true });
     } catch (err) {
+      console.log("🚀 ~ handleLogin ~ err:", err);
       HttpErrorHandler.spitHttpErrorMsg(err);
     }
   };

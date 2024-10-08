@@ -20,11 +20,11 @@ import useTitle from "../../../hooks/useTitle";
 import OutsideClickHandler from "../../../hooks/useClickOutside";
 import HttpErrorHandler from "../../../utils/http_error_handler";
 import { capitalizeFirstLetter } from "../../../helpers/reuseable";
-import Avatar from "../../../Components/profile/Avatar";
 import { BackDrop } from "../../../Components/backdrop";
 import EditProfile from "./components/edit-profile/EditProfile";
 import LightBoxGallery from "../../../Components/LightBoxGallery/LightboxGallery";
 import { Section } from "../../../Components/container";
+import Avatar from "@/Components/profile/Avatar";
 
 const UserProfile = () => {
   const [toggle, setToggle] = useState(false);
@@ -34,7 +34,6 @@ const UserProfile = () => {
   const { userId } = useParams();
   const [imgIndex, setImgIndex] = useState(0);
   const _id = useSelector(getCurrentUserId);
-  const [id, setUserId] = useState(null); // Assuming you have a state to store the current user ID
   const [user, setUser] = useState(null);
   const navigate = useNavigate();
 
@@ -100,7 +99,7 @@ const UserProfile = () => {
 
   try {
     const currentUserId =
-      profileUserId === id
+      profileUserId === _id
         ? useGetUserQuery()
         : useGetUserByIdQuery(profileUserId);
     ({ data: res, isLoading, isError, isSuccess, error } = currentUserId);
@@ -111,14 +110,8 @@ const UserProfile = () => {
   }
 
   useEffect(() => {
-    setUserId(res); // Set the current user ID based on your logic
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  // const navigate = useNavigate();
-  useEffect(() => {
     //? Render the data once it has been successfully fetched
-    setUser(res);
+    setUser(res?.data);
   }, [isSuccess, res]);
 
   let profile;
@@ -130,8 +123,7 @@ const UserProfile = () => {
       </div>
     );
   } else if (isError) {
-    const statusCode = error?.status;
-    console.log("statusCode", statusCode);
+    // const statusCode = error?.status;
     // profile = statusCode === 404 ? <NotFound /> : <Navigate to="/login" />;
   } else if (isSuccess && user) {
     const {
@@ -172,9 +164,7 @@ const UserProfile = () => {
               </button>
               <img
                 src={
-                  backgroundBg.length !== 0
-                    ? backgroundBg[0]?.url
-                    : "/facts.jpg"
+                  backgroundBg?.length > 0 ? backgroundBg[0]?.url : "/facts.jpg"
                 }
                 alt="background"
               />
@@ -222,7 +212,7 @@ const UserProfile = () => {
 
               <div className="rating-cont ">
                 <p className="rating-info">followers</p>
-                <p className="figure">{friends ? friends.length : 0}</p>
+                <p className="figure">{friends ? friends?.length : 0}</p>
               </div>
 
               <div className="rating-cont">

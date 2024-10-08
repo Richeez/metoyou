@@ -3,6 +3,12 @@ import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { v4 } from "uuid";
 import { storage } from "../../firebase";
 import { useEffect, useState } from "react";
+import {
+  FaCheckCircle,
+  FaExclamationTriangle,
+  FaInfoCircle,
+  FaTimes,
+} from "react-icons/fa";
 
 export const formatDate = (dateString) => {
   if (!dateString) return null;
@@ -95,6 +101,120 @@ const toastOptions = {
   pauseOnHover: false,
   draggable: false,
   progress: undefined,
+};
+
+// Default toast options
+const defaultToastOptions = {
+  position: "top-right",
+  duration: 3000,
+};
+
+// Custom close button component
+const CloseButton = ({ closeToast }) => (
+  <button
+    onClick={closeToast}
+    style={{
+      background: "transparent",
+      border: "none",
+      cursor: "pointer",
+      paddingLeft: "8px",
+      color: "white",
+    }}
+  >
+    <FaTimes />
+  </button>
+);
+
+export const showToast = {
+  success: (message, options = {}) =>
+    toast(
+      (t) => (
+        <div style={{ display: "flex", alignItems: "center" }}>
+          <FaCheckCircle style={{ marginRight: "8px", color: "white" }} />
+          <span>{message}</span>
+          <CloseButton closeToast={() => toast.dismiss(t.id)} />
+        </div>
+      ),
+      {
+        ...defaultToastOptions,
+        style: {
+          backgroundColor: "#4caf50", // Green color matching the success icon
+          color: "white",
+        },
+        ...options,
+      }
+    ),
+  error: (message, options = {}) =>
+    toast(
+      (t) => (
+        <div style={{ display: "flex", alignItems: "center" }}>
+          <FaExclamationTriangle
+            style={{ marginRight: "8px", color: "white" }}
+          />
+          <span>{message}</span>
+          <CloseButton closeToast={() => toast.dismiss(t.id)} />
+        </div>
+      ),
+      {
+        ...defaultToastOptions,
+        style: {
+          backgroundColor: "#f44336", // Red color matching the error icon
+          color: "white",
+        },
+        ...options,
+      }
+    ),
+  info: (message, options = {}) =>
+    toast(
+      (t) => (
+        <div style={{ display: "flex", alignItems: "center" }}>
+          <FaInfoCircle style={{ marginRight: "8px", color: "white" }} />
+          <span>{message}</span>
+          <CloseButton closeToast={() => toast.dismiss(t.id)} />
+        </div>
+      ),
+      {
+        ...defaultToastOptions,
+        style: {
+          backgroundColor: "#2196f3", // Blue color matching the info icon
+          color: "white",
+        },
+        ...options,
+      }
+    ),
+  warn: (message, options = {}) =>
+    toast(
+      (t) => (
+        <div style={{ display: "flex", alignItems: "center" }}>
+          <FaExclamationTriangle
+            style={{ marginRight: "8px", color: "white" }}
+          />
+          <span>{message}</span>
+          <CloseButton closeToast={() => toast.dismiss(t.id)} />
+        </div>
+      ),
+      {
+        ...defaultToastOptions,
+        style: {
+          backgroundColor: "#ff9800", // Orange color matching the warn icon
+          color: "white",
+        },
+        ...options,
+      }
+    ),
+  custom: (message, options = {}) =>
+    toast(
+      (t) => (
+        <div style={{ display: "flex", alignItems: "center" }}>
+          <span>{message}</span>
+          <CloseButton closeToast={() => toast.dismiss(t.id)} />
+        </div>
+      ),
+      {
+        ...defaultToastOptions,
+        ...options,
+      }
+    ),
 };
 
 export const isValidEmail = (email) => {
