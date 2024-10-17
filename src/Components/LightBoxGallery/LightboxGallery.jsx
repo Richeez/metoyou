@@ -3,6 +3,7 @@ import Carousel from "react-elastic-carousel";
 import "./LightboxGallery.css";
 import PropTypes from "prop-types";
 import RenderFileType from "../RenderFileType";
+import { CgClose } from "react-icons/cg";
 
 const LightBoxGallery = ({ children, files, imgIndex, setImgIndex }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -25,7 +26,7 @@ const LightBoxGallery = ({ children, files, imgIndex, setImgIndex }) => {
       {isOpen && (
         <div className="lightbox-gallery">
           <div className="close-button" onClick={closeLightBox}>
-            X
+            <CgClose />
           </div>
           <Carousel
             itemsToShow={1}

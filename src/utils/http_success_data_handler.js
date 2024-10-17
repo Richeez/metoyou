@@ -1,4 +1,4 @@
-import { toaster } from "../helpers/reuseable";
+import { showToast } from "../helpers/reuseable";
 
 export default class HttpSuccessDataHandler {
   static getSuccessResponseData(response) {
@@ -10,7 +10,7 @@ export default class HttpSuccessDataHandler {
         responseMessage = response["message"];
       }
       if (responseMessage) {
-        toaster(responseMessage);
+        showToast.success(responseMessage);
       }
 
       return response["data"] || response;

@@ -1,0 +1,32 @@
+.custom-modal-dialog {
+}
+
+.custom-modal-header.modal-header {
+  border: 0;
+  /* padding: 2rem; */
+  position: relative;
+}
+
+.custom-modal-header .custom-modal-header-close-icon {
+  position: absolute;
+  top: 1.5rem;
+  right: 1.5rem;
+  cursor: pointer;
+  z-index: 1;
+}
+.custom-modal-dialog .modal-body {
+  padding: 0.3rem 1.5rem 1.5rem;
+}
+
+.custom-modal-dialog .modal-footer {
+  border: 0;
+  padding: 2rem;
+}
+
+.custom-modal-dialog .modal-footer-button {
+  margin-right: 1rem;
+}
+
+.custom-modal-dialog .modal-footer-button:last-child {
+  margin-right: 0;
+}

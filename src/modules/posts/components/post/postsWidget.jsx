@@ -41,7 +41,7 @@ const PostsWidget = React.memo(({ userId, isProfile = false }) => {
     if (post && !posts?.length) {
       memoizedDispatch(setPosts({ posts: post?.data }));
     }
-  }, [post, posts.length, memoizedDispatch]);
+  }, [post, posts, memoizedDispatch]);
 
   if (isLoading) {
     return (
@@ -98,23 +98,25 @@ const PostsWidget = React.memo(({ userId, isProfile = false }) => {
             comments,
             following,
             details,
-          }) => (
-            <div key={`${_id}-${userId}`}>
-              <Post
-                postId={_id}
-                postUserId={userId}
-                username={username}
-                description={description}
-                location={location}
-                picsPath={picsPath}
-                userPicsPath={userPicsPath}
-                likes={likes}
-                comments={comments}
-                following={following}
-                timestamp={!details?.length ? createdAt : details[0].time}
-              />
-            </div>
-          )
+          }) => {
+            return (
+              <div key={`${_id}-${userId}`}>
+                <Post
+                  postId={_id}
+                  postUserId={userId}
+                  username={username}
+                  description={description}
+                  location={location}
+                  picsPath={picsPath}
+                  userPicsPath={userPicsPath}
+                  likes={likes}
+                  comments={comments}
+                  following={following}
+                  timestamp={!details?.length ? createdAt : details[0].time}
+                />
+              </div>
+            );
+          }
         )
         .reverse()}
     </div>

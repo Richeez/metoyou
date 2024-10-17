@@ -1,0 +1,126 @@
+/* Base Styles */
+@import url("default.css");
+@import url("dark.css");
+@import url("blue.css");
+@import url("black.css");
+@import url("red.css");
+@import url("purple.css");
+@import url("green.css");
+
+:root {
+  /* Background Variations for Dark Theme */
+  --body-bg: var(--color-light); /* Default background */
+  --body-bg-light: var(--color-light-light); /* Slightly lighter background */
+  --body-bg-lighter: var(--color-light-lighter); /* Even lighter background */
+  --body-bg-dark: var(--color-light-dark); /* Darker background */
+  --body-bg-darker: var(--color-light-darker); /* Darkest background */
+  /* Backgrounds and Borders */
+  --text-color: var(--color-dark);
+  --border-color: var(--color-secondary-lighter);
+  --card-bg: var(--color-light);
+  --card-border: var(--color-secondary-lighter);
+  --card-border-radius: 0.5rem;
+  --btn-border-radius: 0.25rem;
+
+  /* Typography */
+  --font-family: "Roboto", sans-serif;
+  --font-family-base: var(--font-family);
+  --font-family-heading: var(--font-family);
+  --global-font-family: var(--font-family);
+
+  /* Font Sizes (using rem units) */
+  --fs--7: 0.1rem;
+  --fs--6: 0.2rem;
+  --fs--5: 0.3rem;
+  --fs--4: 0.4rem;
+  --fs--3: 0.5rem;
+  --fs--2: 0.6rem;
+  --fs--1: 0.7rem;
+  --fs-1: 0.8rem;
+  --fs-2: 0.9rem; /* Base font size */
+  --fs-3: 1rem;
+  --fs-4: 1.2rem;
+  --fs-5: 1.4rem;
+  --fs-6: 2.55rem;
+  --fs-7: 3rem;
+  --fs-8: 3.5rem;
+
+  /* Font Weights */
+  --fw-light: 300;
+  --fw-normal: 400;
+  --fw-medium: 500;
+  --fw-bold: 700;
+
+  /* Line Heights */
+  --lh-normal: 1.5;
+  --lh-loose: 1.75;
+  --lh-tight: 1.25;
+
+  /* Heading Sizes */
+  --heading-h1: var(--fs-8);
+  --heading-h2: var(--fs-7);
+  --heading-h3: var(--fs-6);
+  --heading-h4: var(--fs-5);
+  --heading-h5: var(--fs-4);
+  --heading-h6: var(--fs-3);
+
+  /* Spacing (Margin & Padding) */
+  --space-xs: 0.4rem;
+  --space-sm: 0.8rem;
+  --space-md: 1.6rem;
+  --space-lg: 2.4rem;
+  --space-xl: 3.2rem;
+
+  /* Border Radius */
+  --radius-small: 0.2rem;
+  --radius-medium: 0.4rem;
+  --radius-large: 0.8rem;
+
+  /* Box Shadows */
+  --shadow-sm: 0px 1px 2px rgba(0, 0, 0, 0.1);
+  --shadow-md: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0px 10px 20px rgba(0, 0, 0, 0.2);
+
+  /* Link Colors */
+  --link-color: var(--color-primary);
+  --link-hover-color: var(--color-primary-light);
+
+  /* Button Styles */
+  --btn-padding: var(--space-sm) var(--space-md);
+  --btn-bg-primary: var(--color-primary);
+  --btn-bg-primary-light: var(--color-primary-light);
+  --btn-bg-secondary: var(--color-secondary);
+  --btn-bg-secondary-light: var(--color-secondary-light);
+  --btn-bg-success: var(--color-success);
+  --btn-bg-success-light: var(--color-success-light);
+  --btn-bg-danger: var(--color-danger);
+  --btn-bg-danger-light: var(--color-danger-light);
+  --btn-text-color: var(--color-light);
+  --btn-border-radius: 0.25rem;
+  --btn-border: 1px solid transparent;
+  --btn-hover-opacity: var(--opacity-medium);
+
+  /* Card Styles */
+  --card-padding: var(--space-md);
+  --card-bg: var(--color-light);
+  --card-border: 1px solid var(--color-muted);
+  --card-border-radius: var(--radius-medium);
+  --card-shadow: var(--shadow-sm);
+
+  /* Opacity */
+  --opacity-high: 0.9;
+  --opacity-medium: 0.7;
+  --opacity-low: 0.5;
+
+  /* Transitions */
+  --transition: all 0.3s ease-in-out;
+  --transition-fast: 0.2s ease-in-out;
+  --transition-normal: 0.4s ease-in-out;
+  --transition-slow: 0.6s ease-in-out;
+
+  /* Z-index */
+  --z-index-low: 1;
+  --z-index-medium: 10;
+  --z-index-high: 100;
+  --z-index-modal: 1000;
+}

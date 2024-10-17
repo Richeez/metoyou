@@ -17,10 +17,10 @@ import {
   useDeletePostMutation,
   useLikeMutation,
 } from "../../../../manager/auth/authApiSlice";
-import { useRef, useState } from "react";
+import React, { useCallback, useRef, useState } from "react";
 import {
   capitalizeFirstLetter,
-  toaster,
+  showToast,
   useDynamicDate,
 } from "../../../../helpers/reuseable";
 import OutsideClickHandler from "../../../../hooks/useClickOutside";
@@ -30,9 +30,12 @@ import Avatar from "../../../../Components/profile/Avatar";
 import Comment from "../comments/Comment";
 import LightBoxGallery from "../../../../Components/LightBoxGallery/LightboxGallery";
 import RenderFileType from "../../../../Components/RenderFileType";
+import Modal from "@/Components/Modal";
+import Swal from "sweetalert2";
+import { ScaleLoader } from "react-spinners";
 
 const Post = ({
-  postId,
+  postId: id,
   postUserId,
   username,
   description,
@@ -44,9 +47,10 @@ const Post = ({
   timestamp,
 }) => {
   const name = capitalizeFirstLetter(username);
-
+  const [modalType, setModalType] = useState("");
+  const [postId, setPostId] = useState(null);
+  const [showModal, setShowModal] = useState(false);
   const dispatch = useDispatch();
-  const [isComments, setIsComments] = useState(false);
   const [isPostOptions, setIsPostOptions] = useState(false);
   const [imgIndex, setImgIndex] = useState(0);
   const optionsMenuRef = useRef(null);
@@ -76,9 +80,24 @@ const Post = ({
     setIsPostOptions((prev) => !prev);
   };
 
+  const handleModalToggle = useCallback(() => {
+    setShowModal((prev) => {
+      const newShowModal = !prev;
+      if (!newShowModal) {
+        setModalType("");
+      }
+      return newShowModal;
+    });
+  }, []);
+
+  const handleModalData = (type) => {
+    setModalType(type);
+    handleModalToggle();
+  };
+
   const handleLike = async () => {
     const credentials = {
-      postId,
+      postId: id,
     };
 
     try {
@@ -91,25 +110,51 @@ const Post = ({
     }
   };
 
-  const handleComment = async () => {
-    setIsComments((prev) => !prev);
-  };
-  const handlePostDeletion = async () => {
-    const credentials = {
-      postId,
-    };
-    try {
-      const updatedPost = await deletePost(credentials).unwrap();
-      dispatch(setPosts({ posts: updatedPost }));
-      toaster("Post Deleted Successfully!");
-      setIsPostOptions(false);
-    } catch (error) {
-      toaster(
-        "An unexpected error occurred while trying to delete post!",
-        true
-      );
-    }
-  };
+  const handlePostDeletion = useCallback(async () => {
+    Swal.fire({
+      title: "Confirm Delete",
+      text: "Are you sure you want to delete this post?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Delete",
+      cancelButtonText: "Cancel",
+      customClass: {
+        confirmButton: "btn btn-lg btn-danger me-3",
+        cancelButton: "btn btn-lg btn-secondary",
+      },
+      buttonsStyling: false,
+    }).then(async (result) => {
+      if (result?.isConfirmed) {
+        // Set loading state only after confirmation
+        const credentials = {
+          postId: id,
+        };
+        setPostId(id);
+        try {
+          setIsPostOptions(false);
+          const updatedPost = await deletePost(credentials).unwrap();
+          if (updatedPost?.status === 200) {
+            showToast.success("Post deleted successfully!");
+            dispatch(setPosts({ posts: updatedPost?.data }));
+          } else {
+            showToast.error(
+              updatedPost?.error || "An error occurred. Please try again."
+            );
+          }
+        } catch (error) {
+          showToast.error(
+            "There was an error deleting post. Please try again."
+          );
+        } finally {
+          // Always reset loading state after action completes
+          setPostId(null);
+        }
+      } else {
+        // Reset loading state if the deletion is canceled
+        setPostId(null);
+      }
+    });
+  }, [deletePost, dispatch, id]);
 
   return (
     <StyledPost>
@@ -121,7 +166,11 @@ const Post = ({
         </div>
         {postUserId === loggedInUserId && (
           <span ref={optionsMenuRef} className="close_menu">
-            <BsThreeDots onClick={handlePostOptions} className="icon" />
+            {id == postId ? (
+              <ScaleLoader size={13} />
+            ) : (
+              <BsThreeDots onClick={handlePostOptions} className="icon" />
+            )}
           </span>
         )}
         {isPostOptions && (
@@ -223,7 +272,10 @@ const Post = ({
               />
               <p>{likeCount !== 0 ? likeCount : null}</p>
             </div>
-            <FaRegComment onClick={handleComment} className="icon" />
+            <FaRegComment
+              onClick={() => handleModalData("comment")}
+              className="icon"
+            />
             <BiShareAlt className="icon" />
           </div>
           <div className="right_icons">
@@ -275,18 +327,30 @@ const Post = ({
               </div>
             )}
           </div>
+          <Modal
+            show={showModal}
+            handleClose={handleModalToggle}
+            onHide={handleModalToggle}
+            centered={true}
+            size={"md"}
+            scrollable={true}
+          >
+            {modalType === "comment"
+              ? comments?.map(({ user, username, picsPath, comment }) => (
+                  <React.Fragment key={user + new Date().toUTCString()}>
+                    <Comment
+                      userId={user}
+                      username={username}
+                      picsPath={picsPath}
+                      content={comment}
+                      author={username}
+                      timestamp={new Date().toUTCString()}
+                    />
+                  </React.Fragment>
+                ))
+              : null}
+          </Modal>
         </div>
-        {isComments &&
-          comments?.map(({ user, username, picsPath, comment }) => {
-            <Comment
-              user={user}
-              username={username}
-              picsPath={picsPath}
-              content={comment}
-              author={username}
-              timestamp={new Date().toUTCString()}
-            />;
-          })}
       </div>
     </StyledPost>
   );
