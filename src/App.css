@@ -1,4 +1,8 @@
-App {
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* App {
   position: relative;
   color: #8a2be2;
-}
+} */

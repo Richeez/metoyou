@@ -31,6 +31,8 @@ import Comment from "../comments/Comment";
 import LightBoxGallery from "../../../../Components/LightBoxGallery/LightboxGallery";
 import RenderFileType from "../../../../Components/RenderFileType";
 
+//install tailwind css
+
 const Post = ({
   postId,
   postUserId,
@@ -94,6 +96,7 @@ const Post = ({
   const handleComment = async () => {
     setIsComments((prev) => !prev);
   };
+
   const handlePostDeletion = async () => {
     const credentials = {
       postId,
@@ -117,7 +120,7 @@ const Post = ({
         <Avatar img={userPicsPath} id={postUserId} profile size={"60px"} />
         <div className="text">
           <p>{name}</p>
-          <p>Published: {formattedDate?.ago || formattedDate?.date}</p>
+          <p>{formattedDate?.ago || formattedDate?.date}</p>
         </div>
         {postUserId === loggedInUserId && (
           <span ref={optionsMenuRef} className="close_menu">
@@ -223,7 +226,7 @@ const Post = ({
               />
               <p>{likeCount !== 0 ? likeCount : null}</p>
             </div>
-            <FaRegComment onClick={handleComment} className="icon" />
+            <FaRegComment onClick={() => handleComment()} className="icon" />
             <BiShareAlt className="icon" />
           </div>
           <div className="right_icons">
@@ -276,17 +279,20 @@ const Post = ({
             )}
           </div>
         </div>
-        {isComments &&
-          comments?.map(({ user, username, picsPath, comment }) => {
-            <Comment
-              user={user}
-              username={username}
-              picsPath={picsPath}
-              content={comment}
-              author={username}
-              timestamp={new Date().toUTCString()}
-            />;
-          })}
+        {isComments && (
+          <div>
+            {comments?.map(({ user, username, picsPath, comment }) => {
+              <Comment
+                user={user}
+                username={username}
+                picsPath={picsPath}
+                content={comment}
+                author={username}
+                timestamp={new Date().toUTCString()}
+              />;
+            })}
+          </div>
+        )}
       </div>
     </StyledPost>
   );

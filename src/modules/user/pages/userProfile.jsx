@@ -3,13 +3,15 @@
 import { IoMdBriefcase, IoMdSettings } from "react-icons/io";
 import { FaChevronLeft, FaGreaterThan } from "react-icons/fa";
 import "./userProfile.css";
-import Lottie from "lottie-react";
-import Empty from "../../../Components/profile/empty-state.json";
+// import Lottie from "lottie-react";
+// import Empty from "../../../Components/profile/empty-state.json";
 import StartFromTop from "../../../Components/StartFromTop";
 import { useState, useEffect, useRef, useCallback } from "react";
 import {
   useGetUserByIdQuery,
   useGetUserQuery,
+  useGetUserPostsQuery,
+  useGetUserLikedPostsQuery,
 } from "../../../manager/usersReq/usersApiSlice";
 import { useSelector } from "react-redux";
 import { MdLocationPin } from "react-icons/md";
@@ -25,6 +27,7 @@ import EditProfile from "./components/edit-profile/EditProfile";
 import LightBoxGallery from "../../../Components/LightBoxGallery/LightboxGallery";
 import { Section } from "../../../Components/container";
 import Avatar from "@/Components/profile/Avatar";
+import UserPostActivities from "../userPostActivities";
 
 const UserProfile = () => {
   const [toggle, setToggle] = useState(false);
@@ -36,11 +39,15 @@ const UserProfile = () => {
   const _id = useSelector(getCurrentUserId);
   const [user, setUser] = useState(null);
   const navigate = useNavigate();
+  const [activeTab, setActiveTab] = useState("posts");
+  const [userPosts, setUserPosts] = useState([]);
+  const [likedPosts, setLikedPosts] = useState([]);
+  const [bookmarks, setBookmarks] = useState([]);
 
   const firstName = user?.username
     ? capitalizeFirstLetter(user.username.split(" ")[0])
     : "";
-  useTitle(`${firstName} Profile`);
+  useTitle(`${firstName}'s Profile`);
   const closeRef = useRef(null);
   const [editField, setEditField] = useState({
     nickname: "",
@@ -94,6 +101,9 @@ const UserProfile = () => {
   let isError = false;
   let error = null;
   let isSuccess = null;
+  let allUserPosts = null;
+  let allLikedPosts = null;
+  let allSavedPosts = null;
 
   const profileUserId = userId;
 
@@ -103,6 +113,13 @@ const UserProfile = () => {
         ? useGetUserQuery()
         : useGetUserByIdQuery(profileUserId);
     ({ data: res, isLoading, isError, isSuccess, error } = currentUserId);
+
+    const getAllUserPosts = useGetUserPostsQuery(userId);
+    ({ data: allUserPosts } = getAllUserPosts);
+
+    const getAllLikedPosts = useGetUserLikedPostsQuery(userId);
+    ({ data: allLikedPosts } = getAllLikedPosts);
+    console.log(getAllLikedPosts);
   } catch (error) {
     isError = true;
     HttpErrorHandler.spitHttpErrorMsg(error);
@@ -112,7 +129,11 @@ const UserProfile = () => {
   useEffect(() => {
     //? Render the data once it has been successfully fetched
     setUser(res?.data);
-  }, [isSuccess, res]);
+    setUserPosts(allUserPosts?.data);
+    setLikedPosts(allLikedPosts?.data);
+  }, [isSuccess, res, allUserPosts, allLikedPosts]);
+
+  console.log(userPosts);
 
   let profile;
   if (isLoading) {
@@ -178,10 +199,8 @@ const UserProfile = () => {
                 <Avatar img={picsPath} size={"110px"} />
               </LightBoxGallery>
               <div className="profile-user tac">
-                <p className="profile-name cap">
-                  {username ? username : "username"}
-                </p>
-                <p className="handle-name">{`@${nickname}`}</p>
+                <p className="profile-name cap">{username}</p>
+                <p className="handle-name">@{nickname}</p>
               </div>
             </div>
           </div>
@@ -254,7 +273,79 @@ const UserProfile = () => {
             </div>
           </div>
 
-          <div className="photos flex-cont">
+          <div className="w-full flex flex-col gap-5 items-center justify-center">
+            <div className="font-semibold flex md:text-xl gap-20 md:gap-28 items-center pb-2 border-b border-black">
+              <p
+                className={
+                  activeTab === "posts"
+                    ? "font-black border-b-2 border-black"
+                    : ""
+                }
+                onClick={() => setActiveTab("posts")}
+              >
+                Posts
+              </p>
+              <p
+                className={
+                  activeTab === "liked"
+                    ? "font-black border-b-2 border-black"
+                    : ""
+                }
+                onClick={() => setActiveTab("liked")}
+              >
+                Liked posts
+              </p>
+              <p
+                className={
+                  activeTab === "marks"
+                    ? "font-black border-b-2 border-black"
+                    : ""
+                }
+                onClick={() => setActiveTab("marks")}
+              >
+                Bookmarks
+              </p>
+            </div>
+
+            <div className="flex w-full justify-center items-center pt-3">
+              <div className="flex flex-col gap-5 w-11/12 md:w-1/2">
+                {activeTab === "posts" && (
+                  <UserPostActivities arr={userPosts} msg={"No post found"} />
+                )}
+                {activeTab === "liked" && (
+                  <UserPostActivities
+                    arr={likedPosts}
+                    msg={"No liked posts found"}
+                  />
+                )}
+                {activeTab === "marks" && (
+                  <UserPostActivities
+                    arr={bookmarks}
+                    msg={"No bookmarks found"}
+                  />
+                )}
+              </div>
+            </div>
+          </div>
+        </div>
+      </Section>
+    );
+  }
+
+  return (
+    <>
+      <StartFromTop />
+      {profile}
+    </>
+  );
+};
+
+export default UserProfile;
+
+//work in progress
+
+{
+  /* <div className="photos flex-cont">
             <div className="photos-head">
               <p className="photos-label">Photos</p>
               <FaGreaterThan className="goTo" />
@@ -309,21 +400,9 @@ const UserProfile = () => {
                   <span className="click-add">click here to add</span>
                   <Lottie className="empty" animationData={Empty} />
                 </div>
-                {/* <PostsWidget userId={userId} isProfile /> */}
+                // <PostsWidget userId={userId} isProfile /> 
               </div>
             </div>
-          </div>
-        </div>
-      </Section>
-    );
-  }
-
-  return (
-    <>
-      <StartFromTop />
-      {profile}
-    </>
-  );
-};
-
-export default UserProfile;
+            </div> 
+          */
+}

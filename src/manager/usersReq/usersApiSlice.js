@@ -48,6 +48,17 @@ export const usersApiSlice = apiSlice.injectEndpoints({
         HttpErrorHandler.spitHttpErrorMsg(error);
       },
     }),
+    getUserLikedPosts: builder.query({
+      query: (userId) => `/posts/${userId}/likedPosts`,
+      async onfulfilled(response) {
+        //? Extract data from successful response
+        return HttpSuccessDataHandler.getSuccessResponseData(response);
+      },
+      async onrejected(error) {
+        HttpErrorHandler.spitHttpErrorMsg(error);
+        console.error("fetch post error:", error);
+      },
+    }),
     getUserPosts: builder.query({
       query: (userId) => `/posts/${userId}/posts`,
       async onfulfilled(response) {
@@ -87,6 +98,7 @@ export const {
   useGetUsersQuery,
   useGetUserByIdQuery,
   useGetUserQuery,
+  useGetUserLikedPostsQuery,
   useGetUserPostsQuery,
   useGetUsersPostsQuery,
   useGetUserProfileQuery,
