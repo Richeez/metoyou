@@ -64,6 +64,21 @@ export const authApiSlice = apiSlice.injectEndpoints({
         return HttpErrorHandler.spitHttpErrorMsg(error);
       },
     }),
+    comment: builder.mutation({
+      query: (credentials) => ({
+        url: "/posts/comment/post",
+        method: "PUT",
+        body: { ...credentials },
+      }),
+
+      async onfulfilled(response) {
+        return HttpSuccessDataHandler.getSuccessResponseData(response);
+      },
+      async onrejected(error) {
+        HttpErrorHandler.spitHttpErrorMsg(error);
+        console.error("Post error:", error);
+      },
+    }),
     deletePost: builder.mutation({
       query: (credentials) => {
         const { postId } = credentials;
@@ -131,6 +146,7 @@ export const useAuthApi = () => {
 
 export const {
   usePostMutation,
+  useCommentMutation,
   useUploadMutation,
   useLikeMutation,
   useDeletePostMutation,

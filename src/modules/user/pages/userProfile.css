@@ -19,15 +19,12 @@
   position: relative;
 }
 
-.profile-cont .icon {
+.profile-cont .background-image .icon {
   margin: 2px 5px 0;
-  width: 50px;
-  height: 50px;
+  width: 40px;
+  height: 40px;
   position: absolute;
-  padding: 2rem;
-  /* width: calc(70px * 0.8); */
-  /* height: calc(70px * 0.8); */
-  padding: 5px;
+  padding: 0.5rem;
   font-size: 1rem;
   border-radius: 50%;
   cursor: pointer;

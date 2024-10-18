@@ -119,7 +119,7 @@ const UserProfile = () => {
 
     const getAllLikedPosts = useGetUserLikedPostsQuery(userId);
     ({ data: allLikedPosts } = getAllLikedPosts);
-    console.log(getAllLikedPosts);
+    // console.log(getAllLikedPosts);
   } catch (error) {
     isError = true;
     HttpErrorHandler.spitHttpErrorMsg(error);
@@ -133,7 +133,7 @@ const UserProfile = () => {
     setLikedPosts(allLikedPosts?.data);
   }, [isSuccess, res, allUserPosts, allLikedPosts]);
 
-  console.log(userPosts);
+  // console.log(userPosts);
 
   let profile;
   if (isLoading) {

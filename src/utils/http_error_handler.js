@@ -1,5 +1,5 @@
 /* eslint-disable no-prototype-builtins */
-import { toaster } from "../helpers/reuseable";
+import { showToast } from "../helpers/reuseable";
 
 // Define UnauthorizedError as a standalone class
 class UnauthorizedError extends Error {
@@ -52,7 +52,7 @@ export default class HttpErrorHandler {
     // Display error message as toast if present
     if (errorMessage) {
       // toast.error(errorMessage, { theme: "colored" });
-      toaster(errorMessage, true);
+      showToast.error(errorMessage);
       return true;
     }
 
